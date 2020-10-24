@@ -71,12 +71,11 @@ void Move(char Dir, MATRIKS M, POINT P) {
         else { // Bergerak keluar peta melalui gerbang
             Address PMap;
             PMap = (Address) malloc(sizeof(Node));
-            CreateEmpty(&PMap)
-            PMap -> M.Mem[(int)Absis(P)][(int)Ordinat(P)] = BLANK; 
-            
+            CreateEmpty(&PMap);
+            /*
             if (Path(Dir,M,P)) {}
             else if (Path(Dir,M,P))
-
+            */
         }
     }
 }
