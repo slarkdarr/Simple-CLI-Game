@@ -1,9 +1,3 @@
-// NIM                  : 13519135
-// Nama                 : Naufal Alexander Suryasumirat
-// Tanggal              : 20 Oktober 2020
-// Topik Pra-praktikum  : Stack
-// Deskripsi            : Implementasi dari stack.h
-
 #include <stdio.h>
 #include "stackt.h"
 
