@@ -3,39 +3,55 @@
 
 #define MaxEl 100
 
+//Ukuran Map
+#define UkuranMap 10
+
 #include "matriks.h"
 #include "boolean.h"
 #include "point.h"
 
+#define Nil -1
+
+//cek definisi lagi, soalnya gabisa diakses id sama type nya
 typedef char keytype;
 typedef int infotype;
 typedef struct {
                 keytype type; 
-                infotype id; 
+                infotype id; // Selain bangunan/gate ber-id Nil *untuk Antrian?
                 } mapEntry;
 
 typedef struct {
-                mapEntry T[MaxEl-1][MaxEl-1];
-                int NbElmt;
+                mapEntry *T[MaxEl][MaxEl];
+                int NBrsEff;
+                int NKolEff;
                 POINT P;
                 } Map;
 
+/* Selektor */
+#define Elmt(M, i, j) M.T[(i)][(j)]
+#define Info(Entry) (Entry).id
+#define Key(Entry) (Entry).type
+#define Player(M) M.P
+#define NBrsEff(M) M.NBrsEff
+#define NKolEff(M) M.NKolEff
+
 /* KONSTRUKTOR */
-MakeEmptyMap(Map *M);
-LoadMap(Map *M);
+void MakeEmptyMap(Map *M);
+void LoadMap(Map *M);
 
 /* GETTER SETTER */
 
 
 /* PROSEDUR */
 // Menggerakkan Point P sesuai command W
-Move(Map *M, char W);
+void Move(Map *M, char W);
 
 // SystemPrint matriks Map M
-DrawMap(Map M);
+void DrawMap(Map M);
 
 /* FUNGSI */
 // Mengembalikan id dari object dengan tipe O terdekat dengan P
-GetObject(char O);
+// Object yang diprioritaskan untuk dicek pertama adalah di atas P, kemudian secara clock-wise dicek dengan prioritas paling utama adalah diatas
+int GetObject(char O);
 
 #endif

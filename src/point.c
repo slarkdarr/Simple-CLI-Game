@@ -2,6 +2,8 @@
 #include <math.h>
 #include "point.h"
 
+#define M_PI 3.14159
+
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
 POINT MakePOINT (float X, float Y)
