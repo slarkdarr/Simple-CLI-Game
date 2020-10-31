@@ -52,30 +52,19 @@ void Move(char Dir, MATRIKS M, POINT P) {
     if (Walkable(Dir,M,P)) {
         if (NGate(Path(Dir,M,P))){ // Bergerak dalam peta yang sama
             if (Dir == 'W') {
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = BLANK;
                 Geser(&P,0,1);
             }
             else if (Dir == 'A') {
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = BLANK;
                 Geser(&P,-1,0);
             }
             else if (Dir == 'S') {
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = BLANK;
                 Geser(&P,0,-1);        
             }
             else if (Dir == 'D') {
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = BLANK;
                 Geser(&P,1,0);        
             }
         }
         else { // Bergerak keluar peta melalui gerbang
-            Address PMap;
-            PMap = (Address) malloc(sizeof(Node));
-            CreateEmpty(&PMap);
-            /*
-            if (Path(Dir,M,P)) {}
-            else if (Path(Dir,M,P))
-            */
         }
     }
 }

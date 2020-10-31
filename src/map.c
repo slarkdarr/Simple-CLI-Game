@@ -1,48 +1,131 @@
 #include "map.h"
-#include "matriks.h"
 #include "point.h"
+#include "boolean.h"
 
 /* KONSTRUKTOR */
-void MakeEmptyMap(Map *M)
+void MakeEmptyMAP(MAP *M)
 {
-    for (int i = 0; i < UkuranMap; i++)
+    //Belum tau dipake atau engga
+}
+
+void LoadMap(MAP *M)
+{
+    //Load dari file map.txt?
+}
+
+/* GETTER DAN SETTER */
+
+/* PROSEDUR */
+void Move(MAP *M, char X)
+{
+    POINT P = Player(*M);
+    boolean collision = false;
+    switch (X)
     {
-        for (int j = 0; j < UkuranMap; j++)
-        {
-            if (i == 0 || j == UkuranMap)
+        //Kalau indeks 0 adalah border pada MAP
+        //Tambah case jika bertemu dengan Gate
+        //Tambah case jika ingin masuk ke Office
+        //Kode masih kurang
+        //Nil merupakan definisi element pada map bukan merupakan tipe bangunan atau gate
+        //Mengecek dulu tipe lokasi yang akan dijalani, jika bukan bangunan/border POINT P (Lokasi Player) akan digeser
+        case 'W' :
+        case 'w' :
+            if (InfoElmt(*M, Absis(P), (Ordinat(P) - 1)) != Nil)
+            //Cek bisa diganti atau engga (int) biar lebih enak diliatnya
             {
-                // (Elmt(*M, i, j)).type = '*'; /* .type gabisa diakses */
-                // Key(Elmt(*M, )) /* .id gabisa diakses */
+                Geser(&P, 0, -1);
             }
-        }
+            else
+            {
+                collision = true;
+            }
+            break;
+        case 'A' :
+        case 'a' :
+            if (InfoElmt(*M, (Absis(P) - 1),  Ordinat(P)) != Nil)
+            {
+                Geser(&P, -1, 0);
+            }
+            else
+            {
+                collision = true;
+            }
+            break;
+        case 'S' :
+        case 's' :
+            if (InfoElmt(*M, Absis(P), (Ordinat(P) + 1)) != Nil)
+            {
+                Geser(&P, 0, 1);
+            }
+            else
+            {
+                collision = true;
+            }
+            break;
+        case 'D' :
+        case 'd' :
+            if (InfoElmt(*M, (Absis(P) + 1), Ordinat(P)) != Nil)
+            {
+                Geser(&P, 1, 0);
+            }
+            else
+            {
+                collision = true;
+            }
+            break;
+        default :
+            printf("Bukan input yang valid\n"); //Output jika input yang dimasukkan tidak valid
+            break;
+    }
+    Player(*M) = P; //set POINT baru Player pada MAP
+    if (collision)
+    {
+        printf("Anda tertabrak\n"); //Output jika Player menabrak bangunan/border
     }
 }
 
-void LoadMap(Map *M)
+void DrawMap(MAP M)
 {
-
+    Player(M);
+    int a = Player(M).Y;
+    
+    for (int i = 0; i < NbElement(M); i++)
+    {
+        for (int j = 0; j < NbElement(M); j++)
+        {
+            if (i == Player(M).Y && j == Player(M).X)
+            {
+                printf("P");
+            } else {
+                printf("%c", TypeElmt(M, i, j));
+            }
+        }
+        printf("\n");
+    }
 }
 
-/* GETTER SETTER */
-
-
-/* PROSEDUR */
-// Menggerakkan Point P sesuai command W
-void Move(Map *M, char W)
+int GetObject(MAP *M, char O)
 {
+    boolean found = false;
+    POINT pointer = MakePOINT(0, 1); 
+    
+    int count = 3;
 
-}
+    while (!found && count != 0)
+    {
+        if (TypeElmt(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
+        {
+            found = true;
+        } else {
+            Putar(&pointer, M_PI / 2);
+            count -= 1;
+        }
+    }
 
-// SystemPrint matriks Map M
-void DrawMap(Map M)
-{
-
-}
-
-/* FUNGSI */
-// Mengembalikan id dari object dengan tipe O terdekat dengan P
-// Object yang diprioritaskan untuk dicek pertama adalah di atas P, kemudian secara clock-wise dicek dengan prioritas paling utama adalah diatas
-int GetObject(char O)
-{
-
+    if (found)
+    {
+        return (InfoElmt(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y));
+    } else {
+        return -1;
+    }
 }

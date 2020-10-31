@@ -6,7 +6,7 @@
 
 /* *** DEFINISI PROTOTIPE PRIMITIF *** */
 /* *** Konstruktor membentuk POINT *** */
-POINT MakePOINT (float X, float Y)
+POINT MakePOINT (int X, int Y)
 {
    POINT P;
    Absis(P) = X;
@@ -18,8 +18,8 @@ POINT MakePOINT (float X, float Y)
 /* *** KELOMPOK Interaksi dengan I/O device, BACA/TULIS  *** */
 void BacaPOINT (POINT * P)
 {
-   float X, Y;
-   scanf("%f %f", &X, &Y);
+   int X, Y;
+   scanf("%d %d", &X, &Y);
    *P = MakePOINT(X, Y);
 }
 /* Membaca nilai absis dan ordinat dari keyboard dan membentuk
@@ -31,7 +31,7 @@ void BacaPOINT (POINT * P)
 /* F.S. P terdefinisi */
 void TulisPOINT (POINT P)
 {
-   printf("(%.2f,%.2f)", Absis(P), Ordinat(P));
+   printf("(%d,%d)\n", Absis(P), Ordinat(P));
 }
 /* Nilai P ditulis ke layar dengan format "(X,Y)"
    tanpa spasi, enter, atau karakter lain di depan, belakang,
@@ -107,7 +107,7 @@ POINT NextY (POINT P)
    return (MakePOINT(Absis(P), Ordinat(P) + 1));
 }
 /* Mengirim salinan P dengan ordinat ditambah satu */
-POINT PlusDelta (POINT P, float deltaX, float deltaY)
+POINT PlusDelta (POINT P, int deltaX, int deltaY)
 {
    return (MakePOINT(Absis(P) + deltaX, Ordinat(P) + deltaY));
 }
@@ -144,7 +144,7 @@ float Panjang (POINT P1, POINT P2)
 /* Perhatikanlah bahwa di sini spec fungsi kurang baik sebab menyangkut ADT Garis. */
 /* Tuliskan spec fungsi yang lebih tepat. */
 /* Spek dari fungsi Panjang adalah merupakan fungsi yang menghitung jarak antar dua Point */
-void Geser (POINT *P, float deltaX, float deltaY)
+void Geser (POINT *P, int deltaX, int deltaY)
 {
    *P = PlusDelta(*P, deltaX, deltaY);
 }

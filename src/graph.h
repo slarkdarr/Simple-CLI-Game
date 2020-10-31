@@ -5,11 +5,12 @@
 
 #include "boolean.h"
 #include "matriks.h"
+#include "map.h"
 
 typedef char ElType;
 typedef struct Node* Address;
 typedef struct {
-                MATRIKS Map;
+                MAP Map;
                 Address Prev;
                 Address Next; 
                 } Node;
