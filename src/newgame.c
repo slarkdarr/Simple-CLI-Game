@@ -2,18 +2,18 @@
 #include <stdlib.h>
 
 int main(){
-    char nama;
+    char name;
     FILE *new;
     char new, f;
 
     println("Memulai permainan baru...");
     println("Masukkan nama:");
-    scanf("%lc", &nama);
+    scanf("%lc", &name);
 
     f = fopen("map.txt","r");
     if ("map.txt" == NULL){
-        println("File map missing");
-        exit(0);
+        println("Error. File map missing atau tidak dapat dibuka");
+        exit(-1);
     }
 
     new = fgetc(f);

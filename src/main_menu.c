@@ -40,5 +40,6 @@ void new_game(Map *M, int wahana[], int barang[])
 
 void exit_game()
 {
-
+    printf("Thanks for playing!!!");
+    fclose();
 }
