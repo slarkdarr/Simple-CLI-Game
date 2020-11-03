@@ -11,22 +11,23 @@ void MakeEmptyMAP(MAP *M)
 
 }
 
-void LoadMap(MAP *M, char fileName[])
+void LoadMap(MAP *M, char* fileName)
 {
     /*
     Membaca data map dari file mulai dari penanda #map. 
     Bisa untuk membaca dari file map.txt dan state.txt
     FORMAT:
         #map
-        H W
+        id H W
+        gateCount dest1 dest2 dest3
         <matriks M> 
-        id <gate1 gate2 gate3>
         
         KETERANGAN:
-        H, W    : int, dimensi dari M
-        M       : matriks of char
-        id      : int, id dari map
-        gateN   : int, id dari tujuan dari gateN (dibaca dari kiri->kanan->nextline)
+        H, W            : int, dimensi dari M
+        M               : matriks of char
+        id              : int, id dari map
+        gateCount       : int, jumlah gate pada map
+        dest<N>         : int, id dari tujuan gate ke-N (penomoran gate dibaca terurut seperti paragraf)
     
     Ukuran M adalah HxW
 
@@ -36,13 +37,11 @@ void LoadMap(MAP *M, char fileName[])
 
     NOTES:
         Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
+        Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
     */
 
     FILE *mapFile;
-    char* line;
-    char temp;
-    size_t buffer = 0;
-    int len;
+    char line[100];
 
     int mapH, mapW, mapID;
     int gateCount = 0;
@@ -50,47 +49,70 @@ void LoadMap(MAP *M, char fileName[])
     POINT gates[10];
 
     mapFile = fopen(fileName, "r"); 
-
-    while ((len = getline(&line, &buffer, mapFile)) != -1)
+    if (mapFile == NULL)
     {
-        if (*line == "#map")
+        printf("FAILED TO READ MAP\n");
+        return;
+    }
+
+    while (fgets(line, 100, mapFile) != NULL)
+    {
+        if (line[0] == '#' && line[1] == 'm')
         {
+            // fseek(mapFile, ftell(mapFile), SEEK_SET);
             // Mulai dari data map
-            fscanf(mapFile, "%d %d", &mapH, &mapW);
-            NbElement(*M) = mapH;
-            for (int i = 0; i < mapH; i++)
-            {
-                for (int j = 0; j < mapW; j++)
-                {
-                    // Mengisi 
-                    fscanf(mapFile, "%c", &temp);
-                    if (temp == 'P')
-                    {
-                        Player(*M) = MakePOINT(i, j);
-                        TypeElmt(*M, i, j) = '-';
-                    } else {
-                        TypeElmt(*M, i, j) = temp;
-                        if (temp == 'v' | temp == '^' | temp == '>' | temp == '<')
-                        {
-                            gates[gateCount] = MakePOINT(i, j);
-                            gateCount++;
-                        }
-                    }
+            fscanf(mapFile, "%d %d %d", &mapID, &mapH, &mapW);
+            fscanf(mapFile, "%d", &gateCount);
 
-                    InfoElmt(*M, i, j) = -1;
-                }
-            }
-            fscanf(mapFile, "%d", &mapID);
-
+            int* gateDestinations = malloc(gateCount * sizeof(int));
             for (int i = 0; i < gateCount; i++)
             {
-                fscanf(mapFile, "%d",TypeElmt(*M, gates[i].X, gates[i].Y));
+                fscanf(mapFile, "%d", &gateDestinations[i]);
             }
-            // Akhir dati data map
+            
+            printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
+            printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
+            fgets(line, 100, mapFile);
+
+            NBrs(*M) = mapH;
+            NKol(*M) = mapW;
+
+            int gate = 0;
+
+            for (int i = 0; i < mapH + 1; i++)
+            {
+                fgets(line, 100, mapFile);
+                
+                for (int j = 0; j < mapW; j++)
+                {
+                    switch(line[j])
+                    {
+                        case '<':
+                        case '>':
+                        case '^':
+                        case 'V':
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = gateDestinations[gate];
+                            gate++;
+                            break;
+                        case 'P':
+                            Player(*M) = MakePOINT(j, i);
+                            TypeElmt(*M, i, j) = '-';
+                            InfoElmt(*M, i, j) = 0;
+                            break;
+                        default:
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = 0;                            
+                    }
+                }
+            }
+
+            free(gateDestinations);
+            // Akhir dari data map
         }
     }
 
-    free(line);
+    fclose(mapFile);
     return;
 
 }
@@ -168,12 +190,11 @@ void Move(MAP *M, char X)
 
 void DrawMap(MAP M)
 {
-    Player(M);
-    int a = Player(M).Y;
+    printf("\nPLAYER AT %d, %d\n", Player(M).X, Player(M).Y);
     
-    for (int i = 0; i < NbElement(M); i++)
+    for (int i = 0; i < NBrs(M); i++)
     {
-        for (int j = 0; j < NbElement(M); j++)
+        for (int j = 0; j < NKol(M); j++)
         {
             if (i == Player(M).Y && j == Player(M).X)
             {
@@ -181,6 +202,20 @@ void DrawMap(MAP M)
             } else {
                 printf("%c", TypeElmt(M, i, j));
             }
+        }
+        printf("\n");
+    }
+}
+
+void DrawMapInfo(MAP M)
+{
+    printf("\nTHIS IS A DEBUG MAP\nPLAYER AT %d, %d\n", Player(M).X, Player(M).Y);
+    
+    for (int i = 0; i < NBrs(M); i++)
+    {
+        for (int j = 0; j < NKol(M); j++)
+        {
+            printf("%d", InfoElmt(M, i, j));
         }
         printf("\n");
     }

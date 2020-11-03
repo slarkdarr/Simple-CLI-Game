@@ -42,12 +42,12 @@ void TulisPOINT (POINT P)
 /* F.S. P tertulis di layar dengan format "(X,Y)" */
 
 /* *** Kelompok operasi relasional terhadap POINT *** */
-boolean EQ (POINT P1, POINT P2)
+boolean POINT_EQ (POINT P1, POINT P2)
 {
    return ((Absis(P1) == Absis(P2) && (Ordinat(P1) == Ordinat(P2))));
 }
 /* Mengirimkan true jika P1 = P2 : absis dan ordinatnya sama */
-boolean NEQ (POINT P1, POINT P2)
+boolean POINT_NEQ (POINT P1, POINT P2)
 {
    return ((Absis(P1) != Absis(P2) || (Ordinat(P1) != Ordinat(P2))));
 }
@@ -174,7 +174,7 @@ void Mirror (POINT *P, boolean SbX)
 /* F.S. P dicerminkan tergantung nilai SbX atau SbY */
 /* Jika SbX true maka dicerminkan terhadap sumbu X */
 /* Jika SbX false maka dicerminkan terhadap sumbu Y */
-void Putar (POINT *P, float Sudut)
+void Putar (POINT *P, int Sudut)
 {
    float putarx, putary;
    Sudut = ((Sudut * M_PI) / 180);

@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void new_game(Map *M, int wahana[], int barang[])
+void new_game(MAP *M, int wahana[], int barang[])
 {
     char nama;
     FILE *new;
@@ -41,5 +41,5 @@ void new_game(Map *M, int wahana[], int barang[])
 void exit_game()
 {
     printf("Thanks for playing!!!");
-    fclose();
+    // fclose();
 }
