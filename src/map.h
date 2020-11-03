@@ -44,7 +44,7 @@ typedef struct {
 
 
 void MakeEmptyMAP(MAP *M);
-void LoadMap(MAP *M);
+void LoadMap(MAP *M, char fileName[]);
 void Move(MAP *M, char X);
 void DrawMap(MAP M);
 int GetObject(MAP *M, char O);

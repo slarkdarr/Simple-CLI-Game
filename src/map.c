@@ -2,15 +2,97 @@
 #include "point.h"
 #include "boolean.h"
 
+#include <stdio.h>
+#include <stdlib.h>
+
 /* KONSTRUKTOR */
 void MakeEmptyMAP(MAP *M)
 {
-    //Belum tau dipake atau engga
+
 }
 
-void LoadMap(MAP *M)
+void LoadMap(MAP *M, char fileName[])
 {
-    //Load dari file map.txt?
+    /*
+    Membaca data map dari file mulai dari penanda #map. 
+    Bisa untuk membaca dari file map.txt dan state.txt
+    FORMAT:
+        #map
+        H W
+        <matriks M> 
+        id <gate1 gate2 gate3>
+        
+        KETERANGAN:
+        H, W    : int, dimensi dari M
+        M       : matriks of char
+        id      : int, id dari map
+        gateN   : int, id dari tujuan dari gateN (dibaca dari kiri->kanan->nextline)
+    
+    Ukuran M adalah HxW
+
+    Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
+    (Untuk map.txt, tidak ada Wahana atau Antrian)
+    (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
+
+    NOTES:
+        Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
+    */
+
+    FILE *mapFile;
+    char* line;
+    char temp;
+    size_t buffer = 0;
+    int len;
+
+    int mapH, mapW, mapID;
+    int gateCount = 0;
+
+    POINT gates[10];
+
+    mapFile = fopen(fileName, "r"); 
+
+    while ((len = getline(&line, &buffer, mapFile)) != -1)
+    {
+        if (*line == "#map")
+        {
+            // Mulai dari data map
+            fscanf(mapFile, "%d %d", &mapH, &mapW);
+            NbElement(*M) = mapH;
+            for (int i = 0; i < mapH; i++)
+            {
+                for (int j = 0; j < mapW; j++)
+                {
+                    // Mengisi 
+                    fscanf(mapFile, "%c", &temp);
+                    if (temp == 'P')
+                    {
+                        Player(*M) = MakePOINT(i, j);
+                        TypeElmt(*M, i, j) = '-';
+                    } else {
+                        TypeElmt(*M, i, j) = temp;
+                        if (temp == 'v' | temp == '^' | temp == '>' | temp == '<')
+                        {
+                            gates[gateCount] = MakePOINT(i, j);
+                            gateCount++;
+                        }
+                    }
+
+                    InfoElmt(*M, i, j) = -1;
+                }
+            }
+            fscanf(mapFile, "%d", &mapID);
+
+            for (int i = 0; i < gateCount; i++)
+            {
+                fscanf(mapFile, "%d",TypeElmt(*M, gates[i].X, gates[i].Y));
+            }
+            // Akhir dati data map
+        }
+    }
+
+    free(line);
+    return;
+
 }
 
 /* GETTER DAN SETTER */
