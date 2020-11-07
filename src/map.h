@@ -43,7 +43,9 @@ typedef struct {
 #define Player(M) (M).Player //Select POINT (Lokasi) Player pada MAP
 #define Elmt(M, i, j) (M).Mem[(i)][(j)] //Select struct ElType pada MAP
 #define TypeElmt(M, i, j) ((M).Mem[(i)][(j)]).type //Select type dari struct ElType pada MAP indeks baris i dan kolom j
+#define TypeElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).type
 #define InfoElmt(M, i, j) ((M).Mem[(i)][(j)]).id //Select id dari struct ElType pada MAP indeks baris i dan kolom j
+#define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id
 
 
 void MakeEmptyMAP(MAP *M);

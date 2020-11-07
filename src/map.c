@@ -70,8 +70,8 @@ void LoadMap(MAP *M, char* fileName)
                 fscanf(mapFile, "%d", &gateDestinations[i]);
             }
             
-            printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
-            printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
+            // printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
+            // printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
             fgets(line, 100, mapFile);
 
             NBrs(*M) = mapH;
@@ -98,8 +98,13 @@ void LoadMap(MAP *M, char* fileName)
                         case 'P':
                             Player(*M) = MakePOINT(j, i);
                             TypeElmt(*M, i, j) = '-';
-                            InfoElmt(*M, i, j) = 0;
+                            InfoElmt(*M, i, j) = -1;
                             break;
+                        case '-':
+                        case 'O':
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = -1;
+                            break;   
                         default:
                             TypeElmt(*M, i, j) = line[j];
                             InfoElmt(*M, i, j) = 0;                            
@@ -114,7 +119,6 @@ void LoadMap(MAP *M, char* fileName)
 
     fclose(mapFile);
     return;
-
 }
 
 /* GETTER DAN SETTER */
@@ -124,6 +128,7 @@ void Move(MAP *M, char X)
 {
     POINT P = Player(*M);
     boolean collision = false;
+    DrawMapInfo(*M);
     switch (X)
     {
         //Kalau indeks 0 adalah border pada MAP
@@ -134,7 +139,7 @@ void Move(MAP *M, char X)
         //Mengecek dulu tipe lokasi yang akan dijalani, jika bukan bangunan/border POINT P (Lokasi Player) akan digeser
         case 'W' :
         case 'w' :
-            if (InfoElmt(*M, Absis(P), (Ordinat(P) - 1)) != Nil)
+            if (InfoElmtAtP(*M, Absis(P), (Ordinat(P) - 1)) < 0)
             //Cek bisa diganti atau engga (int) biar lebih enak diliatnya
             {
                 Geser(&P, 0, -1);
@@ -146,7 +151,7 @@ void Move(MAP *M, char X)
             break;
         case 'A' :
         case 'a' :
-            if (InfoElmt(*M, (Absis(P) - 1),  Ordinat(P)) != Nil)
+            if (InfoElmtAtP(*M, (Absis(P) - 1),  Ordinat(P)) != Nil)
             {
                 Geser(&P, -1, 0);
             }
@@ -157,7 +162,7 @@ void Move(MAP *M, char X)
             break;
         case 'S' :
         case 's' :
-            if (InfoElmt(*M, Absis(P), (Ordinat(P) + 1)) != Nil)
+            if (InfoElmtAtP(*M, Absis(P), (Ordinat(P) + 1)) != Nil)
             {
                 Geser(&P, 0, 1);
             }
@@ -168,7 +173,7 @@ void Move(MAP *M, char X)
             break;
         case 'D' :
         case 'd' :
-            if (InfoElmt(*M, (Absis(P) + 1), Ordinat(P)) != Nil)
+            if (InfoElmtAtP(*M, (Absis(P) + 1), Ordinat(P)) != Nil)
             {
                 Geser(&P, 1, 0);
             }
@@ -190,8 +195,7 @@ void Move(MAP *M, char X)
 
 void DrawMap(MAP M)
 {
-    printf("\nPLAYER AT %d, %d\n", Player(M).X, Player(M).Y);
-    
+    system("cls");
     for (int i = 0; i < NBrs(M); i++)
     {
         for (int j = 0; j < NKol(M); j++)
@@ -205,17 +209,43 @@ void DrawMap(MAP M)
         }
         printf("\n");
     }
+
+    printf(
+    "Legend:\n"
+    "A = Antrian\n"
+    "P = Player\n"
+    "W = Wahana\n"
+    "O = Office\n"
+    "<, ^, >, V = Gerbang\n");
 }
 
 void DrawMapInfo(MAP M)
 {
     printf("\nTHIS IS A DEBUG MAP\nPLAYER AT %d, %d\n", Player(M).X, Player(M).Y);
     
+    printf("%d\n", InfoElmt(M, 8, 2));
+    printf("SIZE IS %d x %d\n", NBrs(M), NKol(M));
+
     for (int i = 0; i < NBrs(M); i++)
     {
         for (int j = 0; j < NKol(M); j++)
         {
-            printf("%d", InfoElmt(M, i, j));
+            if (InfoElmt(M, i, j) < 0)
+            {
+                if (i == 8 && j == 2)
+                {
+                    printf("X");
+                } else {
+                    printf("-");
+                }
+            } else {
+                if (i == 8 && j == 2)
+                {
+                    printf("Y");
+                } else {
+                    printf("%d", InfoElmt(M, i, j));
+                }
+            }
         }
         printf("\n");
     }
@@ -230,7 +260,7 @@ int GetObject(MAP *M, char O)
 
     while (!found && count != 0)
     {
-        if (TypeElmt(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
+        if (TypeElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
         {
             found = true;
         } else {
@@ -241,7 +271,7 @@ int GetObject(MAP *M, char O)
 
     if (found)
     {
-        return (InfoElmt(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y));
+        return (InfoElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y));
     } else {
         return -1;
     }

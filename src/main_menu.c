@@ -1,45 +1,44 @@
 #include "main_menu.h"
 #include "boolean.h"
-#include "map.h"
+#include "game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void new_game(MAP *M, int wahana[], int barang[])
+void main_menu(GAME *gameInstance)
 {
-    char nama;
-    FILE *new;
-    char new, f;
+    boolean endGame = false;
+    char commandTemp;
 
-    println("Memulai permainan baru...");
-    println("Masukkan nama:");
-    scanf("%lc", &nama);
+    printf("Welcome to Willy Wangky's World!!\n");
+    printf("New / Load / Exit\n");
 
-    f = fopen("map.txt","r");
-    if ("map.txt" == NULL)
+    scanf("%c", &commandTemp);
+    
+    switch(commandTemp)
     {
-        println("File map missing");
-        exit(0);
+        case 'n':
+            new_game(gameInstance);
+            break;
+        case 'l':
+            // load_game(gameInstance);
+            break;
+        case 'e':
+            endGame = true;
+            break;
     }
+}
 
-    new = fgetc(f);
-    while (new != EOF){
-        printf("%c", new);
-        new = fgetc(f);
-    }
-    fclose(f);
-
-    // ini mestinya di bagian gameny bukan di new game menu
-    // println("Legend:");
-    // println("A = Antrian");
-    // println("P = Player");
-    // println("W = Wahana");
-    // println("O = Office");
-    // println("<, ^, >, V = Gerbang");
+void new_game(GAME *gameInstance)
+{
+    printf("Memulai permainan baru...");
+    printf("Masukkan nama:");
+    scanf("%lc", &(*gameInstance).PName);
+    
+    LoadMap(&(*gameInstance).map, "map.txt");
 }
 
 void exit_game()
 {
     printf("Thanks for playing!!!");
-    // fclose();
 }

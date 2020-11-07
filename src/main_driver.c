@@ -3,8 +3,8 @@
 #include <stdio.h>
 #include "boolean.h"
 // #include "matriks.h"
-#include "point.h"
-#include "map.h"
+#include "game.h"
+#include "main_menu.h"
 
 /*
 COMPILE COMMAND (ganti dir ke src):
@@ -16,19 +16,33 @@ RUN COMMANd:
 MAKEFILE COMING SOON
 */
 
+void init_game(GAME *gameInstance)
+{
+
+}
+
+void run_test(GAME *gameInstance)
+{
+    boolean end_game = false;
+    char input;
+
+    while (!end_game)
+    {
+        DrawMap((*gameInstance).map);
+        scanf("%c", &input);
+        Move(&(*gameInstance).map, input);
+    }
+};
+
 int main()
 {
-    printf("Welcome to Willy Wangky's World!!\n");
-    printf("New / Load / Exit\n");
+    GAME gameInstance;
 
     int cont;
 
-    printf("STARTING TEST: MAP. Press any key to continue  ");
-    scanf("%d", &cont);
-    MAP test;
-    LoadMap(&test, "map.txt");
-    DrawMap(test);
-    // DrawMapInfo(test);
+    main_menu(&gameInstance);
+    run_test(&gameInstance);
 
     return 0;
 }
+
