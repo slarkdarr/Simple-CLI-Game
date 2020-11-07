@@ -8,7 +8,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test main_driver.c point.c map.c
+    gcc -o test  main_driver.c point.c map.c main_menu.c
 
 RUN COMMANd:
     ./test.exe
