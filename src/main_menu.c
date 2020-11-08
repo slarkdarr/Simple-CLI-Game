@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main_menu(GAME *gameInstance)
+void main_menu()
 {
     boolean endGame = false;
     char commandTemp;
@@ -18,10 +18,10 @@ void main_menu(GAME *gameInstance)
     switch(commandTemp)
     {
         case 'n':
-            new_game(gameInstance);
+            new_game();
             break;
         case 'l':
-            // load_game(gameInstance);
+            // load_game();
             break;
         case 'e':
             endGame = true;
@@ -29,13 +29,14 @@ void main_menu(GAME *gameInstance)
     }
 }
 
-void new_game(GAME *gameInstance)
+void new_game()
 {
-    printf("Memulai permainan baru...");
-    printf("Masukkan nama:");
-    scanf("%lc", &(*gameInstance).PName);
-    
-    LoadMap(&(*gameInstance).map, "map.txt");
+    printf("Memulai permainan baru...\n");
+    GAME_Init();
+
+    printf("Masukkan nama: ");
+    scanf("%s", &_name);
+    printf("Player name is: %s\n", _name);
 }
 
 void exit_game()

@@ -8,7 +8,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test  main_driver.c point.c map.c main_menu.c
+    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c
 
 RUN COMMANd:
     ./test.exe
@@ -16,32 +16,44 @@ RUN COMMANd:
 MAKEFILE COMING SOON
 */
 
-void init_game(GAME *gameInstance)
+void init_game()
 {
 
 }
 
-void run_test(GAME *gameInstance)
+void run_test()
 {
     boolean end_game = false;
     char input;
 
     while (!end_game)
     {
-        DrawMap((*gameInstance).map);
+        // printf("Name: %s\n", PName(gameInstance));
+        DrawMap(_map);
+
         scanf("%c", &input);
-        Move(&(*gameInstance).map, input);
+        Move(&_map, input);
+
+        
     }
+    /*
+    Name: wangkie kumalasari
+    Money: 1000
+    Current Time: 21.00
+    Opening Time: 09.00
+    Time Remaining: 12 hour(s)
+    Total aksi yang akan dilakukan: 0
+    Total waktu yang dibutuhkan: 0
+    Total uang yang dibutuhkan: 0
+    */
 };
 
 int main()
 {
-    GAME gameInstance;
-
     int cont;
 
-    main_menu(&gameInstance);
-    run_test(&gameInstance);
+    main_menu();
+    run_test();
 
     return 0;
 }

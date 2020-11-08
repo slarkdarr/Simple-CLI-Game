@@ -128,7 +128,7 @@ void Move(MAP *M, char X)
 {
     POINT P = Player(*M);
     boolean collision = false;
-    DrawMapInfo(*M);
+    // DrawMapInfo(*M);
     switch (X)
     {
         //Kalau indeks 0 adalah border pada MAP

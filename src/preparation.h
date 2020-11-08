@@ -7,8 +7,10 @@
 #include <stdio.h>
 #include "boolean.h"
 #include "stackt.h"
-#include "matriks.h"
 #include "point.h"
+#include "game.h"
+
+void preparation_phase(GAME *gameInstance);
 
 void build(Stack S);   //Fungsi untuk membangun wahana baru
 void upgrade(Stack S); //Fungsi untuk meng-upgrade wahana

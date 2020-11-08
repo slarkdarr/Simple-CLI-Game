@@ -4,7 +4,6 @@
 #define GRAPH_H
 
 #include "boolean.h"
-#include "matriks.h"
 #include "map.h"
 
 typedef char ElType;
