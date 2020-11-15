@@ -5,6 +5,7 @@
 // #include "matriks.h"
 #include "game.h"
 #include "main_menu.h"
+#include "mesinkata.h"
 
 /*
 COMPILE COMMAND (ganti dir ke src):
@@ -26,15 +27,15 @@ void run_test()
     boolean end_game = false;
     char input;
 
+    STARTKATA();
     while (!end_game)
     {
         // printf("Name: %s\n", PName(gameInstance));
-        DrawMap(_map);
-
+        /*DrawMap(_map);
         scanf("%c", &input);
-        Move(&_map, input);
-
-        
+        Move(&_map, input);*/
+        printf("%s", CKata);
+        ADVKATA();
     }
     /*
     Name: wangkie kumalasari
