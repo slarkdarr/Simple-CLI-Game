@@ -9,7 +9,8 @@ void IgnoreBlank()
    I.S. : CC sembarang 
    F.S. : CC ≠ BLANK atau CC = MARK */
 {
-    while(CC == BLANK){
+    while (CC == BLANK || CC == MARK)
+    {
         ADV();
     }
 }
@@ -38,12 +39,16 @@ void ADVKATA()
           Jika CC = MARK, EndKata = true.		  
    Proses : Akuisisi kata menggunakan procedure SalinKata */
 {
-    IgnoreBlank();
     if(CC == MARK){
         EndKata = true;
     }
     else{
         SalinKata();
+        IgnoreBlank();
+        if (CC == MARK)
+        {
+            EndKata = true;
+        }
     }
 }
 
@@ -93,7 +98,8 @@ boolean IsKataSama(Kata Kata1, Kata Kata2)
     return sama;
 }
 
-void Input(Kata *InputKata)
+void Input(Kata *InputKata) // ga dipake soalnya ga make mesinkata
+// jangan pake yang ini, salah
 {
     char character;
     int count = 0;
@@ -115,6 +121,7 @@ void Input(Kata *InputKata)
 }
 
 void PrintKata(Kata print)
+// testing purposes
 {
     int traverse = 0;
     while (traverse < print.Length)
@@ -122,4 +129,78 @@ void PrintKata(Kata print)
         printf("%c", print.TabKata[traverse]);
         traverse += 1;
     }
+    printf("\n");
+}
+
+void ReadInput(Kata *InputKata)
+{
+    START();
+    IgnoreBlank();
+    int count = 0;
+    while(CC != MARK)
+    {
+        (*InputKata).TabKata[count] = CC;
+        count += 1;
+        ADV();
+    }
+    (*InputKata).Length = count;
+}
+
+void ReadInputInteger(int *out)
+{
+    START();
+    int output = 0;
+    while (CC != MARK)
+    {
+        switch(CC)
+        {
+            case '0' :  output = output * 10; break;
+            case '1' :  output = output * 10 + 1; break;
+            case '2' :  output = output * 10 + 2; break;
+            case '3' :  output = output * 10 + 3; break;
+            case '4' :  output = output * 10 + 4; break;
+            case '5' :  output = output * 10 + 5; break;
+            case '6' :  output = output * 10 + 6; break;
+            case '7' :  output = output * 10 + 7; break;
+            case '8' :  output = output * 10 + 8; break;
+            case '9' :  output = output * 10 + 9; break;
+        }
+        ADV();
+    }
+    *out = output;
+}
+
+void ReadCommand(int *out, Kata *InputKata)
+{
+    START();
+    int output = 0;
+    while (CC != BLANK)
+    {
+        switch(CC)
+        {
+            case '0' :  output = output * 10; break;
+            case '1' :  output = output * 10 + 1; break;
+            case '2' :  output = output * 10 + 2; break;
+            case '3' :  output = output * 10 + 3; break;
+            case '4' :  output = output * 10 + 4; break;
+            case '5' :  output = output * 10 + 5; break;
+            case '6' :  output = output * 10 + 6; break;
+            case '7' :  output = output * 10 + 7; break;
+            case '8' :  output = output * 10 + 8; break;
+            case '9' :  output = output * 10 + 9; break;
+        }
+        ADV();
+    }
+
+    *out = output;
+    IgnoreBlank();
+    
+    int count = 0;
+    while(CC != MARK && CC != BLANK)
+    {
+        (*InputKata).TabKata[count] = CC;
+        count += 1;
+        ADV();
+    }
+    (*InputKata).Length = count;
 }

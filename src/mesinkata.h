@@ -46,13 +46,19 @@ void SalinKata();
 boolean IsKataSama(Kata Kata1, Kata Kata2);
 /* Menghasilkan trua jika Kata1 sama dengan Kata2, panjangnya sama dan semua hurufnya sama */
 
-void Input(Kata *InputKata);
-/* buat input aja */
+void Input(Kata *InputKata); //jangan dipake nanti diapus
 
 void PrintKata(Kata print);
 /* Menampilkan print kata anjing */
 /* For testing purposes */
 
+void ReadInput(Kata *InputKata);
+/* membaca input user */
 
+void ReadInputInteger(int *out);
+/* membaca input user dan mengubah ke integer */
+
+void ReadCommand(int *out, Kata *InputKata);
+/* membaca input dengan format int yang diikuti kata */
 
 #endif
