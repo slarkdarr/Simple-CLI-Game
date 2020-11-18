@@ -117,6 +117,25 @@ boolean IsKataSama(Kata Kata1, Kata Kata2)
     return sama;
 }
 
+boolean Command(char CommandAsString[], Kata Command)
+{
+    Kata CommandAsKata = CreateKata(CommandAsString);
+    return IsKataSama(Command, CommandAsKata);
+}
+
+// boolean IsCommand(char* Commands[], Kata com, int CommandsLen)
+// {
+//     boolean isCommand = false;
+//     int i = 0;
+//     while (!isCommand && i < CommandsLen)
+//     {
+//         isCommand = Command(Commands[i], com);
+//         i++;
+//     }
+
+//     return isCommand;
+// }
+
 void Input(Kata *InputKata) // ga dipake soalnya ga make mesinkata
 // jangan pake yang ini, salah
 {
@@ -223,4 +242,5 @@ void ReadCommand(int *out, Kata *InputKata)
         ADV();
     }
     (*InputKata).Length = count;
+}
 

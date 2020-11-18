@@ -30,6 +30,7 @@ extern GAME gameInstance;
 
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
+#define _time Time(gameInstance)
 
 void GAME_Init();
 void GAME_Save();

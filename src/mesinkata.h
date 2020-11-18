@@ -48,6 +48,9 @@ Kata CreateKata(char *String);
 boolean IsKataSama(Kata Kata1, Kata Kata2);
 /* Menghasilkan trua jika Kata1 sama dengan Kata2, panjangnya sama dan semua hurufnya sama */
 
+boolean Command(char* CommandAsString, Kata Command);
+boolean IsCommand(char* Commands[], Kata com, int CommandsLen);
+
 void Input(Kata *InputKata); //jangan dipake nanti diapus
 
 void PrintKata(Kata print);
