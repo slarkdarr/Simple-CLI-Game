@@ -50,8 +50,8 @@ typedef struct {
 
 void MakeEmptyMAP(MAP *M);
 void LoadMap(MAP *M, char fileName[]);
-void Move(MAP *M, char X);
-void DrawMap(MAP M);
+void Move(MAP *M, char X, char* message[]);
+void DrawMap(MAP M, char message[]);
 void DrawMapInfo(MAP M);
 int GetObject(MAP *M, char O);
 

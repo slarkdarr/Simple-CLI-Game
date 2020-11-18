@@ -124,7 +124,7 @@ void LoadMap(MAP *M, char* fileName)
 /* GETTER DAN SETTER */
 
 /* PROSEDUR */
-void Move(MAP *M, char X)
+void Move(MAP *M, char X, char* message[])
 {
     POINT P = Player(*M);
     boolean collision = false;
@@ -183,17 +183,19 @@ void Move(MAP *M, char X)
             }
             break;
         default :
-            printf("Bukan input yang valid\n"); //Output jika input yang dimasukkan tidak valid
+            *message = "Bukan input yang valid\n"; //Output jika input yang dimasukkan tidak valid
             break;
     }
     Player(*M) = P; //set POINT baru Player pada MAP
     if (collision)
     {
-        printf("Anda tertabrak\n"); //Output jika Player menabrak bangunan/border
+        *message = "Anda tertabrak\n"; //Output jika Player menabrak bangunan/border
+    } else {
+        *message = "";
     }
 }
 
-void DrawMap(MAP M)
+void DrawMap(MAP M, char message[])
 {
     system("cls");
     for (int i = 0; i < NBrs(M); i++)
@@ -217,6 +219,8 @@ void DrawMap(MAP M)
     "W = Wahana\n"
     "O = Office\n"
     "<, ^, >, V = Gerbang\n");
+
+    printf("%s", message);
 }
 
 void DrawMapInfo(MAP M)

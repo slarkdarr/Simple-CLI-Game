@@ -9,7 +9,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkar.c mesinkata.c
+    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c
 
 RUN COMMANd:
     ./test.exe
@@ -22,29 +22,12 @@ void init_game()
 
 }
 
-void run_test()
+void run_test(Kata input)
 {
     boolean end_game = false;
-    char input;
-
-    Kata command;
-
-    // while (!end_game)
-    // {
-
-    //     ReadInput(&command);
-    //     Move(&_map, command.TabKata[0]);
-    //     if (command.TabKata[0] != ' ') {
-    //         DrawMap(_map);
-    //     }
-        
-    // }
-
-    ReadInput(&command);
-    
-    Move(&_map, command.TabKata[0]);
-    DrawMap(_map);
-
+    char* message;
+    Move(&_map, input.TabKata[0], &message);
+    DrawMap(_map, message);
 
     /*
     Name: wangkie kumalasari
@@ -61,11 +44,14 @@ void run_test()
 int main()
 {
     int cont;
+    Kata input;
 
     main_menu();
-    for (int i = 0; i < 10; i++)
+
+    while (input.TabKata[0] != 'x')
     {
-        run_test();
+        ReadInput(&input);
+        run_test(input);
     }
     
 
