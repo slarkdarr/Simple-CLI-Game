@@ -10,7 +10,6 @@
 
 typedef struct {
 	char TabKata[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
-    int Length;
    int Length;
 } Kata;
 

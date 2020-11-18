@@ -92,15 +92,11 @@ Kata CreateKata(char String[])
 
 boolean IsKataSama(Kata Kata1, Kata Kata2)
 {
-    boolean sama;
     boolean sama = true;
 
     if (Kata1.Length == Kata2.Length)
     {
         int length = Kata1.Length;
-        sama = true;
-        int check = 1;
-        while (sama && (check <= length)){ 
         int check = 0;
         while (sama && (check < length))
         { 
@@ -108,7 +104,6 @@ boolean IsKataSama(Kata Kata1, Kata Kata2)
             {
                 sama = false;
             }
-            check += 1;
             else
             {
                 check += 1;
@@ -228,5 +223,4 @@ void ReadCommand(int *out, Kata *InputKata)
         ADV();
     }
     (*InputKata).Length = count;
-}}
 
