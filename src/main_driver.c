@@ -9,7 +9,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c
+    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkar.c mesinkata.c
 
 RUN COMMANd:
     ./test.exe
@@ -27,16 +27,25 @@ void run_test()
     boolean end_game = false;
     char input;
 
-    STARTKATA();
-    while (!end_game)
-    {
-        // printf("Name: %s\n", PName(gameInstance));
-        /*DrawMap(_map);
-        scanf("%c", &input);
-        Move(&_map, input);*/
-        printf("%s", CKata);
-        ADVKATA();
-    }
+    Kata command;
+
+    // while (!end_game)
+    // {
+
+    //     ReadInput(&command);
+    //     Move(&_map, command.TabKata[0]);
+    //     if (command.TabKata[0] != ' ') {
+    //         DrawMap(_map);
+    //     }
+        
+    // }
+
+    ReadInput(&command);
+    
+    Move(&_map, command.TabKata[0]);
+    DrawMap(_map);
+
+
     /*
     Name: wangkie kumalasari
     Money: 1000
@@ -54,7 +63,11 @@ int main()
     int cont;
 
     main_menu();
-    run_test();
+    for (int i = 0; i < 10; i++)
+    {
+        run_test();
+    }
+    
 
     return 0;
 }

@@ -11,6 +11,7 @@
 typedef struct {
 	char TabKata[NMax]; /* container penyimpan kata, indeks yang dipakai [0..NMax-1] */
     int Length;
+   int Length;
 } Kata;
 
 /* State Mesin Kata */
@@ -42,6 +43,8 @@ void SalinKata();
           CC = BLANK atau CC = MARK; 
           CC adalah karakter sesudah karakter terakhir yang diakuisisi.
           Jika panjang kata melebihi NMax, maka sisa kata "dipotong" */
+
+Kata CreateKata(char *String);
 
 boolean IsKataSama(Kata Kata1, Kata Kata2);
 /* Menghasilkan trua jika Kata1 sama dengan Kata2, panjangnya sama dan semua hurufnya sama */

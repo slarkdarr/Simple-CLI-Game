@@ -74,9 +74,26 @@ void SalinKata()
     IgnoreBlank();
 }
 
+Kata CreateKata(char String[])
+{
+    int len = 0;
+    char current = String[0];
+    Kata result;
+    while (current != '\0')
+    {
+        result.TabKata[len] = current;
+        len += 1;
+        current = String[len];
+    }
+
+    result.Length = len;
+    return result;
+}
+
 boolean IsKataSama(Kata Kata1, Kata Kata2)
 {
     boolean sama;
+    boolean sama = true;
 
     if (Kata1.Length == Kata2.Length)
     {
@@ -84,11 +101,18 @@ boolean IsKataSama(Kata Kata1, Kata Kata2)
         sama = true;
         int check = 1;
         while (sama && (check <= length)){ 
+        int check = 0;
+        while (sama && (check < length))
+        { 
             if (Kata1.TabKata[check] != Kata2.TabKata[check])
             {
                 sama = false;
             }
             check += 1;
+            else
+            {
+                check += 1;
+            }
         }
     }
     else
@@ -171,6 +195,7 @@ void ReadInputInteger(int *out)
 }
 
 void ReadCommand(int *out, Kata *InputKata)
+/* Membaca input integer diikuti dengan Kata */
 {
     START();
     int output = 0;
@@ -203,4 +228,5 @@ void ReadCommand(int *out, Kata *InputKata)
         ADV();
     }
     (*InputKata).Length = count;
-}
+}}
+
