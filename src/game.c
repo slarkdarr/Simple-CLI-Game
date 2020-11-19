@@ -5,8 +5,8 @@ GAME gameInstance;
 void GAME_Init()
 {
     LoadMap(&Map(gameInstance), "map.txt");
+    WahanaType(gameInstance) = 0;
     Wahana(gameInstance) = 0;
-    WahanaData(gameInstance) = 0;
     Barang(gameInstance) = 0;
     BarangData(gameInstance) = 0;
     AntrianData(gameInstance) = 0;

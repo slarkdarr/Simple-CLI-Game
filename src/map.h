@@ -47,6 +47,26 @@ typedef struct {
 #define InfoElmt(M, i, j) ((M).Mem[(i)][(j)]).id //Select id dari struct ElType pada MAP indeks baris i dan kolom j
 #define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id
 
+// typedef struct MAP_Node* MAP_Address;
+// typedef struct {
+//                 MAP Map;
+//                 MAP_Address Prev;
+//                 MAP_Address Next; 
+//                 } MAP_Node;
+
+// /* *** Notasi Akses: Selektor GRAPH *** */
+
+// #define Prev(P) (P).Prev
+// #define Next(P) (P).Next
+// #define Nil -1
+
+// /* *** DEFINISI PROTOTIPE PRIMITIF *** */
+
+// /* *** KONSTRUKTOR *** */
+
+// MAP_Node CreateEmpty (MAP_Address * P);
+// /* Membentuk node baru,  */
+
 
 void MakeEmptyMAP(MAP *M);
 void LoadMap(MAP *M, char fileName[]);

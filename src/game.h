@@ -3,14 +3,15 @@
 
 #include "map.h"
 #include "jam.h"
+#include "wahana.h"
 
 typedef struct {
     MAP map;
     char PName[25];
-    int wahana;
-    int wahanaData;
+    WAHANA_UpgradeTree *wahanaType;
+    WAHANA_ElType wahana[50];
+    int barangType;
     int barang;
-    int barangData;
     int antrianData;
     int money;
     JAM time;
@@ -18,10 +19,10 @@ typedef struct {
 
 #define Map(G) (G).map
 #define PName(G) (G).PName
+#define WahanaType(G) (G).wahanaType
 #define Wahana(G) (G).wahana
-#define WahanaData(G) (G).wahanaData
-#define Barang(G) (G).barang
-#define BarangData(G) (G).barangData
+#define Barang(G) (G).barangType
+#define BarangData(G) (G).barang
 #define AntrianData(G) (G).antrianData
 #define Money(G) (G).money
 #define Time(G) (G).time
