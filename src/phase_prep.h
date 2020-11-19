@@ -9,8 +9,9 @@
 #include "stackt.h"
 #include "point.h"
 #include "game.h"
+#include "mesinkata.h"
 
-void preparation_phase(GAME *gameInstance);
+void preparation_phase();
 
 void build(Stack S);   //Fungsi untuk membangun wahana baru
 void upgrade(Stack S); //Fungsi untuk meng-upgrade wahana

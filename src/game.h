@@ -4,11 +4,12 @@
 #include "map.h"
 #include "jam.h"
 #include "wahana.h"
+#include "mesinkata.h"
 
 typedef struct {
     MAP map;
     char PName[25];
-    WAHANA_UpgradeTree *wahanaType;
+    WAHANA_TypeList wahanaType;
     WAHANA_ElType wahana[50];
     int barangType;
     int barang;

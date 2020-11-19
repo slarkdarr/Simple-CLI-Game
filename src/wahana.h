@@ -28,6 +28,11 @@ typedef struct {
     tAddress left; 
 } WAHANA_UpgradeTree;
 
+typedef struct {
+    WAHANA_UpgradeTree WahanaType;
+    tAddress next;
+} WAHANA_TypeList;
+
 #define WNama(W) W->nama
 #define WHarga(W) W->harga
 #define WKapasitas(W) W->kapasitas

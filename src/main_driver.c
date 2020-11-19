@@ -92,10 +92,10 @@ int readCommand()
     if (JLT(_time, OpeningTime) | JGT(_time, ClosingTime))
     {
         /* COMMAND UNTUK PREP */
-        // phase_preparation(command);
+        // phase_preparation();
     } else {
         /* COMMAND UNTUK PREP*/
-        // phase_main(command);
+        // phase_main();
     }
 
     return cont;
