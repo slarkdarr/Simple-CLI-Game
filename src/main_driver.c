@@ -17,11 +17,6 @@ RUN COMMANd:
 MAKEFILE COMING SOON
 */
 
-void init_game()
-{
-
-}
-
 void run_test(Kata input)
 {
     boolean end_game = false;

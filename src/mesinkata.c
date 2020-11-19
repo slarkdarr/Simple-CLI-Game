@@ -123,19 +123,6 @@ boolean Command(char CommandAsString[], Kata Command)
     return IsKataSama(Command, CommandAsKata);
 }
 
-// boolean IsCommand(char* Commands[], Kata com, int CommandsLen)
-// {
-//     boolean isCommand = false;
-//     int i = 0;
-//     while (!isCommand && i < CommandsLen)
-//     {
-//         isCommand = Command(Commands[i], com);
-//         i++;
-//     }
-
-//     return isCommand;
-// }
-
 void Input(Kata *InputKata) // ga dipake soalnya ga make mesinkata
 // jangan pake yang ini, salah
 {
