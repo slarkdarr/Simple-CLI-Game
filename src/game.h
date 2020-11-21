@@ -9,7 +9,7 @@
 typedef struct {
     MAP map;
     char PName[25];
-    WAHANA_TypeList wahanaType;
+    WAHANA_UpgradeTree wahanaType[10];
     WAHANA_ElType wahana[50];
     int barangType;
     int barang;
