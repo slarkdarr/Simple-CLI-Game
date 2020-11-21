@@ -74,5 +74,6 @@ void Move(MAP *M, char X, char* message[]);
 void DrawMap(MAP M, char message[]);
 void DrawMapInfo(MAP M);
 int GetObject(MAP *M, char O);
+POINT GetObjectP(MAP *M, char O);
 
 #endif

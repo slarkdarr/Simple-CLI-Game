@@ -1,6 +1,5 @@
-#m
-1500 Moonstone
-#m
-1000 Anaptanium
-#m
-750 Arcanite
+#mt
+3
+1500 0 Wood
+1000 0 Stone
+750 0 Iron

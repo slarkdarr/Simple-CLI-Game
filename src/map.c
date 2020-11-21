@@ -280,3 +280,31 @@ int GetObject(MAP *M, char O)
         return -1;
     }
 }
+
+POINT GetObjectP(MAP *M, char O)
+{
+    boolean found = false;
+    POINT pointer = MakePOINT(0, 1);
+    int count = 3;
+    while (!found && count != 0)
+    {
+        if (TypeElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
+        {
+            found = true;
+        } 
+        else 
+        {
+            Putar(&pointer, M_PI / 2);
+            count -= 1;
+        }
+    }
+
+    if (found)
+    {
+        return pointer;
+    } 
+    else 
+    {
+        return MakePOINT(0, 0); // CEK
+    }
+}
