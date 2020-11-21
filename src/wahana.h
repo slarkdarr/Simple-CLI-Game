@@ -13,7 +13,12 @@ Cost yang dibutuhkan untuk upgrade wahana(pindah ke node ​tree​ lain):
 */
 #ifndef WAHANA_H
 #define WAHANA_H
+
+
+
 typedef struct WAHANA_UpgradeTree *tAddress;
+const tAddress WAHANA_Nil = NULL;
+
 typedef struct {
     char nama[25];
     int harga;
@@ -40,5 +45,8 @@ typedef struct {
 
 void LoadWahanaTypes(WAHANA_UpgradeTree *wahanaType[], char* filename);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
+
+tAddress WAHANAT_Alokasi();
+FILE* readWahanaType(tAddress *WAHANAT); 
 
 #endif

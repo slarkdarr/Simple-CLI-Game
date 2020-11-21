@@ -1,130 +1,222 @@
 #include "phase_prep.h"
+#include "stacklist.h"
+#include "map.h"
+#include "game.h"
+#include <stdio.h>
+#include <stdlib.h>
 
-int time = 0;
+void preparation_phase()
+{
+    int MoneyNow = _money;
+    JAM JCheck = _time; //check jam, _time tidak diubah dulu
+    JAM JOpening = MakeJAM(9, 0, 0);
 
-void build(Stack S){
-    MATRIKS M;
-    POINT P;
-    FILE *wahana;
-    char f, wahana, bangun;
+    Kata command;
 
-    println("Apa bangunan yang ingin Anda bangun?\nList bangunan:");
+    Kata buildWahana; // setelah build, variable penyimpanan nama wahana yang akan di build
 
-    // Load file berisi list bangunan
-    f = fopen("wahana.txt", "r");
-    if ("map.txt" == NULL){
-        println("Error. File map missing atau tidak dapat dibuka");
-        exit(-1);
-    }
+    int unbuilt = 11; // pas di build awal w kecil, saat di build menjadi W besar indeksnya sementara 11
+    int cont = 0;
+    char* messageBuffer;
+    int total_action = 0;// variable total aksi yang akan dilakukan
+    Stack Actions;
+    Stack TargetExecution;
+    STACK_CreateEmpty(&Actions);
+    STACK_CreateEmpty(&TargetExecution);
 
-    wahana = fgetc(f);
-    while (wahana != EOF){
-        printf("%c", wahana);
-        wahana = fgetc(f);
-    }
-    // End of load
-
-    scanf("%s\n", &bangun);
-    switch (bangun)
+    //43200 adalah 12 jam
+    //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200)))
+    while(Durasi(JCheck, JOpening) <= 43200)
     {
-        case 'WankCoaster':
-            if (Moonstone < 250 && Anaptanium < 100 && Arcanite < 50)
-                println("Bahan bangunan tidak mencukupi");
-            else
-                println("Memasukkan perintah build WankCoaster ke dalam Stack");
-                Push(&S, "Build WankCoaster");
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = 'W';
-        case 'Carousel':
-            if (Moonstone < 150 && Anaptanium < 150 && Arcanite < 100)
-                println("Bahan bangunan tidak mencukupi");
-            else
-                println("Memasukkan perintah build Carousel ke dalam Stack");
-                Push(&S, "Build Carousel");
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = 'W';
-        case 'Wheel of Fum':
-            if (Moonstone < 300 && Anaptanium < 50 && Arcanite < 150)
-                println("Bahan bangunan tidak mencukupi");
-            else
-                println("Memasukkan perintah build Wheel of Fum ke dalam Stack");
-                Push(&S, "Build Wheel of Fum");
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = 'W';
-        case 'Bump Bump Boom!!':
-            if (Moonstone < 100 && Anaptanium < 250 && Arcanite < 100)
-                println("Bahan bangunan tidak mencukupi");
-            else
-                println("Memasukkan perintah build Bump Bump Boom!! ke dalam Stack");
-                Push(&S, "Build Bump Bump Boom!!");
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = 'W';
-        case 'FUNswing':
-            if (Moonstone < 150 && Anaptanium < 150 && Arcanite < 200)
-                println("Bahan bangunan tidak mencukupi");
-            else
-                println("Memasukkan perintah build FUNswing ke dalam Stack");
-                Push(&S, "Build FUNswing");
-                M.Mem[(int)Absis(P)][(int)Ordinat(P)] = 'W';
+        ReadInput(&command);
+        switch(command.TabKata[0])
+        {
+            case 'w':
+            case 'W':
+                Move(&_map, 'W', &messageBuffer);
+                DrawMap(_map, messageBuffer);
+                break;
+            case 'a':
+            case 'A':
+                Move(&_map, 'A', &messageBuffer);
+                DrawMap(_map, messageBuffer);
+                break;
+            case 's':
+            case 'S':
+                Move(&_map, 'S', &messageBuffer);
+                DrawMap(_map, messageBuffer);
+                break;
+            case 'd':
+            case 'D':
+                Move(&_map, 'D', &messageBuffer);
+                DrawMap(_map, messageBuffer);
+                break;
+            case 'x':
+                cont = -1;
+                break;
+            case 'b':
+                if (IsKataSama(command, CreateKata("buy")))
+                {
+                    JCheck = NextNDetik(JCheck, GetDuration(command));
+
+                }
+                else if (IsKataSama(command, CreateKata("build")))
+                {
+                    //wahanaList = open("wahana.txt", "r")
+                    //print(wahanaList.read())
+                    ReadInput(&buildWahana);
+                    JCheck = NextNDetik(JCheck, GetDuration(command));
+
+                }
+                break;
+            case 'u':
+                if (IsKataSama(command, CreateKata("undo")))
+                {
+                    // harusnya undo mengurangi waktu sama nambahin resource yang dipake
+                }
+                break;
+            case 'e':
+                if (IsKataSama(command, CreateKata("execute")))
+                {
+                    JCheck = NextNDetik(JCheck, GetDuration(command));
+
+                }
+                break;
+            case 'm':
+                if (IsKataSama(command, CreateKata("main")))
+                {
+                    JCheck = NextNDetik(JCheck, GetDuration(command));
+                    
+                }
+                break;
+        }
+    }
+    // Force execute?
+    // Pindah ke Main phase
+    
+
+    
+}
+
+//ini command yang dijalanin kalo command build, tambahin build ke stack
+void Build(MAP *M, POINT P, int i) //indeks pada array wahana
+{
+    Kata BUILD = CreateKata("build");
+    int x = P.X;
+    int y = P.Y;
+    if ((InfoElmtAtP(*M, x, y) == -1) && (TypeElmtAtP(*M, x, y) != 'O'))
+    //jika tidak terdapat bangunan dan bukan Office maka dapat dibangun
+    {
+        //GetWahanaID
+
+        
+    }
+    else
+    {
+        //refund?
+        printf("Sudah terdapat bangunan pada tempat tersebut\n");
+    }
+    
+}
+
+void Upgrade() //Mengakses array wahana
+{
+    
+}
+
+void Buy()
+{
+
+}
+
+// sebelum execut pindah stack ke stack target dan lakukan dari aksi awal
+void Execute(Stack *S, int *currency, int *time)
+{
+    Kata command_;
+    int specCommand_;
+    int infoCommand_;
+    POINT pointPlayer_;
+
+    Kata KataBuild = CreateKata("build");
+    Kata KataUpgrade = CreateKata("upgrade");
+    Kata KataBuy = CreateKata("buy");
+
+    while (!STACK_IsEmpty(*S))
+    {
+        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_);
+        if (IsKataSama(command_, KataBuild))
+        {
+            // does things
+        }
+        else if (IsKataSama(command_, KataUpgrade))
+        {
+            // does things
+        }
+        else if (IsKataSama(command_, KataBuy))
+        {
+            // does things
+        }
     }
 }
 
-void upgrade(Stack S){
-    MATRIKS M;
-    POINT P;
-    FILE *upgradable;
-    char f, up;
-
-    println("Apa bangunan yang ingin Anda upgrade?\nList bangunan yang dapat di-upgrade:");
-
-    // Belum FIX //
-    /* // Load file berisi list bangunan yang dapat di-upgrade
-    f = fopen("wahana.txt", "r");
-    if ("map.txt" == NULL){
-        println("Error. File map missing atau tidak dapat dibuka");
-        exit(-1);
+void toTarget(Stack *S, Stack *Target)
+// Stack Target di Create Empty terlebih dahulu
+// lalu baru dieksekusi
+{
+    Kata command_;
+    int specCommand_;
+    int infoCommand_;
+    POINT pointPlayer_;
+    while (!STACK_IsEmpty(*S))
+    {
+        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_);
+        Push(S, command_, specCommand_, infoCommand_, pointPlayer_);
     }
-
-    wahana = fgetc(f);
-    while (wahana != EOF){
-        printf("%c", wahana);
-        wahana = fgetc(f);
-    }
-    // End of load */
-
-    scanf("%s\n", &up);
 }
 
-void buy(Stack S){
-    FILE *resource;
-    char f, resource, bahan;
-    int sum;
-
-    println("Apa bahan bangunan yang ingin Anda beli?\nList bahan bangunan:");
-
-    // Load file berisi list bangunan yang dapat di-upgrade
-    f = fopen("resources.txt", "r");
-    if ("resources.txt" == NULL){
-        println("Error. File map missing atau tidak dapat dibuka");
-        exit(-1);
+void Main(Stack *S)
+// Langsung lanjut ke main phase
+// Tidak mengeksekusi isi stack
+{
+    while (!STACK_IsEmpty(*S))
+    {
+        Undo(S);
     }
-
-    resource = fgetc(f);
-    while (resource != EOF){
-        printf("%c", resource);
-        resource = fgetc(f);
-    }
-    // End of load
-
-    scanf("%s\n", &bahan);
-    printf("Jumlah yang ingin dibeli : ");
-    scanf("%d\n", &sum);
-    printf("Memasukkan perintah membeli ", &bahan); printf(" sebanyak ", &sum); println(" ke dalam Stack...");
-    int i = 1;
-    do{
-        Push(&S, bahan);
-    } while (i <= sum);
 }
 
-void undo(Stack S, infotype X){
-    Pop(&S, &X);
-    printf("Menghapus perintah", &X); println("dari Stack");
-}
+void Undo (Stack *S) // untuk fungsi user undo
+{
+    Kata command__;
+    int specCommand__;
+    int infoCommand__;
+    POINT pointPlayer__;
+    addressStack P = Top(*S);
+    if (Next(P) == Nil)
+    {
+        Pop(S, &command__, &specCommand__, &infoCommand__, &pointPlayer__);
+        if IsKataSama(command__, CreateKata("build"))
+        {
 
-void execute(Stack S, infotype X);
+        }
+        else if IsKataSama(command__, CreateKata("upgrade"))
+        {
+            
+        }
+        else if IsKataSama(command__, CreateKata("buy"))
+        {
+            
+        }
+        Top(*S) = Nil;
+        STACK_Dealokasi(P);
+    }
+    else if (P == Nil)
+    {
+        printf("Tidak ada aksi untuk di undo\n");
+    }
+    else
+    {
+        Top(*S) = Next(P);
+        Next(P) = Nil;
+        STACK_Dealokasi(P);
+    }
+}

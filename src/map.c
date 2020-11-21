@@ -151,7 +151,7 @@ void Move(MAP *M, char X, char* message[])
             break;
         case 'A' :
         case 'a' :
-            if (InfoElmtAtP(*M, (Absis(P) - 1),  Ordinat(P)) != Nil)
+            if (InfoElmtAtP(*M, (Absis(P) - 1),  Ordinat(P)) < 0)
             {
                 Geser(&P, -1, 0);
             }
@@ -162,7 +162,7 @@ void Move(MAP *M, char X, char* message[])
             break;
         case 'S' :
         case 's' :
-            if (InfoElmtAtP(*M, Absis(P), (Ordinat(P) + 1)) != Nil)
+            if (InfoElmtAtP(*M, Absis(P), (Ordinat(P) + 1)) < 0)
             {
                 Geser(&P, 0, 1);
             }
@@ -173,7 +173,7 @@ void Move(MAP *M, char X, char* message[])
             break;
         case 'D' :
         case 'd' :
-            if (InfoElmtAtP(*M, (Absis(P) + 1), Ordinat(P)) != Nil)
+            if (InfoElmtAtP(*M, (Absis(P) + 1), Ordinat(P)) < 0)
             {
                 Geser(&P, 1, 0);
             }

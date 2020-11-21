@@ -33,6 +33,7 @@ extern GAME gameInstance;
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)
+#define _money Money(gameInstance) //gua tambahin vin -Noler
 
 void GAME_Init();
 void GAME_Save();

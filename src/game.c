@@ -11,8 +11,6 @@ void GAME_Init()
     AntrianData(gameInstance) = 0;
     Money(gameInstance) = 0;
     Time(gameInstance) = MakeJAM(9, 0, 0);
-
-    
 }
 
 void GAME_Load()

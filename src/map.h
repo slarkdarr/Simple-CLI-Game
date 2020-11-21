@@ -13,7 +13,7 @@
 
 #define M_PI 3.14159
 
-#define Nil 0 //definisi id dari struct ElType bukan bangunan (bisa berupa -, *)
+// -1 definisi id dari struct ElType bukan bangunan (bisa berupa -, *)
 
 typedef int indeks; //masih belom tau dipake apa engga nanti
 
