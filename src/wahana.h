@@ -14,12 +14,14 @@ Cost yang dibutuhkan untuk upgrade wahana(pindah ke node ​tree​ lain):
 #ifndef WAHANA_H
 #define WAHANA_H
 
+#include <stdio.h>
+#include <stdlib.h>
 
 
-typedef struct WAHANA_UpgradeTree *tAddress;
 const tAddress WAHANA_Nil = NULL;
 
-typedef struct {
+typedef struct tWAHANA_ElType *wAddress;
+typedef struct tWAHANA_Eltype {
     char nama[25];
     int harga;
     int kapasitas;
@@ -27,26 +29,28 @@ typedef struct {
     char deskripsi[50];    
 } WAHANA_ElType;
 
-typedef struct {
-    WAHANA_ElType wahana;
+#define WNama(W) (W).nama
+#define WHarga(W) (W)->harga
+#define WKapasitas(W) (W)->kapasitas
+#define WDurasi(W) (W)->durasi
+#define WDeskripsi(W) (W)->deskripsi  
+
+typedef struct tWAHANA_UpgradeTree *tAddress;
+typedef struct tWAHANA_UpgradeTree {
+    wAddress wahana;
     tAddress right;
     tAddress left; 
 } WAHANA_UpgradeTree;
 
-#define WNama(W) W->nama
-#define WHarga(W) W->harga
-#define WKapasitas(W) W->kapasitas
-#define WDurasi(W) W->durasi
-#define WDeskripsi(W) W->deskripsi  
-
-#define Akar(U) U->Wahana
-#define Right(U) U->Right
-#define Left(U) U->Left
+#define Akar(U) (U)->wahana
+#define Right(U) (U)->right
+#define Left(U) (U)->left
 
 void LoadWahanaTypes(WAHANA_UpgradeTree *wahanaType[], char* filename);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
 
-tAddress WAHANAT_Alokasi();
+tAddress WAHANAT_Alokasi(char* name, int price, int cap, int dur, char* desc, int upprice, int left, int right);
+wAddress WAHANA_Alokasi(char name[], int price, int cap, int dur, char desc[]);
 FILE* readWahanaType(tAddress *WAHANAT); 
 
 #endif
