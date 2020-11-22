@@ -5,18 +5,22 @@
 #include "jam.h"
 #include "wahana.h"
 #include "mesinkata.h"
+#include "phase_prep.h"
 
 typedef struct {
     MAP map;
     char PName[25];
     WAHANA_UpgradeTree wahanaType[10];
     WAHANA_ElType wahana[50];
-    int barangType;
-    int barang;
+    //int barangType;
+    //int barang;
     int antrianData;
     int money;
     JAM time;
+    int day; //penanda hari ke berapa
+    TabMaterial MaterialList;
 } GAME;
+
 
 #define Map(G) (G).map
 #define PName(G) (G).PName
@@ -27,6 +31,8 @@ typedef struct {
 #define AntrianData(G) (G).antrianData
 #define Money(G) (G).money
 #define Time(G) (G).time
+#define MaterialList(G) (G).MaterialList // Harga dan Tipe Material dan Kuantitas yang dimiliki
+#define Day(G) (G).day
 
 extern GAME gameInstance;
 

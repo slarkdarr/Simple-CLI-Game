@@ -7,11 +7,23 @@
 
 void preparation_phase()
 {
-    int MoneyNow = _money;
-    JAM JCheck = _time; //check jam, _time tidak diubah dulu
-    JAM JOpening = MakeJAM(9, 0, 0);
+    boolean prep_phase = true;
+
+    _money; // variable global money (Uang yang dimiliki)
+
+    int moneyNeeded = 0; 
+    //untuk display uang yang dibutuhkan, sekaligus dibandingkan dengan uang yang dimiliki
+
+    _time; //display current time (prep phase tidak berubah kecuali execute/main)
+    //check jam, _time tidak diubah dulu
+
+    JAM batasTime = MakeJAM(12, 0, 0); // Batas time tiap prep phase 12 jam
+    JAM timeNeeded = MakeJAM(0, 0, 0); // Awalnya akan 0, untuk display waktu yang diperlukan
 
     Kata command;
+
+    int nBuy; // jumlah barang yang dibeli
+    Kata buyName; // nama barang
 
     Kata buildWahana; // setelah build, variable penyimpanan nama wahana yang akan di build
 
@@ -26,7 +38,7 @@ void preparation_phase()
 
     //43200 adalah 12 jam
     //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200)))
-    while(Durasi(JCheck, JOpening) <= 43200)
+    while(prep_phase)
     {
         ReadInput(&command);
         switch(command.TabKata[0])
@@ -57,45 +69,68 @@ void preparation_phase()
             case 'b':
                 if (IsKataSama(command, CreateKata("buy")))
                 {
-                    JCheck = NextNDetik(JCheck, GetDuration(command));
-
+                    JAM JCheck = NextNDetik(timeNeeded, GetDuration(command));
+                    
+                    if (JLT(JCheck, batasTime))
+                    {
+                        ReadCommand(&nBuy,&buyName);
+                        //if (MoneyNow < TotalPrIce) {
+                        //  printf("Uang tidak mencukupi")
+                        //}
+                        //else {buys things}
+           
+                        JCheck = JCheck2;
+                    }
+                    else
+                    {
+                        printf("Waktu tidak mencukupi\n");
+                    }
                 }
                 else if (IsKataSama(command, CreateKata("build")))
                 {
-                    //wahanaList = open("wahana.txt", "r")
-                    //print(wahanaList.read())
-                    ReadInput(&buildWahana);
-                    JCheck = NextNDetik(JCheck, GetDuration(command));
-
+                    JAM JCheck = NextNDetik(timeNeeded, GetDuration(command));
+                    if (JLT(JCheck, batasTime))
+                    {
+                        ReadInput(&buildWahana);
+                        //cek kondisi build
+                        //build stuff
+                        //Jcheck diganti Jcheck2
+                        //Push point player, check berada di office atau bukan
+                        JCheck = JCheck2;
+                    }
+                    else
+                    {
+                        printf("Waktu tidak mencukupi\n");
+                    }
                 }
                 break;
             case 'u':
                 if (IsKataSama(command, CreateKata("undo")))
                 {
-                    // harusnya undo mengurangi waktu sama nambahin resource yang dipake
+                    Undo(&Actions, &timeNeeded, &moneyNeeded);
                 }
                 break;
             case 'e':
                 if (IsKataSama(command, CreateKata("execute")))
                 {
-                    JCheck = NextNDetik(JCheck, GetDuration(command));
-
+                    // does executing shit
+                    prep_phase = false;
+                    // Set jam ke jam buka, pindah ke main phase
                 }
                 break;
             case 'm':
                 if (IsKataSama(command, CreateKata("main")))
                 {
-                    JCheck = NextNDetik(JCheck, GetDuration(command));
-                    
+                    while (!STACK_IsEmpty(Actions))
+                    {
+                        Undo(&Actions, &timeNeeded, &moneyNeeded);
+                    }
+                    prep_phase = false;
+                    // Set jam ke jam buka, pindah ke main phase
                 }
                 break;
         }
     }
-    // Force execute?
-    // Pindah ke Main phase
-    
-
-    
 }
 
 //ini command yang dijalanin kalo command build, tambahin build ke stack
@@ -104,19 +139,8 @@ void Build(MAP *M, POINT P, int i) //indeks pada array wahana
     Kata BUILD = CreateKata("build");
     int x = P.X;
     int y = P.Y;
-    if ((InfoElmtAtP(*M, x, y) == -1) && (TypeElmtAtP(*M, x, y) != 'O'))
-    //jika tidak terdapat bangunan dan bukan Office maka dapat dibangun
-    {
-        //GetWahanaID
-
-        
-    }
-    else
-    {
-        //refund?
-        printf("Sudah terdapat bangunan pada tempat tersebut\n");
-    }
-    
+    InfoElmtAtP(*M, x, y) = i;
+    TypeElmtAtP(*M, x, y) = 'W';
 }
 
 void Upgrade() //Mengakses array wahana
@@ -130,7 +154,7 @@ void Buy()
 }
 
 // sebelum execut pindah stack ke stack target dan lakukan dari aksi awal
-void Execute(Stack *S, int *currency, int *time)
+void Execute(Stack *S, int *globalCurrency)
 {
     Kata command_;
     int specCommand_;
@@ -174,7 +198,7 @@ void toTarget(Stack *S, Stack *Target)
     }
 }
 
-void Main(Stack *S)
+/*void Main(Stack *S)
 // Langsung lanjut ke main phase
 // Tidak mengeksekusi isi stack
 {
@@ -182,41 +206,90 @@ void Main(Stack *S)
     {
         Undo(S);
     }
-}
+}*/
 
-void Undo (Stack *S) // untuk fungsi user undo
-{
+void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user undo
+{ //money needed dikurangin, time needed juga dikurangin
     Kata command__;
     int specCommand__;
     int infoCommand__;
     POINT pointPlayer__;
     addressStack P = Top(*S);
-    if (Next(P) == Nil)
-    {
-        Pop(S, &command__, &specCommand__, &infoCommand__, &pointPlayer__);
-        if IsKataSama(command__, CreateKata("build"))
-        {
-
-        }
-        else if IsKataSama(command__, CreateKata("upgrade"))
-        {
-            
-        }
-        else if IsKataSama(command__, CreateKata("buy"))
-        {
-            
-        }
-        Top(*S) = Nil;
-        STACK_Dealokasi(P);
-    }
-    else if (P == Nil)
+    if (P == Nil)
     {
         printf("Tidak ada aksi untuk di undo\n");
     }
     else
     {
-        Top(*S) = Next(P);
-        Next(P) = Nil;
-        STACK_Dealokasi(P);
+        Pop(S, &command__, &specCommand__, &infoCommand__, &pointPlayer__);
+        if (IsKataSama(command__, CreateKata("build")))
+        {
+            int x = pointPlayer__.X;
+            int y = pointPlayer__.Y;
+            InfoElmtAtP(_map, x, y) = -1;
+            TypeElmtAtP(_map, x, y) = '-'; //mengembalikan ke '-'
+        }
+        else if (IsKataSama(command__, CreateKata("upgrade")))
+        {
+            //mengembalikan ke akar dari tree upgrade
+        }
+        else if (IsKataSama(command__, CreateKata("buy")))
+        {
+            
+        }
     }
 }
+
+void LoadMaterial(TabMaterial *TabMat, char *filename)
+{
+    FILE *materialFile;
+    char line[20];
+    int price;
+    char Sname[10];
+    Kata Kname;
+    int quantity;
+
+    materialFile = fopen(filename,"r");
+    if (materialFile == NULL)
+    {
+        printf("FAILED TO READ MATERIALS\n");
+        return;
+    }
+    int i = 0;
+    while (fgets(line, 100, materialFile) != NULL)
+    {
+        if (line[0] == '#' && line[1] == 'm' && line[2] == 't')
+        {
+            int nb;
+            fscanf(materialFile, "%d", &nb);
+            for (int i = 0; i < nb; i++)
+            {
+                fscanf(materialFile, "%d %d %s", &price, &quantity, &Sname);
+                ((*TabMat).TI[(i)]).price = price;
+                ((*TabMat).TI[(i)]).kuantitas = quantity;
+                ((*TabMat).TI[(i)]).name = CreateKata(Sname);
+            }
+        }
+    }
+}
+
+int SearchForPrice(TabMaterial *TabMat, Kata Material)
+{
+    
+}
+
+int SearchForQuantity(TabMaterial *TabMat, Kata Material)
+{
+    
+}
+
+/*
+Name: wangkie kumalasari
+Money: 1000
+Current Time: 21.00
+Opening Time: 09.00
+Time Remaining: 12 hour(s)
+Total aksi yang akan dilakukan: 0
+Total waktu yang dibutuhkan: 0
+Total uang yang dibutuhkan: 0
+*/
