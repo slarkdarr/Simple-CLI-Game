@@ -79,7 +79,7 @@ Kata CreateKata(char String[])
     int len = 0;
     char current = String[0];
     Kata result;
-    while (current != '\0')
+    while (current != '\0' && current != '\n')
     {
         result.TabKata[len] = current;
         len += 1;
@@ -154,7 +154,7 @@ void PrintKata(Kata print)
         printf("%c", print.TabKata[traverse]);
         traverse += 1;
     }
-    printf("\n");
+    printf("");
 }
 
 void ReadInput(Kata *InputKata)

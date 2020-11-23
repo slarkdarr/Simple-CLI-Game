@@ -1,5 +1,44 @@
-- WankCoaster
-- Carousel
-- Wheel of Fum
-- Bump Bump Boom!!
-- FUNSwing
+#wt
+100
+15
+15
+4
+1 2 5
+Bego
+Deskripsi Bego
+
+#wu 
+200
+15
+15
+15
+4 -1
+Lebih Bego
+Hehehe
+
+#wu
+400
+30
+30
+30
+-1 -1
+Lebih Bego 2
+Hehehe 2  
+
+#wu
+800
+60
+60
+60
+-1 -1
+Lebih Bego 3
+Hehehe 3
+
+#wu
+8001
+601
+601
+601
+-1 -1
+Lebih Bego 4
+Hehehe 4

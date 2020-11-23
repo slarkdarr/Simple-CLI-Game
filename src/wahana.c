@@ -1,9 +1,10 @@
 #include "wahana.h"
+#include "mesinkata.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 
-void LoadWahanaTypes(WAHANA_UpgradeTree *wahanaTypes[], char* fileName)
+void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName)
 {
     /*
     Membaca data map dari file mulai dari penanda #map. 
@@ -37,10 +38,6 @@ void LoadWahanaTypes(WAHANA_UpgradeTree *wahanaTypes[], char* fileName)
     FILE *wtFile;
     char line[100];
 
-    // int mapH, mapW, mapID;
-    // int gateCount = 0;
-
-
     wtFile = fopen(fileName, "r"); 
     if (wtFile == NULL)
     {
@@ -57,71 +54,62 @@ void LoadWahanaTypes(WAHANA_UpgradeTree *wahanaTypes[], char* fileName)
             tAddress nodes[25];
             char name[25], desc[50];
             int cap, dur, price, left, right, upprice, elcount;
-            fscanf(wtFile, "%s %d %d %d %s %d %d %d %d", &name, &price, &cap, &dur, &desc, &upprice,&left, &right, &elcount);
+
+            fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d %d\n", &price, &cap, &dur, &upprice,&left, &right, &elcount);
+            fgets(name, 25, wtFile);
+            fgets(desc, 50, wtFile);
+
+            // printf(" %s %s %d\n %d\n %d\n %d\n %d %d %d\n\n", name, desc, price, cap, dur, upprice, left, right, elcount);
             nodes[0] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right);
+
+            // WAHANA_PrintInfo(Akar(nodes[0]));
 
             for (int i = 1; i < elcount; i++)
             {
-                while (fgets(line, 100, wtFile) != NULL)
+                while (!(line[0] == '#' && line[1] == 'w' && line[2] == 'u'))
                 {
-                    if (line[0] == '#' && line[1] == 'w' && line[2] == 'u')
-                    {
-                        fscanf(wtFile, "%s %d %d %d %s %d %d %d", &name, &price, &cap, &dur, &desc, &upprice,&left, &right);
-                        nodes[i] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right);
-                    }
+                    fgets(line, 100, wtFile);
                 }
+
+                if (line[0] == '#' && line[1] == 'w' && line[2] == 'u')
+                {
+                    // fseek(wtFile, 0, SEEK_CUR);
+                    fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d\n", &price, &cap, &dur, &upprice,&left, &right);
+                    fgets(name, 25, wtFile);
+                    fgets(desc, 50, wtFile);
+
+                    // printf("%d\n %s %s %d\n %d\n %d\n %d\n %d %d\n", i, name, desc, price, cap, dur, upprice, left, right);
+
+                    nodes[i] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right);
+                }
+
+                line[0] = 'x';
             }
 
-            for  (int i = 0; i < elcount; i++)
+            for (int i = 0; i < elcount; i++)
             {
-                Left(nodes[i]) = nodes[(int)Left(nodes[i])];
-                Right(nodes[i]) = nodes[(int)Right(nodes[i])];
+                if (nodes[(int)Left(nodes[i])] == -1)
+                {
+                    Left(nodes[i]) = WAHANA_Nil;
+                } else {
+                    Left(nodes[i]) = nodes[(int)Left(nodes[i])];
+                }
+
+                if (nodes[(int)Right(nodes[i])] == -1)
+                {
+                    Right(nodes[i]) = WAHANA_Nil;
+                } else {
+                    Right(nodes[i]) = nodes[(int)Right(nodes[i])];
+                }
+
+                WAHANA_PrintInfo(nodes[i]);
             }
+            
+            *wahanaTypes = nodes[0];
         }
     }
-
-    // while (fgets(line, 100, wtFile) != NULL)
-    // {
-    //     if (line[0] == '#' && line[1] == 'm')
-    //     {
-    //         // fseek(mapFile, ftell(mapFile), SEEK_SET);
-    //         // Mulai dari data map
-    //         fscanf(wtFile, "%d %d %d", &mapID, &mapH, &mapW);
-    //         fscanf(wtFile, "%d", &gateCount);
-
-    //         int* gateDestinations = malloc(gateCount * sizeof(int));
-    //         for (int i = 0; i < gateCount; i++)
-    //         {
-    //             fscanf(wtFile, "%d", &gateDestinations[i]);
-    //         }
-            
-    //         // printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
-    //         // printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
-    //         fgets(line, 100, wtFile);
-
-    //         NBrs(*M) = mapH;
-    //         NKol(*M) = mapW;
-
-    //         int gate = 0;
-
-    //         for (int i = 0; i < mapH + 1; i++)
-    //         {
-    //             fgets(line, 100, wtFile);
-                
-    //         }
-
-    //         free(gateDestinations);
-    //         // Akhir dari data map
-    //     }
-    // }
-
-    // fclose(wtFile);
-    // return;
-}
-
-FILE* readWahanaType()
-{
-    
+    fclose(wtFile);
+    return;
 }
 
 tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right)
@@ -135,29 +123,61 @@ tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], 
     // <id left> <id right>
     tAddress result = malloc(sizeof(WAHANA_UpgradeTree));
 
-    Akar(result) = WAHANA_Alokasi(name, price, cap, dur, desc);
+    Akar(result) = WAHANAT_Create(CreateKata(name), price, cap, dur, CreateKata(desc));
     Right(result) = right;
     Left(result) = left;
-
-    // WNama(result) = name;
-    // WHarga(result) = price;
-    // WKapasitas(result) = cap;
-    // WDurasi(result) = dur;
-    // WDeskripsi(result) = desc;
 };
 
-wAddress WAHANA_Alokasi(char name[], int price, int cap, int dur, char desc[])
+WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc)
 {
-    wAddress result = malloc(sizeof(WAHANA_ElType));
+    WAHANA_ElType result;
 
-    if (result != NULL)
-    {
-        WNama(result) = name;
-        WHarga(result) = price;
-        WKapasitas(result) = cap;
-        WDurasi(result) = dur;
-        WDeskripsi(result) = desc;
-    }
+    WNama(result) = name;
+    WHarga(result) = price;
+    WKapasitas(result) = cap;
+    WDurasi(result) = dur;
+    WDeskripsi(result) = desc;
 
     return result;
 };
+
+void WAHANA_PrintInfo(tAddress wahanaT)
+{
+    WAHANA_ElType wahana = Akar(wahanaT);
+
+    printf("NAME       : ");
+    PrintKata(WNama(wahana));
+    printf("\n");
+
+    printf("DESC       : ");
+    PrintKata(WDeskripsi(wahana));
+    printf("\n");
+
+    printf(
+        "PRICE      : %d\n"
+        "CAP        : %d\n"
+        "DURATION   : %d\n",
+        WHarga(wahana), WKapasitas(wahana), WDurasi(wahana)
+        );
+
+    printf("LEFT       : ");
+    if (Left(wahanaT) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Akar(Left(wahanaT))));
+    } else {
+        printf("NONE");
+    }
+    printf("\n");
+    
+
+    printf("RIGHT      : ");
+    if (Right(wahanaT) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Akar(Right(wahanaT))));
+    } else {
+        printf("NONE");
+    }
+    printf("\n");
+    printf("\n");
+
+}
