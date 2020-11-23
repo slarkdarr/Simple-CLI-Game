@@ -70,5 +70,6 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
 /* F.S. X adalah nilai elemen TOP yang lama, */
 /*      elemen TOP yang lama didealokasi */
 /* Pada dasarnya adalah operasi Delete First pada list linier */
+int STACK_NbElmt(Stack S);
 
 #endif
