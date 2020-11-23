@@ -11,6 +11,7 @@ typedef struct {
     MAP map;
     char PName[25];
     tAddress wahanaType[10];
+    int wahanaCount;
     WAHANA_ElType wahana[50];
     //int barangType;
     //int barang;
@@ -25,6 +26,8 @@ typedef struct {
 #define Map(G) (G).map
 #define PName(G) (G).PName
 #define WahanaType(G) (G).wahanaType
+#define ElWahanaType(G,i) (G).wahanaType[i]
+#define WahanaCount(G) (G).wahanaCount
 #define Wahana(G) (G).wahana
 #define Barang(G) (G).barangType
 #define BarangData(G) (G).barang
@@ -39,6 +42,8 @@ extern GAME gameInstance;
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)
+#define _wahanaType(i) ElWahanaType(gameInstance,i) 
+#define _wCount WahanaCount(gameInstance)
 #define _money Money(gameInstance) //gua tambahin vin -Noler
 
 void GAME_Init();

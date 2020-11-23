@@ -5,7 +5,9 @@ GAME gameInstance;
 void GAME_Init()
 {
     LoadMap(&Map(gameInstance), "map.txt");
-    LoadWahanaTypes(&(WahanaType(gameInstance)[0]), "wahana.txt");
+    // printf("LOADED MAP\n");
+    LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaCount(gameInstance));
+    // printf("LOADED WAHANAS");
     //Barang(gameInstance) = 0;
     //BarangData(gameInstance) = 0;
     AntrianData(gameInstance) = 0;
@@ -27,7 +29,9 @@ void GAME_Init()
     // printf("KAP %d\n", (Akar((WahanaType(gameInstance))[0])).kapasitas);
     // printf("DURASI %d\n", (Akar((WahanaType(gameInstance))[0])).durasi);
 
-    
+    // printf("OUTSIDE WAHANA.C\n");
+    // WAHANA_PrintInfo(WahanaType(gameInstance)[0]);
+    // WAHANA_PrintInfo(WahanaType(gameInstance)[1]);   
 }
 
 void GAME_Load()

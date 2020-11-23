@@ -4,29 +4,29 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName)
+void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
 {
     /*
     Membaca data map dari file mulai dari penanda #map. 
     Bisa untuk membaca dari file map.txt dan state.txt
     FORMAT (untuk setiap tipe wahana):
         #wt 
-        nama
         harga
         kapasitas
         durasi
-        deskripsi
         jumlah upgrade
         <id left> <id right> <elcount>
+        nama
+        deskripsi
 
         #wu 
-        nama
         harga
         kapasitas
         durasi
-        deskripsi
         biaya upgrade
         <id left> <id right>
+        nama
+        deskripsi
 
         KETERANGAN:
         id sesuai urutan kemunculan (wt adalah 0)
@@ -45,9 +45,9 @@ void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName)
         return;
     }
 
-    int level = 0;
+    int count = 0;
 
-    while(fgets(line, 100, wtFile) != NULL)
+    while(fgets(line, 100, wtFile) != NULL && count < 10)
     {
         if (line[0] == '#' && line[1] == 'w' && line[2] == 't')
         {
@@ -86,7 +86,7 @@ void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName)
                 line[0] = 'x';
             }
 
-            for (int i = 0; i < elcount; i++)
+            for (int i = 0; i < elcount-1; i++)
             {
                 if (nodes[(int)Left(nodes[i])] == -1)
                 {
@@ -102,13 +102,17 @@ void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName)
                     Right(nodes[i]) = nodes[(int)Right(nodes[i])];
                 }
 
-                WAHANA_PrintInfo(nodes[i]);
+                // WAHANA_PrintInfo(nodes[i]);
+                // printf("DONE\n\n");
             }
-            
-            *wahanaTypes = nodes[0];
+
+            // printf("HA\n");
+            *(wahanaTypes+count) = nodes[0];
+            count++;
         }
+
+        *Wcount = count;
     }
-    fclose(wtFile);
     return;
 }
 
@@ -161,6 +165,7 @@ void WAHANA_PrintInfo(tAddress wahanaT)
         );
 
     printf("LEFT       : ");
+    // printf("%d", Right(wahanaT));
     if (Left(wahanaT) != WAHANA_Nil)
     {
         PrintKata(WNama(Akar(Left(wahanaT))));

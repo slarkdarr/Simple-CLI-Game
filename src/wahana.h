@@ -47,7 +47,7 @@ typedef struct tWAHANA_UpgradeTree {
 #define Right(U) (U)->right
 #define Left(U) (U)->left
 
-void LoadWahanaTypes(tAddress *wahanaTypes, char *fileName);
+void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
 
 tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right);
