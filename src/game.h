@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "wahana.h"
 #include "map.h"
 #include "jam.h"
-#include "wahana.h"
 #include "mesinkata.h"
 #include "phase_prep.h"
 #include "materials.h"
@@ -13,7 +13,7 @@ typedef struct {
     char PName[25];
     tAddress wahanaType[10];
     int wahanaCount;
-    WAHANA_ElType wahana[50];
+    WAHANA_Instance wahana[50];
     //int barangType;
     //int barang;
     int antrianData;

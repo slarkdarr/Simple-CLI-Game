@@ -20,7 +20,6 @@ Cost yang dibutuhkan untuk upgrade wahana(pindah ke node ​tree​ lain):
 #include "boolean.h"
 #include "mesinkata.h"
 #include "point.h"
-#include "game.h"
 
 typedef struct tWAHANA_Eltype {
     Kata nama;
@@ -61,8 +60,6 @@ typedef struct
 {
     WAHANA_UpgradeTree current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
-
-    int pengunjung; // Placeholder, nanti buat nyimpen ADT yang buat pengunjung lagi didalam wahananya, mungkin gadipake idk.
 
     boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      
     int upgradeHistoryNEff; // NEff dari upgradeHistory

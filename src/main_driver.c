@@ -9,7 +9,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c
+    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c materials.c stacklist.c
 
 RUN COMMANd:
     ./test.exe

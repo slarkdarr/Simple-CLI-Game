@@ -7,6 +7,7 @@ void GAME_Init()
     LoadMap(&Map(gameInstance), "map.txt");
     // printf("LOADED MAP\n");
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaCount(gameInstance));
+    
     // printf("LOADED WAHANAS");
     //Barang(gameInstance) = 0;
     //BarangData(gameInstance) = 0;
