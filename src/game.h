@@ -5,7 +5,7 @@
 #include "jam.h"
 #include "wahana.h"
 #include "mesinkata.h"
-#include "phase_prep.h"
+// #include "phase_prep.h"
 
 typedef struct {
     MAP map;
@@ -19,7 +19,7 @@ typedef struct {
     int money;
     JAM time;
     int day; //penanda hari ke berapa
-    TabMaterial MaterialList;
+    // TabMaterial MaterialList;
 } GAME;
 
 
@@ -34,7 +34,7 @@ typedef struct {
 #define AntrianData(G) (G).antrianData
 #define Money(G) (G).money
 #define Time(G) (G).time
-#define MaterialList(G) (G).MaterialList // Harga dan Tipe Material dan Kuantitas yang dimiliki
+// #define MaterialList(G) (G).MaterialList // Harga dan Tipe Material dan Kuantitas yang dimiliki
 #define Day(G) (G).day
 
 extern GAME gameInstance;
@@ -45,7 +45,6 @@ extern GAME gameInstance;
 #define _wType(i) ElWahanaType(gameInstance,i) 
 #define _wCount WahanaCount(gameInstance)
 #define _money Money(gameInstance) //gua tambahin vin -Noler
-#define _mlist MaterialList(gameInstance)
 
 void GAME_Init();
 void GAME_Save();
