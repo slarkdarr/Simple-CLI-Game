@@ -2,8 +2,6 @@
 #define JAM_H
 
 #include "boolean.h"
-#include "game.h"
-#include "mesinkata.h"
 
 /* *** Definisi TYPE JAM <HH:MM:SS> *** */
 typedef struct {
@@ -12,30 +10,10 @@ typedef struct {
 	int SS; /* integer [0..59] */
 } JAM;
 
-typedef struct {
-   Kata command;
-   int duration;
-} ACTION; // Elemen array actions beserta durasinya
-
-typedef struct {
-   ACTION action[15];
-   int Neff;
-} ACTION_List;
-
-ACTION ACTION_CreateAction(char* commandAsString, int duration);
-
-void ACTION_Init();
-void ACTION_AddTime(Kata command); // Menambahkan waktu berdasarkan command yang dilakukan
-int ACTION_Search(Kata command); // Mencari indeks dari action dengan 
-
 /* *** Notasi Akses: selektor JAM *** */
 #define Hour(J) (J).HH
 #define Minute(J) (J).MM
 #define Second(J) (J).SS
-#define ElmtACTION_List(Action, indeks) (Action).action[(indeks)]
-#define GETCommand(Action) (Action).command
-#define GETDuration(Action) (Action).duration
-#define Neff(Action) (Action).Neff
 
 /* ***************************************************************** */
 /* DEFINISI PRIMITIF                                                 */
@@ -115,13 +93,5 @@ JAM PrevNDetik (JAM J, int N);
 long Durasi (JAM JAw, JAM JAkh);
 /* Mengirim JAkh-JAw dlm Detik, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */
-
-void SetOpen (JAM* currentTime);
-/* Set currentTime to opening time */
-
-void SetClose (JAM* currentTime);
-/* Set currentTime to closing time */
-
-int GetDuration(Kata command);
 
 #endif

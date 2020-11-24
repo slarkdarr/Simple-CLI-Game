@@ -5,8 +5,6 @@
 #include <stdio.h>
 #include "boolean.h"
 #include "jam.h"
-#include "mesinkata.h"
-#include "game.h"
 
 /* ***************************************************************** */
 /* DEFINISI PRIMITIF                                                 */
@@ -177,56 +175,3 @@ long Durasi (JAM JAw, JAM JAkh)
 }
 /* Mengirim JAkh-JAw dlm Detik, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */
-
-void SetOpen (JAM *currentTime)
-{
-    *currentTime = MakeJAM(9, 0, 0);
-}
-void SetClose(JAM *currentTime)
-{
-    *currentTime = MakeJAM(21, 0, 0);
-}
-
-ACTION ACTION_CreateAction(char* commandAsString, int duration)
-{
-    ACTION result;
-    result.command = CreateKata(commandAsString);
-    result.duration = duration;
-
-    return result;
-}
-
-ACTION_List actions;
-void ACTION_Init()
-{
-    actions.Neff = 5;
-    ElmtACTION_List(actions, 0) = ACTION_CreateAction("build", 10);
-    ElmtACTION_List(actions, 1) = ACTION_CreateAction("upgrade", 10);
-    ElmtACTION_List(actions, 2) = ACTION_CreateAction("buy", 10);
-    ElmtACTION_List(actions, 3) = ACTION_CreateAction("serve", 10);
-    ElmtACTION_List(actions, 4) = ACTION_CreateAction("repair", 10);
-}
-
-void ACTION_AddTime(Kata command)
-{
-    NextNDetik(_time, GetDuration(command));
-}
-
-int GetDuration(Kata command)
-//beda dengan GETDuration, ini ambil dari list
-{
-    ACTION_List LIST = actions;
-    int i = 0;
-    boolean found = false;
-    while (!found && i < Neff(LIST))
-    {
-        ACTION Elmt = ElmtACTION_List(LIST, i);
-        if (IsKataSama(GETCommand(Elmt), command))
-        {
-            return GETDuration(Elmt);
-        }
-        i++;
-    }
-
-    return 0;
-}
