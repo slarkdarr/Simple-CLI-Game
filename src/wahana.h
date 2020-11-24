@@ -17,8 +17,10 @@ Cost yang dibutuhkan untuk upgrade wahana(pindah ke node ​tree​ lain):
 #include <stdio.h>
 #include <stdlib.h>
 
+#include "boolean.h"
 #include "mesinkata.h"
-
+#include "point.h"
+#include "game.h"
 
 typedef struct tWAHANA_Eltype {
     Kata nama;
@@ -55,6 +57,25 @@ typedef struct tWAHANA_UpgradeTree {
 #define WDurasi(W) WahanaDurasi(Akar(W))
 #define WDeskripsi(W) WahanaDeskripsi(Akar(W))
 
+typedef struct 
+{
+    WAHANA_UpgradeTree current; // sekarang wahananya apa
+    POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
+
+    int pengunjung; // Placeholder, nanti buat nyimpen ADT yang buat pengunjung lagi didalam wahananya, mungkin gadipake idk.
+
+    boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      
+    int upgradeHistoryNEff; // NEff dari upgradeHistory
+    // Example tftttf: left right left left left right (dari root)
+
+    int root; // id tipe awal wahananya apa
+    int currentLoad; // sekarang isinya ada berapa orang
+    
+    int timesUsed; // total dipakai berapa kali
+    int timesUsedToday; // hari ini dipakai berapa kali
+} WAHANA_Instance;
+
+
 void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
 
@@ -63,4 +84,7 @@ WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc);
 FILE* readWahanaType(tAddress *WAHANAT); 
 
 void WAHANA_PrintInfo(tAddress wahana);
+
+void WAHANA_CreateInstance(POINT location, int type); // Membuat wahana baru di location dengan tipe _wType(type)
+
 #endif
