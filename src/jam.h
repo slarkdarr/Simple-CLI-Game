@@ -93,5 +93,7 @@ JAM PrevNDetik (JAM J, int N);
 long Durasi (JAM JAw, JAM JAkh);
 /* Mengirim JAkh-JAw dlm Detik, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */
+void SetOpen(JAM *currentTime);
+void SetClose(JAM *currentTime);
 
 #endif

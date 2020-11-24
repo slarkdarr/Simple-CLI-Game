@@ -45,7 +45,7 @@ int main()
     main_menu();
     WAHANA_PrintInfo(_wType(1));
     printf("WCOUNT FAK %d\n", _wCount);
-    printf("MAMAMIA\n");
+    printf("Mann is this compiling?2\n");
 
     while (cont != -1)
     {
@@ -60,46 +60,47 @@ int readCommand()
     const JAM OpeningTime = MakeJAM(9, 0, 0);
     const JAM ClosingTime = MakeJAM(21, 0, 0);
     
-    Kata command;
-    int cont = 0;
-    char* messageBuffer;
-    ReadInput(&command);
+    // Kata command;
+    // int cont = 0;
+    // char* messageBuffer;
+    // ReadInput(&command);
 
-    switch(command.TabKata[0])
-    {
-        case 'w':
-        case 'W':
-            Move(&_map, 'W', &messageBuffer);
-            DrawMap(_map, messageBuffer);
-            break;
-        case 'a':
-        case 'A':
-            Move(&_map, 'A', &messageBuffer);
-            DrawMap(_map, messageBuffer);
-            break;
-        case 's':
-        case 'S':
-            Move(&_map, 'S', &messageBuffer);
-            DrawMap(_map, messageBuffer);
-            break;
-        case 'd':
-        case 'D':
-            Move(&_map, 'D', &messageBuffer);
-            DrawMap(_map, messageBuffer);
-            break;
-        case 'x':
-            cont = -1;
-            break;
-    }
+    // switch(command.TabKata[0])
+    // {
+    //     case 'w':
+    //     case 'W':
+    //         Move(&_map, 'W', &messageBuffer);
+    //         DrawMap(_map, messageBuffer);
+    //         break;
+    //     case 'a':
+    //     case 'A':
+    //         Move(&_map, 'A', &messageBuffer);
+    //         DrawMap(_map, messageBuffer);
+    //         break;
+    //     case 's':
+    //     case 'S':
+    //         Move(&_map, 'S', &messageBuffer);
+    //         DrawMap(_map, messageBuffer);
+    //         break;
+    //     case 'd':
+    //     case 'D':
+    //         Move(&_map, 'D', &messageBuffer);
+    //         DrawMap(_map, messageBuffer);
+    //         break;
+    //     case 'x':
+    //         cont = -1;
+    //         break;
+    // }
+    preparation_phase();
 
-    if (JLT(_time, OpeningTime) | JGT(_time, ClosingTime))
-    {
-        /* COMMAND UNTUK PREP */
-        // phase_preparation();
-    } else {
-        /* COMMAND UNTUK PREP*/
-        // phase_main();
-    }
+    // if (JLT(_time, OpeningTime) | JGT(_time, ClosingTime))
+    // {
+    //     /* COMMAND UNTUK PREP */
+    //     preparation_phase();
+    // } else {
+    //     /* COMMAND UNTUK PREP*/
+    //     // phase_main();
+    // }
 
-    return cont;
+    return 0;
 }

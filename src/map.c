@@ -286,22 +286,26 @@ POINT GetObjectP(MAP *M, char O)
     boolean found = false;
     POINT pointer = MakePOINT(0, 1);
     int count = 3;
+    POINT pointerputer;
     while (!found && count != 0)
     {
-        if (TypeElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
+        pointerputer = MakePOINT(Player(*M).X + pointer.X, Player(*M).Y + pointer.Y);
+        if (TypeElmtAtP(*M, pointerputer.X, pointerputer.Y) == O)
         {
             found = true;
         } 
         else 
         {
             Putar(&pointer, M_PI / 2);
+            TulisPOINT(pointerputer);
             count -= 1;
         }
     }
 
     if (found)
     {
-        return pointer;
+        TulisPOINT(pointer);
+        return pointerputer;
     } 
     else 
     {

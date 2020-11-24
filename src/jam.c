@@ -175,3 +175,11 @@ long Durasi (JAM JAw, JAM JAkh)
 }
 /* Mengirim JAkh-JAw dlm Detik, dengan kalkulasi */
 /* Jika JAw > JAkh, maka JAkh adalah 1 hari setelah JAw */
+void SetOpen (JAM *currentTime)
+{
+    *currentTime = MakeJAM(9, 0, 0);
+}
+void SetClose(JAM *currentTime)
+{
+    *currentTime = MakeJAM(21, 0, 0);
+}

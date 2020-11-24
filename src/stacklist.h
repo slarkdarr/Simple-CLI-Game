@@ -7,8 +7,11 @@
 #include "boolean.h"
 #include <stdlib.h>
 
+
+
+
 /* Konstanta */
-#define Nil NULL
+#define STACK_Nil NULL
 
 /* Deklarasi infotype */
 //typedef Kata command; //buy, build, upgrade
@@ -70,5 +73,6 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
 /* F.S. X adalah nilai elemen TOP yang lama, */
 /*      elemen TOP yang lama didealokasi */
 /* Pada dasarnya adalah operasi Delete First pada list linier */
+int STACK_NbElmt(Stack S);
 
 #endif
