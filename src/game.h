@@ -42,7 +42,7 @@ extern GAME gameInstance;
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)
-#define _wType(i) ElWahanaType(gameInstance,i) 
+#define _wahanaType(i) ElWahanaType(gameInstance,i) 
 #define _wCount WahanaCount(gameInstance)
 #define _money Money(gameInstance) //gua tambahin vin -Noler
 
