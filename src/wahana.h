@@ -28,11 +28,13 @@ typedef struct tWAHANA_Eltype {
     int durasi;    
 } WAHANA_ElType;
 
-#define WNama(W) (W).nama
-#define WHarga(W) (W).harga
-#define WKapasitas(W) (W).kapasitas
-#define WDurasi(W) (W).durasi
-#define WDeskripsi(W) (W).deskripsi  
+#define WahanaNama(W) (W).nama
+#define WahanaHarga(W) (W).harga
+#define WahanaKapasitas(W) (W).kapasitas
+#define WahanaDurasi(W) (W).durasi
+#define WahanaDeskripsi(W) (W).deskripsi  
+
+
 
 typedef struct tWAHANA_UpgradeTree *tAddress;
 #define WAHANA_Nil NULL
@@ -46,6 +48,12 @@ typedef struct tWAHANA_UpgradeTree {
 #define Akar(U) (U)->wahana
 #define Right(U) (U)->right
 #define Left(U) (U)->left
+
+#define WNama(W) WahanaNama(Akar(W))
+#define WHarga(W) WahanaHarga(Akar(W))
+#define WKapasitas(W) WahanaKapasitas(Akar(W))
+#define WDurasi(W) WahanaDurasi(Akar(W))
+#define WDeskripsi(W) WahanaDeskripsi(Akar(W))
 
 void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);

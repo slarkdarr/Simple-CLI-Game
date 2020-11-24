@@ -136,11 +136,11 @@ WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc)
 {
     WAHANA_ElType result;
 
-    WNama(result) = name;
-    WHarga(result) = price;
-    WKapasitas(result) = cap;
-    WDurasi(result) = dur;
-    WDeskripsi(result) = desc;
+    WahanaNama(result) = name;
+    WahanaHarga(result) = price;
+    WahanaKapasitas(result) = cap;
+    WahanaDurasi(result) = dur;
+    WahanaDeskripsi(result) = desc;
 
     return result;
 };
@@ -150,25 +150,25 @@ void WAHANA_PrintInfo(tAddress wahanaT)
     WAHANA_ElType wahana = Akar(wahanaT);
 
     printf("NAME       : ");
-    PrintKata(WNama(wahana));
+    PrintKata(WahanaNama(wahana));
     printf("\n");
 
     printf("DESC       : ");
-    PrintKata(WDeskripsi(wahana));
+    PrintKata(WahanaDeskripsi(wahana));
     printf("\n");
 
     printf(
         "PRICE      : %d\n"
         "CAP        : %d\n"
         "DURATION   : %d\n",
-        WHarga(wahana), WKapasitas(wahana), WDurasi(wahana)
+        WahanaHarga(wahana), WahanaKapasitas(wahana), WahanaDurasi(wahana)
         );
 
     printf("LEFT       : ");
     // printf("%d", Right(wahanaT));
     if (Left(wahanaT) != WAHANA_Nil)
     {
-        PrintKata(WNama(Akar(Left(wahanaT))));
+        PrintKata(WahanaNama(Akar(Left(wahanaT))));
     } else {
         printf("NONE");
     }
@@ -178,7 +178,7 @@ void WAHANA_PrintInfo(tAddress wahanaT)
     printf("RIGHT      : ");
     if (Right(wahanaT) != WAHANA_Nil)
     {
-        PrintKata(WNama(Akar(Right(wahanaT))));
+        PrintKata(WahanaNama(Akar(Right(wahanaT))));
     } else {
         printf("NONE");
     }
