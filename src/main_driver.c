@@ -43,8 +43,8 @@ int main()
     int cont;
 
     main_menu();
-    WAHANA_PrintInfo(_wahanaType(1));
-    printf("WCOUNT %d\n", _wCount);
+    WAHANA_PrintInfo(_wType(1));
+    printf("WCOUNT FAK %d\n", _wCount);
 
     while (cont != -1)
     {
