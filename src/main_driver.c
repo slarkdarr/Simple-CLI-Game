@@ -45,6 +45,7 @@ int main()
     main_menu();
     WAHANA_PrintInfo(_wType(1));
     printf("WCOUNT FAK %d\n", _wCount);
+    printf("MAMAMIA\n");
 
     while (cont != -1)
     {
