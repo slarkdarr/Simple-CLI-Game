@@ -1,0 +1,30 @@
+LIST OF COMMANDS
+
+OUTSIDE GAME
+new
+exit
+load
+
+IN GAME
+ANYTIME
+w, a, s, d
+
+PREP
+build
+upgrade
+buy
+undo
+execute
+main
+
+MAIN
+serve
+repair
+detail
+office
+prepare
+
+IN OFFICE
+Details
+Report
+Exit
