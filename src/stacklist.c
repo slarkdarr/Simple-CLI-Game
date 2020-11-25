@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* Prototype manajemen memori */
+// Prototype manajemen memori 
 void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoCommand, POINT pointPlayer)
 {
     *P = (addressStack) malloc(sizeof(ElmtStack));
@@ -17,29 +17,34 @@ void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoComm
         Next(*P) = STACK_Nil;
     }
 }
-/* I.S. Sembarang */
-/* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan 
-        Next(P)=STACK_Nil */
-/*      P=STACK_Nil jika alokasi gagal */
+// Mengalokasikan addressStack untuk di Push pada Stack dengan Next sebagai STACK_Nil
+// addressStack yang dialokasi memiliki atribut sebagai berikut:
+// Command(P) = Kata command
+// SpecCommand(P) = int specCommand
+// InfoCommand(P) = int infoCommand
+// PointPlayer(P) = POINT pointPlayer
+
 void STACK_Dealokasi (addressStack P)
 {
     free(P);
 }
-/* I.S. P adalah hasil alokasi, P != STACK_Nil */
-/* F.S. Alamat P didealokasi, dikembalikan ke sistem */ 
+// Mendealokasi addressStack yang memiliki atribut sebagai berikut:
+// Kata, int, int, POINT
 
-/* ********* PROTOTYPE REPRESENTASI LOJIK STACK ***************/
+/* ********* PROTOTYPE REPRESENTASI LOGIC STACK ***************/
 boolean STACK_IsEmpty (Stack S)
 {
     return (Top(S) == STACK_Nil);
 }
-/* Mengirim true jika Stack kosong: TOP(S) = STACK_Nil */
+// True jika Stack kosong, false jika berisi
+
 void STACK_CreateEmpty (Stack * S)
 {
     Top(*S) = STACK_Nil;
 }
-/* I.S. sembarang */ 
-/* F.S. Membuat sebuah stack S yang kosong */
+// Membuat Stack yang tidak memiliki isi
+// Representasi List Linier Stack (LIFO)
+
 void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT pointPlayer)
 {
     addressStack P;
@@ -50,11 +55,14 @@ void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT poin
         Top(*S) = P;
     }
 }
-/* Menambahkan X sebagai elemen Stack S */
-/* I.S. S mungkin kosong, X terdefinisi */
-/* F.S. X menjadi TOP yang baru jika alokasi X berhasil, */
-/*      jika tidak, S tetap */
-/* Pada dasarnya adalah operasi Insert First pada list linier */
+// Menambahkan elemen pada sebuah Stack, addressStack sebelumnya dialokasi terlebih dahulu
+// Setelah alokasi, addressStack memliki:
+// Command(P) : Kata command
+// SpecCommand(P) : Spesifikasi command, untuk build misal build wahana apa (indeks pada array wahana)
+// InfoCommand(P) : Berisi info dari spesifikasi command, misal untuk Buy, berisi jumlah dari indeks specCommand (pada array material yang ada)
+// PointPlayer(P) : Berisi POINT Player saat melakukan aksi
+// addressStack P kemudian dimasukkan dalam Stack dengan metode Last In First Out (LIFO)
+
 void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer)
 {
     addressStack P = Top(*S);
@@ -78,14 +86,14 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
         STACK_Dealokasi(P);
     }
 }
-/* Menghapus X dari Stack S. */
-/* I.S. S tidak mungkin kosong */
-/* F.S. X adalah STACK_Nilai elemen TOP yang lama, */
-/*      elemen TOP yang lama didealokasi */
-/* Pada dasarnya adalah operasi Delete First pada list linier */
+// Menghapus Top(S) dari sebuah Stack, kemudian di dealokasikan
+// command, specCommand, infoCommand, pointPlayer disimpan pada sebuah variable
+// kemudian variable tersebut digunakan untuk Undo, Execute, dan sebagainya
+// Operasi Delete First pada list linier
 
 int STACK_NbElmt(Stack S)
-// untuk aksi yang akan dilakukan
+// Digunakan untuk display jumlah aksi yang akan dilakukan
+// Aksi yang akan dilakukan adalah sebanyak isi stack
 {
     int count = 0;
     addressStack P = Top(S);
@@ -95,4 +103,18 @@ int STACK_NbElmt(Stack S)
         P = Next(P);
     }
     return count;
+}
+void PrintIsiStack(Stack S)
+// Mem-print isi stack
+{
+    addressStack P = Top(S);
+    while (P != STACK_Nil)
+    {
+        printf("Perintah: ");
+        PrintKata(Command(P)); printf("\n");
+        printf("Spec    : %d\n", SpecCommand(P));
+        printf("Info    : %d\n", InfoCommand(P));
+        printf("Point   : "); TulisPOINT(PointPlayer(P)); printf("\n\n");
+        P = Next(P);
+    }
 }

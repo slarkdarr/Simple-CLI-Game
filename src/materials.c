@@ -79,7 +79,7 @@ void PrintAllMaterials(TabMaterial TabMat) //testing
 {
     for (int i = 0; i < 3; i++)
     {
-        PrintKata(MaterialName(TabMat, i));
+        PrintKata(MaterialName(TabMat, i)); printf("\n");
         printf("%d\n", MaterialPrice(TabMat, i));
         printf("%d\n", MaterialQuantity(TabMat, i));
     }

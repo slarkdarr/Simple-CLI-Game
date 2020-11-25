@@ -9,7 +9,7 @@
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o test  main_driver.c point.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c
+    gcc -o test  main_driver.c point.c stacklist.c materials.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c arrayaction.c -lm
 
 RUN COMMANd:
     ./test.exe
@@ -45,7 +45,7 @@ int main()
     main_menu();
     WAHANA_PrintInfo(_wType(1));
     printf("WCOUNT FAK %d\n", _wCount);
-    printf("Mann is this compiling?2\n");
+    printf("Mann is this compiling?777777\n");
 
     while (cont != -1)
     {

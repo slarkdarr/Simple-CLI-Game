@@ -15,6 +15,8 @@ void GAME_Init()
     Time(gameInstance) = MakeJAM(9, 0, 0);
     Day(gameInstance) = 1;
     LoadMaterial(&MaterialList(gameInstance), "material.txt");
+    InitializeArrayAction(&Actions(gameInstance));
+    _money = 10000;
 
     //     Kata nama;
     // Kata deskripsi;

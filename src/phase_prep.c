@@ -6,7 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi sekalian keluar dari game
+int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi sekalian keluar dari game
 {
     boolean prep_phase = true;
 
@@ -21,7 +21,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
     _time; //display current time (prep phase tidak berubah kecuali execute/main)
     //check jam, _time tidak diubah dulu
 
-    JAM batasTime = MakeJAM(12, 0, 0); // Batas time tiap prep phase 12 jam
+    JAM batasTime = MakeJAM(12, 0, 1); // Batas time tiap prep phase 12 jam, karena memakai JLT maka dibuat 1 detik lebih lama agar dapat melakukan 12 jam worth of action
     JAM timeNeeded = MakeJAM(0, 0, 0); // Awalnya akan 0, untuk display waktu yang diperlukan
 
     Kata command;
@@ -42,6 +42,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
     DrawMap(_map, messageBuffer);
     //43200 adalah 12 jam
     //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200)))
+    PrintAllMaterials(_mlist); // checking buy function
     while(prep_phase)
     {
         printf("Perintah : ");
@@ -52,21 +53,25 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
             case 'W':
                 Move(&_map, 'W', &messageBuffer);
                 DrawMap(_map, messageBuffer);
+                info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 'a':
             case 'A':
                 Move(&_map, 'A', &messageBuffer);
                 DrawMap(_map, messageBuffer);
+                info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 's':
             case 'S':
                 Move(&_map, 'S', &messageBuffer);
                 DrawMap(_map, messageBuffer);
+                info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 'd':
             case 'D':
                 Move(&_map, 'D', &messageBuffer);
                 DrawMap(_map, messageBuffer);
+                info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 'x':
                 cont = -1;
@@ -74,7 +79,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
             case 'b':
                 if (IsKataSama(command, CreateKata("buy")))
                 {
-                    JAM JCheck = NextNDetik(timeNeeded, GetDuration(command)); //Check GetDuration nya bro
+                    JAM JCheck = NextNDetik(timeNeeded, GetDuration(_actions, command)); //Check GetDuration nya bro
                     
                     if (JLT(JCheck, batasTime))
                     {
@@ -87,15 +92,17 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                                 int indeks = SearchForIndexMaterial(buyName);
                                 Push(&Actions, command, indeks, nBuy, Player(_map));
                                 timeNeeded = JCheck;
+                                moneyNeeded += price;
+                                DrawMap(_map, "Buy sukses\n");
                             }
                             else
                             {
-                                printf("Uang tidak mencukupi\n");
+                                DrawMap(_map, "Uang tidak mencukupi\n");
                             }
                         }
                         else
                         {
-                            printf("Material tidak terdapat pada katalog\n");
+                            DrawMap(_map, "Material tidak terdapat pada katalog\n");
                         }
                         
                         //if (MoneyNow < TotalPrIce) {
@@ -107,14 +114,16 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                     }
                     else
                     {
-                        printf("Waktu tidak mencukupi\n");
+                        DrawMap(_map, "Waktu tidak mencukupi\n");
                     }
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+
                 }
                 else if (IsKataSama(command, CreateKata("build")))
                 {
                     if (CheckNearGate(&_map))
                     {
-                        JAM JCheck = NextNDetik(timeNeeded, GetDuration(command));
+                        JAM JCheck = NextNDetik(timeNeeded, GetDuration(_actions, command));
                         if (JLT(JCheck, batasTime))
                         {
                             ReadInput(&buildWahana);
@@ -125,6 +134,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                                 InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array
                                 Push(&Actions, command, indeks, 1, Player(_map));
                                 Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
+                                DrawMap(_map, messageBuffer);
                                 // moneyNeeded = 
                                 // item langsung dikurang, check item, tambahin ke inventory kalo undo
                                 // time needed ditambah
@@ -133,7 +143,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                             }
                             else
                             {
-                                printf("Wahana tidak terdapat dalam katalog\n");
+                                DrawMap(_map, "Wahana tidak terdapat dalam katalog\n");
                             }
                             //build stuff
                             //teleport player using getobjectp(*M, '-')
@@ -143,7 +153,7 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                         }
                         else
                         {
-                            printf("Waktu tidak mencukupi\n");
+                            DrawMap(_map, "Waktu tidak mencukupi\n");
                         }
                     }
                     else
@@ -151,12 +161,22 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                         DrawMap(_map, "Tidak dapat membangun di depan gerbang\n");
                         // printf("Tidak dapat membangun di depan gerbang\n");
                     }
+                    info_prep(Actions, timeNeeded, moneyNeeded);
                 }
                 break;
             case 'u':
                 if (IsKataSama(command, CreateKata("undo")))
                 {
-                    Undo(&Actions, &timeNeeded, &moneyNeeded);
+                    if (!STACK_IsEmpty(Actions))
+                    {
+                        Undo(&Actions, &timeNeeded, &moneyNeeded);
+                        DrawMap(_map, "Undo sukses\n");
+                    }
+                    else
+                    {
+                        DrawMap(_map, "Tidak ada aksi untuk di Undo\n");
+                    }
+                    info_prep(Actions, timeNeeded, moneyNeeded);
                 }
                 break;
             case 'e':
@@ -165,8 +185,11 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                     toTarget(&Actions, &TargetExecution);
                     Execute(&TargetExecution, &_money);
                     // does executing shit
+                    _money -= moneyNeeded;
                     prep_phase = false;
                     SetOpen(&_time);
+                    TulisJAM(_time);
+                    DrawMap(_map, "Pindah ke main phase\n"); //testing
                     // Set jam ke jam buka, pindah ke main phase
                 }
                 break;
@@ -179,17 +202,21 @@ void preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi 
                     }
                     prep_phase = false;
                     SetOpen(&_time);
+                    TulisJAM(_time);printf("\n");
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                    DrawMap(_map, "Pindah ke main phase\n");
+                    printf("testing\n");
                     // Set jam ke jam buka, pindah ke main phase
                 }
                 break;
         }
     }
+    return -1;
 }
 
 //ini command yang dijalanin kalo command build, tambahin build ke stack
 void Build(MAP *M, POINT P, int i) //indeks pada array wahana
 {
-    Kata BUILD = CreateKata("build");
     int x = P.X;
     int y = P.Y;
     InfoElmtAtP(*M, x, y) = i;
@@ -241,6 +268,7 @@ void Execute(Stack *S, int *globalCurrency)
             Buy(&_mlist, infoCommand_, specCommand_); //adds item
         }
     }
+    
 }
 
 void toTarget(Stack *S, Stack *Target)
@@ -254,7 +282,7 @@ void toTarget(Stack *S, Stack *Target)
     while (!STACK_IsEmpty(*S))
     {
         Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_);
-        Push(S, command_, specCommand_, infoCommand_, pointPlayer_);
+        Push(Target, command_, specCommand_, infoCommand_, pointPlayer_);
     }
 }
 
@@ -288,6 +316,7 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             int y = pointPlayer__.Y;
             InfoElmtAtP(_map, x, y) = -1;
             TypeElmtAtP(_map, x, y) = '-'; //mengembalikan ke '-'
+            // refund bahan bangunan
         }
         else if (IsKataSama(command__, CreateKata("upgrade")))
         {
@@ -314,7 +343,9 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             //mengurangkan timeneeded
             *moneyNeeded -= infoCommand__ * MaterialPrice(_mlist, specCommand__);
         }
-        PrevNDetik(*timeNeeded, GetDuration(command__));
+        long waktu = JAMToDetik(*timeNeeded);
+        waktu -= GetDuration(_actions, command__);
+        *timeNeeded = DetikToJAM(waktu);
     }
 }
 
@@ -401,14 +432,14 @@ void info_prep(Stack Action, JAM timeNeeded, int moneyNeeded)
 {
     Kata KName = CreateKata(_name); 
 
-    printf("Nama                            :   "); PrintKata(KName); 
+    printf("Nama                            :   "); PrintKata(KName); printf("\n"); 
     printf("Money                           :   %d\n", _money); 
     printf("Current Time                    :   21.00\n"); 
     printf("Opening Time                    :   09.00\n");
     printf("Time Remaining                  :   12 jam\n");
     printf("Total aksi yang akan dilakukan  :   %d\n", STACK_NbElmt(Action));
     printf("Total waktu yang dibutuhkan     :   "); TulisJAM(timeNeeded); printf("\n");
-    printf("Total uang yang dibutuhkan      :   %d", moneyNeeded);
+    printf("Total uang yang dibutuhkan      :   %d", moneyNeeded); printf("\n");
 }
 
 /*
@@ -448,8 +479,6 @@ void PrintNamaWahana()
     }
 }
 
-
-
 void PrintUpgradeWahana(int i) //i adalah indeks base build
 {
     Kata UpgradeOne = WNama(Left(_wType(i))); //tanya govin bener apa engga
@@ -458,9 +487,4 @@ void PrintUpgradeWahana(int i) //i adalah indeks base build
     printf("- "); PrintKata(UpgradeOne);
     printf("- "); PrintKata(UpgradeTwo);
     printf("  Pilihan: ");
-}
-
-int GetDuration(Kata command)
-{
-    return 1000;
 }

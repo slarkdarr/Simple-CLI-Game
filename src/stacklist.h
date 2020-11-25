@@ -7,9 +7,6 @@
 #include "boolean.h"
 #include <stdlib.h>
 
-
-
-
 /* Konstanta */
 #define STACK_Nil NULL
 
@@ -74,5 +71,6 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
 /*      elemen TOP yang lama didealokasi */
 /* Pada dasarnya adalah operasi Delete First pada list linier */
 int STACK_NbElmt(Stack S);
+void PrintIsiStack(Stack S);
 
 #endif

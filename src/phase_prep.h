@@ -13,7 +13,7 @@
 
 /* Materials.txt */
 
-void preparation_phase();
+int preparation_phase();
 
 void Build(MAP *M, POINT P, int i);   
 //Fungsi untuk membangun wahana baru, i merupakan indeks wahana yang akan dibuat, menunjuk pada array wahana
@@ -29,5 +29,4 @@ boolean SearchForUpgrade(); //mencari jika upgrade ada
 int SearchForIndexBuilding(Kata Building);
 int SearchForIndexMaterial(Kata Material);
 boolean CheckNearGate(MAP *M);
-int GetDuration(Kata command);
 #endif

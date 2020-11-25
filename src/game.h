@@ -7,6 +7,7 @@
 #include "mesinkata.h"
 #include "phase_prep.h"
 #include "materials.h"
+#include "arrayaction.h"
 
 typedef struct {
     MAP map;
@@ -21,6 +22,7 @@ typedef struct {
     JAM time;
     int day; //penanda hari ke berapa
     TabMaterial MaterialList;
+    ArrayAction_TabInt actions;
 } GAME;
 
 
@@ -37,6 +39,7 @@ typedef struct {
 #define Time(G) (G).time
 #define MaterialList(G) (G).MaterialList // Harga dan Tipe Material dan Kuantitas yang dimiliki
 #define Day(G) (G).day
+#define Actions(G) (G).actions // Array action berisi durasi tiap action yang dilakukan
 
 extern GAME gameInstance;
 
@@ -47,6 +50,7 @@ extern GAME gameInstance;
 #define _wCount WahanaCount(gameInstance)
 #define _money Money(gameInstance) //gua tambahin vin -Noler
 #define _mlist MaterialList(gameInstance)
+#define _actions Actions(gameInstance)
 
 void GAME_Init();
 void GAME_Save();
