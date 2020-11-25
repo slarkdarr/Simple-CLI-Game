@@ -4,108 +4,199 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
+#include "game.h"
 
-/* Membuat PrioQueue kosong */
+
 void CreateEmptyPrioQueue(PrioQueue *Antrian, int Max)
 {
-  if (Max > 0){
+  if (Max > 0)
+  {
     Antrian->T = (Pengunjung *)malloc((Max) * sizeof(Pengunjung));
     Head(*Antrian) = Nil;
     Tail(*Antrian) = Nil;
     MaxElPrioQueue(*Antrian) = Max;
   }
-  else{
+  else
+  {
     Head(*Antrian) = Nil;
     Tail(*Antrian) = Nil;
     MaxElPrioQueue(*Antrian) = 0;
   }
 }
-
-/* Jumlah wahana yang ingin dinaiki seorang pengunjung */
-int NBElmt(ListWahana Wahana)
+void CreateEmptyPrioQueueWahana(PrioQueueWahana *Wahana)
 {
-  int n = 0;
-  for (int i = 0; i<5; i++)
-    if(Wahana.W[i]!=0) n++;
-  return n;
+  Wahana->P = (Penumpang *) malloc((1000) * sizeof(Penumpang));
+  Head(*Wahana) = Nil;
+  Tail(*Wahana) = Nil;
+  MaxElPrioQueue(*Wahana) = 100;
 }
 
-/* Cek PrioQueue Kosong */
+void CreatePenumpang(Penumpang *P, JAM out, int idWahana, Pengunjung X, int x)
+{
+  P->T = X;
+  P->out = out;
+  P->idWahana = idWahana;
+  P->durasi = x;
+}
+
+void CreateEmptyListWahana(ListWahana *W)
+{
+  W = (int)malloc(_wCount*sizeof(int));
+  
+  for(int i = 0; i < _wCount; i++)
+  {
+    W->W[i] = Nil;
+  }
+}
+
 boolean IsEmptyPrioQueue (PrioQueue Antrian)
 {
   return (Head(Antrian)==Nil) && (Tail(Antrian)==Nil);
 }
 
-/* Cek List Wahana Kosong */
-boolean IsEmptyWahana(ListWahana Wahana)
+boolean IsEmptyPrioQueueW (PrioQueueWahana Antrian)
 {
-  return (NBElmt(Wahana)==0);
+  return (Head(Antrian)==Nil) && (Tail(Antrian)==Nil);
 }
 
-/* Cek PrioQueue Full */
-boolean IsFull (PrioQueue Antrian)
+boolean IsEmptyWahana(ListWahana Wahana)
+{
+  return (NBElmtWahana(Wahana)==0);
+}
+
+boolean IsFullPrioQueue (PrioQueue Antrian)
 {
   return (NBElmtPrioQueue(Antrian) == MaxElPrioQueue(Antrian));
 }
 
-/* Cek Jumlah Pengunjung dalam PrioQueue */
+int NBElmtWahana(ListWahana Wahana)
+{
+  int n = 0;
+  
+  for (int i = 0; i<_wCount; i++)
+    if(Wahana.W[i]!=-1) n++;
+
+  return n;
+}
+
 int NBElmtPrioQueue (PrioQueue Antrian)
 {
   if (IsEmptyPrioQueue(Antrian))
   {
     return 0;
   }
-  else{
+  else
+  {
     int El = ((Tail(Antrian) - Head(Antrian) + MaxElPrioQueue(Antrian)) % MaxElPrioQueue(Antrian)) + 1;
     return El;
   }
 }
 
-/* Mengosongkan PrioQueue */
+int NBElmtPrioQueueW (PrioQueueWahana Antrian)
+{
+  if (IsEmptyPrioQueueW(Antrian))
+  {
+    return 0;
+  }
+  else
+  {
+    int El = ((Tail(Antrian) - Head(Antrian) + MaxElPrioQueue(Antrian)) % MaxElPrioQueue(Antrian)) + 1;
+    return El;
+  }
+}
+
 void DeAlokasi(PrioQueue * Antrian)
 {
   free(Antrian->T);
   MaxElPrioQueue(*Antrian) = 0;
 }
 
-/* Menghapus wahana pada elemen tertentu */
+void DeAlokasiQWahana(PrioQueueWahana *Wahana)
+{
+  free(Wahana->P);
+}
+
 void DelWahana(ListWahana *Wahana, int idxWahana)
 {
   int i = 0;
-  while (i < 5 && Wahana->W[i] != idxWahana)
+  while (i < _wCount && i != idxWahana)
     i++;
-  if (i != 5)
+  if (i != _wCount)
     Wahana->W[i] = Nil;
 }
 
 void Enqueue (PrioQueue * Antrian, Pengunjung X)
 {
-  // Kasus kosong
-  if (IsEmptyPrioQueue(*Antrian)){
+  if (IsEmptyPrioQueue(*Antrian))
+  {
     Head(*Antrian) = 0;
     Tail(*Antrian) = 0;
     InfoHead(*Antrian) = X;
   }
 
-  else{
+  else
+  {
     int geser = NBElmtPrioQueue(*Antrian);
     int idx = Tail(*Antrian);
 
-    while(geser > 0 && Prio(Elmt(*Antrian, idx)) > Prio(X)){
-      Elmt(*Antrian, (idx % MaxElPrioQueue(*Antrian) + 1)) = Elmt(*Antrian, idx);
+    while(geser > 0 && Prio(ElmtQ(*Antrian, idx)) > Prio(X))
+    {
+      ElmtQ(*Antrian, (idx % MaxElPrioQueue(*Antrian) + 1)) = ElmtQ(*Antrian, idx);
 
       geser -= 1; idx -=1; 
 
-      if (idx = -1){
+      if (idx = -1)
+      {
         idx = MaxElPrioQueue(*Antrian) - 1;;
       } 
     }
-    printf("Ini enqueue %d\n", Prio(X));
+    //printf("Ini enqueue %d\n", Prio(X));
     int idxp = idx % MaxElPrioQueue(*Antrian) + 1;
-    Elmt(*Antrian, idxp) = X;
+    ElmtQ(*Antrian, idxp) = X;
     Tail(*Antrian) = Tail(*Antrian) % MaxElPrioQueue(*Antrian) + 1;
   }
 }
+
+void EnqueueWahana (PrioQueueWahana * Wahana, Pengunjung X, int idWahana)
+{
+  /* Create Penumpang */
+  Penumpang PNew;
+  int durasi = JAMToDetik(WahanaDurasi(_wType(idWahana))) + JAMToDetik(_time);
+  JAM out = DetikToJAM(durasi);
+
+  CreatePenumpang(&PNew, out, idWahana, X, durasi);
+
+  if (IsEmptyPrioQueueW(*Wahana))
+  {
+    Head(*Wahana) = 0;
+    Tail(*Wahana) = 0;
+    InfoHeadW(*Wahana) = PNew;
+  }
+
+  else
+  {
+    // diurutkan berdasarkan durasi wahana
+    int geser = NBElmtPrioQueueW(*Wahana);
+    int idx = Tail(*Wahana);
+
+    while(geser > 0 && Dur(ElmtW(*Wahana, idx)) > Dur(PNew))
+    {
+      ElmtW(*Wahana, (idx % MaxElPrioQueue(*Wahana) + 1)) = ElmtW(*Wahana, idx);
+
+      geser -= 1; idx -=1; 
+
+      if (idx = -1)
+      {
+        idx = MaxElPrioQueue(*Wahana) - 1;;
+      } 
+    }
+    //printf("Ini enqueue %d\n", Prio(X));
+    int idxp = idx % MaxElPrioQueue(*Wahana) + 1;
+    ElmtW(*Wahana, idxp) = PNew;
+    Tail(*Wahana) = Tail(*Wahana) % MaxElPrioQueue(*Wahana) + 1;
+  }
+}
+
 void Dequeue (PrioQueue * Antrian, Pengunjung * X)
 {
   *X = InfoHead(*Antrian);
@@ -124,24 +215,37 @@ void Dequeue (PrioQueue * Antrian, Pengunjung * X)
 	}
 }
 
-/* Mengirimkan durasi dan money */
-void DequeueVersi2 (PrioQueue * Q, Pengunjung * X, int *Minute, int *money, int idxWahana)
+boolean adaWahana(ListWahana LW, int idxWahana)
 {
-  *X = InfoHead(*Q);
-  DelWahana(&X->listWahana, idxWahana);
-  // getDurasi
-  // getMoney
-  if (Head(*Q)==Tail(*Q)) {
-    Head(*Q)=Nil;
-    Tail(*Q)=Nil;
-  } 
-  else 
+  for (int i =0; i<5; i++)
+    if (i == idxWahana && LW.W[i] == 1)
+      return true;
+  return false;
+}
+
+void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana)
+{
+  if (adaWahana(ListWahana(InfoHead(*Antrian)), idxWahana))
+    {
+      Dequeue(Antrian, X);
+      // _money += WahanaMoney
+    }
+  else
+    printf("Wahana tidak ada di daftar\n");
+}
+
+void DequeueWahana(PrioQueueWahana *Wahana, Pengunjung *X)
+{
+  if (JGT(_time, JAMOut(InfoHeadW(*Wahana))))
   {
-    if (Head(*Q) == MaxElPrioQueue(*Q)-1) 
-      Head(*Q) = 1;
-    else 
-      Head(*Q)++;
+    *X = Pengunjung(InfoHeadW(*Wahana));
+    DelWahana(&ListWahana(*X), CurrWahana(InfoHeadW(*Wahana)));
   }
+}
+
+void DequeueWahana2 (PrioQueueWahana *Wahana)
+{
+  // penumpang dicek satu satu apakah durasi sudah lewat
 }
 /* Menghapus pengunjung yang kesabaran nya habis */
 void KesabaranHabis(PrioQueue *Antrian)
@@ -170,20 +274,23 @@ void DecrKesabaran(PrioQueue *Antrian)
 
     while (idx != Tail(*Antrian))
     {
-      Kesabaran(Elmt(*Antrian, idx)) -= 1;
-      Prio(Elmt(*Antrian, idx)) -= 1;
+      Kesabaran(ElmtQ(*Antrian, idx)) -= 1;
       idx = (idx+1)%MaxElPrioQueue(*Antrian);
     }
-    Kesabaran(Elmt(*Antrian, Tail(*Antrian))) -= 1;
-    Prio(Elmt(*Antrian, idx)) -= 1;
+    Kesabaran(ElmtQ(*Antrian, Tail(*Antrian))) -= 1;
   }
 }
 
-/* Memunculkan pengunjung secara random ke antrian */
+void setPrio(Pengunjung *X, int prio)
+{
+  X->prio = prio;
+}
+/*
 void RandomEnqueue(PrioQueue *Q) // Memunculkan Pengunjung
 {
   int x = rand() % 60;
-  ListWahana list = {0,0,0,0,0};
+  ListWahana list;
+  CreateEmptyListWahana(&list);
 
   printf("%d\n", x);
   if (x%3==0){
@@ -195,31 +302,36 @@ void RandomEnqueue(PrioQueue *Q) // Memunculkan Pengunjung
     }
     if(y%3==0 && y>20)
     {
-      list.W[1] = 2;
+      list.W[1] = 1;
     }
     if (y%4==0 && y>10)
     {
-      list.W[2] = 3;
+      list.W[2] = 1;
     }
     if(y%5==0)
     {
-      list.W[3] = 4;
+      list.W[3] = 1;
     }
     if(y%6==0 || y%25==0)
     {
-      list.W[4] = 5;
+      list.W[4] = 1;
     }
     printf("%d\n", y);    
   }
+
   if (!IsEmptyWahana(list)){
     Pengunjung A;
     A.kesabaran = 10;
-    A.prio = 10;
+    if (!IsEmptyPrioQueue(*Q))
+      A.prio = Prio(ElmtQ(*Q, Tail(*Q))) + 1;
+    else
+      A.prio = 1;
+    
     A.listWahana = list;
     Enqueue(Q, A);
   }
 }
-
+*/
 /* testing */
 void PrintPrioQueue(PrioQueue Antrian)
 {
