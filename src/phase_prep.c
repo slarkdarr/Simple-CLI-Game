@@ -246,6 +246,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                     // 0 berarti right
                                     moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
                                     timeNeeded = JCheck;
+                                    TypeElmtAtP(_map, cekpointobjek.X, cekpointobjek.Y) = 'w';
                                     DrawMap(_map, "Upgrade sukses\n");
                                 }
                                 else
