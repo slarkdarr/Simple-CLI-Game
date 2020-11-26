@@ -66,4 +66,7 @@ void ReadInputInteger(int *out);
 void ReadCommand(int *out, Kata *InputKata);
 /* membaca input dengan format int yang diikuti kata */
 
+void ReadServe(Kata *InputKata1, Kata *InputKata2);
+/* membaca input user dengan format kata diikuti dengan kata */ // untuk serve
+
 #endif

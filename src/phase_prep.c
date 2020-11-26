@@ -31,7 +31,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
 
     Kata buildWahana; // setelah build, variable penyimpanan nama wahana yang akan di build
 
-    int unbuilt = 11; // pas di build awal w kecil, saat di build menjadi W besar indeksnya sementara 11
+    //int unbuilt = 11; // pas di build awal w kecil, saat di build menjadi W besar indeksnya sementara 11
     int cont = 0;
     char* messageBuffer;
     int total_action = 0;// variable total aksi yang akan dilakukan
@@ -39,7 +39,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
     Stack TargetExecution;
     STACK_CreateEmpty(&Actions);
     STACK_CreateEmpty(&TargetExecution);
-    DrawMap(_map, messageBuffer);
+    DrawMap(_map, "wtf is this\n");
     //43200 adalah 12 jam
     //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200)))
     PrintAllMaterials(_mlist); // checking buy function
@@ -121,8 +121,9 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                 }
                 else if (IsKataSama(command, CreateKata("build")))
                 {
-                    if (CheckNearGate(&_map))
+                    if (CheckNearGate(&_map) && CheckObject(&_map, 'O') && CheckObject(&_map, 'W') && CheckObject(&_map, 'w'))
                     {
+                        PrintBuildableWahana(); // Print Wahana yang dapat dibuat
                         JAM JCheck = NextNDetik(timeNeeded, GetDuration(_actions, command));
                         if (JLT(JCheck, batasTime))
                         {
@@ -158,7 +159,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     }
                     else
                     {
-                        DrawMap(_map, "Tidak dapat membangun di depan gerbang\n");
+                        DrawMap(_map, "Tidak dapat membangun di depan gerbang atau di dalam Office/dekat office/dekat wahana\n");
                         // printf("Tidak dapat membangun di depan gerbang\n");
                     }
                     info_prep(Actions, timeNeeded, moneyNeeded);
@@ -480,6 +481,7 @@ void PrintNamaWahana()
 }
 
 void PrintUpgradeWahana(int i) //i adalah indeks base build
+// Digunakan untuk display list upgrade wahana
 {
     Kata UpgradeOne = WNama(Left(_wType(i))); //tanya govin bener apa engga
     Kata UpgradeTwo = WNama(Right(_wType(i)));
@@ -487,4 +489,96 @@ void PrintUpgradeWahana(int i) //i adalah indeks base build
     printf("- "); PrintKata(UpgradeOne);
     printf("- "); PrintKata(UpgradeTwo);
     printf("  Pilihan: ");
+}
+
+void PrintBuildableWahana()
+// Display Wahana yang dapat di build
+{
+    int i;
+    for (int i = 0; i < _wCount; i++)
+    {
+        WAHANA_PrintInfo(_wType(i));
+    }
+}
+
+// boolean CheckOffice(MAP *M)
+// // Mengecek jika dalam office atau dekat office
+// // Returns true jika dekat atau dalam office
+// {
+//     return (POINT_EQ(GetObjectP(M, 'O'), MakePOINT(0, 0)) || POINT_EQ(MakePOINT(Player(*M).X, Player(*M).Y), MakePOINT(12, 5)));
+// }
+
+// boolean CheckOffice(MAP *M)
+// // Mengecek jika dalam office atau dekat office
+// // Returns true jika dekat atau dalam office
+// {
+//     if (TypeElmtAtP(*M, (Player(*M).X) - 1, Player(*M).Y) == 'O')
+//     {
+//         return false;
+//     }
+//     else if (TypeElmtAtP(*M, (Player(*M).X + 1), Player(*M).Y) == 'O')
+//     {
+//         return false;
+//     }
+//     else if (TypeElmtAtP(*M, (Player(*M).X), (Player(*M).Y + 1)) == 'O')
+//     {
+//         return false;
+//     }
+//     else if (TypeElmtAtP(*M, (Player(*M).X), (Player(*M).Y - 1)) == 'O')
+//     {
+//         return false;
+//     }
+//     else if (POINT_EQ(MakePOINT(Player(*M).X, Player(*M).Y), MakePOINT(12, 5)))
+//     {
+//         return false;
+//     }
+//     else
+//     {
+//         return true;
+//     }  
+// }
+
+boolean CheckObject(MAP *M, char C)
+// Mencari jika object dengan TypeElmt char C ada di dekat atau pada player
+{
+    if (TypeElmtAtP(*M, (Player(*M).X) - 1, Player(*M).Y) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X + 1), Player(*M).Y) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X), (Player(*M).Y + 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X), (Player(*M).Y - 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X - 1), (Player(*M).Y - 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X - 1), (Player(*M).Y + 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X + 1), (Player(*M).Y - 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X + 1), (Player(*M).Y + 1)) == C)
+    {
+        return false;
+    }
+    else if (TypeElmtAtP(*M, (Player(*M).X), (Player(*M).Y)) == C)
+    {
+        return false;
+    }
+    else
+    {
+        return true;
+    }  
 }

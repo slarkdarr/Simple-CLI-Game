@@ -231,3 +231,26 @@ void ReadCommand(int *out, Kata *InputKata)
     (*InputKata).Length = count;
 }
 
+void ReadServe(Kata *InputKata1, Kata *InputKata2)
+{
+    START();
+    int count1 = 0;
+    int count2 = 0;
+    while (CC != BLANK)
+    {
+        (*InputKata1).TabKata[count1] = CC;
+        count1 += 1;
+        ADV();
+    }
+    (*InputKata1).Length = count1;
+
+    IgnoreBlank();
+
+    while (CC != MARK)
+    {
+        (*InputKata2).TabKata[count2] = CC;
+        count2 += 1;
+        ADV();
+    }
+    (*InputKata2).Length = count2;
+}

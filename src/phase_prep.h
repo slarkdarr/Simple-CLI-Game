@@ -29,4 +29,8 @@ boolean SearchForUpgrade(); //mencari jika upgrade ada
 int SearchForIndexBuilding(Kata Building);
 int SearchForIndexMaterial(Kata Material);
 boolean CheckNearGate(MAP *M);
+void PrintBuildableWahana();
+boolean CheckOffice(MAP *M);
+boolean CheckWahana(MAP *M);
+boolean CheckObject(MAP *M, char C);
 #endif

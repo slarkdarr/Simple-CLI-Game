@@ -1,5 +1,5 @@
 #mt
 3
-1500 0 Wood
-1000 0 Stone
-750 0 Iron
+500 0 Wood
+750 0 Stone
+1000 0 Iron

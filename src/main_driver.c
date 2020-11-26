@@ -23,7 +23,7 @@ void run_test(Kata input)
     char* message;
     Move(&_map, input.TabKata[0], &message);
     DrawMap(_map, message);
-
+    _money = 1000;
     /*
     Name: wangkie kumalasari
     Money: 1000
