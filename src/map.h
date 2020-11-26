@@ -42,10 +42,10 @@ typedef struct {
 #define NKol(M) (M).NKol
 #define Player(M) (M).Player //Select POINT (Lokasi) Player pada MAP
 #define Elmt(M, i, j) (M).Mem[(i)][(j)] //Select struct ElType pada MAP
-#define TypeElmt(M, i, j) ((M).Mem[(i)][(j)]).type //Select type dari struct ElType pada MAP indeks baris i dan kolom j
-#define TypeElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).type
+#define TypeElmt(M, i, j) ((M).Mem[(i)][(j)]).type // [CHAR] Select type dari struct ElType pada MAP indeks baris i dan kolom j
+#define TypeElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).type // X, Y format for TypeElmt
 #define InfoElmt(M, i, j) ((M).Mem[(i)][(j)]).id //Select id dari struct ElType pada MAP indeks baris i dan kolom j
-#define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id
+#define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id // X, Y format for InfoElmt
 
 // typedef struct MAP_Node* MAP_Address;
 // typedef struct {

@@ -58,7 +58,7 @@ typedef struct tWAHANA_UpgradeTree {
 
 typedef struct 
 {
-    WAHANA_UpgradeTree current; // sekarang wahananya apa
+    tAddress current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
 
     boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      

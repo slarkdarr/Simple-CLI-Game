@@ -326,15 +326,15 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             //mengurangkan timeneeded
             //mengganti ID pada x dan y menjadi id sebelumnya
             // tambah material yang dipake
-            if (specCommand__ > (_wCount - 1) && specCommand__ < (_wCount * 2))
+            if (specCommand__ > (_wTCount - 1) && specCommand__ < (_wTCount * 2))
             {
-                int y = specCommand__ % _wCount;
+                int y = specCommand__ % _wTCount;
                 // WNama(Left(_wType(specCommand__))); //Ambil info upgrade bahan bangunan, refund (Buy)
                 // Wnama ganti bahan bangunan yang bakal di refund
             }
             else
             {
-                //gamungkin kurang dari _wCount -1
+                //gamungkin kurang dari _wTCount -1
                 //berarti > wCount*2
             }
         }
@@ -355,7 +355,7 @@ boolean SearchForBuilding(Kata Building)
 {
     int i = 0;
     boolean found = false;
-    while (!found && i < _wCount)
+    while (!found && i < _wTCount)
     {
         if (IsKataSama(WNama(_wType(i)), Building))
         {
@@ -374,7 +374,7 @@ int SearchForIndexBuilding(Kata Building)
 {
     int i = 0;
     boolean found = false;
-    while (!found && i < _wCount)
+    while (!found && i < _wTCount)
     {
         if (IsKataSama(WNama(_wType(i)), Building))
         {
@@ -420,7 +420,7 @@ boolean CheckNearGate(MAP *M)
 // {
 //     int i = 0;
 //     boolean found = false;
-//     while (!found && i < _wCount)
+//     while (!found && i < _wTCount)
 //     {
 //         if (IsKataSama(WNama(_wType(i)), Upgrade))
 //         {
@@ -457,7 +457,7 @@ int SearchForIndexMaterial(Kata Material)
 {
     int i = 0;
     boolean found = false;
-    while (!found && i < _wCount)
+    while (!found && i < _wTCount)
     {
         if (IsKataSama(Material, MaterialName(_mlist, i)))
         {
@@ -474,7 +474,7 @@ int SearchForIndexMaterial(Kata Material)
 void PrintNamaWahana()
 {
     printf("List nama wahana:\n");
-    for (int i=0; i<_wCount;i++)
+    for (int i=0; i<_wTCount;i++)
     {
         printf("- "); PrintKata(WNama(_wType(i)));
     }
@@ -495,7 +495,7 @@ void PrintBuildableWahana()
 // Display Wahana yang dapat di build
 {
     int i;
-    for (int i = 0; i < _wCount; i++)
+    for (int i = 0; i < _wTCount; i++)
     {
         WAHANA_PrintInfo(_wType(i));
     }

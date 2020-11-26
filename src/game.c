@@ -5,12 +5,8 @@ GAME gameInstance;
 void GAME_Init()
 {
     LoadMap(&Map(gameInstance), "map.txt");
-    // printf("LOADED MAP\n");
-    LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaCount(gameInstance));
-    
-    // printf("LOADED WAHANAS");
-    //Barang(gameInstance) = 0;
-    //BarangData(gameInstance) = 0;
+    LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
+    WahanaCount(gameInstance) = 0;
     AntrianData(gameInstance) = 0;
     Money(gameInstance) = 0;
     Time(gameInstance) = MakeJAM(9, 0, 0);

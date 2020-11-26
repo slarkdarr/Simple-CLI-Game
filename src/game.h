@@ -1,22 +1,21 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include "wahana.h"
 #include "map.h"
+#include "wahana.h"
 #include "jam.h"
+#include "materials.h"
 #include "mesinkata.h"
 #include "phase_prep.h"
-#include "materials.h"
 #include "arrayaction.h"
 
 typedef struct {
     MAP map;
     char PName[25];
     tAddress wahanaType[10];
-    int wahanaCount;
+    int wahanaTypeCount;
     WAHANA_Instance wahana[50];
-    //int barangType;
-    //int barang;
+    int wahanaCount;
     int antrianData;
     int money;
     JAM time;
@@ -30,8 +29,9 @@ typedef struct {
 #define PName(G) (G).PName
 #define WahanaType(G) (G).wahanaType
 #define ElWahanaType(G,i) (G).wahanaType[i]
-#define WahanaCount(G) (G).wahanaCount
+#define WahanaTypeCount(G) (G).wahanaTypeCount
 #define Wahana(G) (G).wahana
+#define WahanaCount(G) (G).wahanaCount
 #define Barang(G) (G).barangType
 #define BarangData(G) (G).barang
 #define AntrianData(G) (G).antrianData
@@ -47,6 +47,8 @@ extern GAME gameInstance;
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)
 #define _wType(i) ElWahanaType(gameInstance,i) 
+#define _wTCount WahanaTypeCount(gameInstance)
+#define _wahana(i) Wahana(gameInstance)[i]
 #define _wCount WahanaCount(gameInstance)
 #define _money Money(gameInstance) //gua tambahin vin -Noler
 #define _mlist MaterialList(gameInstance)

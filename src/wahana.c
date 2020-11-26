@@ -1,5 +1,7 @@
 #include "wahana.h"
 #include "mesinkata.h"
+#include "map.h"
+#include "game.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -31,7 +33,6 @@ void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
         KETERANGAN:
         id sesuai urutan kemunculan (wt adalah 0)
         Tiap tipe wahana diawali dengan #wt
-        Dibaca PreOrder (Left->Right->Root)
         Setiap level dipisah dengan tab
     */
 
@@ -184,5 +185,35 @@ void WAHANA_PrintInfo(tAddress wahanaT)
     }
     printf("\n");
     printf("\n");
-
 }
+
+void WAHANA_CreateInstance(POINT location, int type)
+{
+    // tAddress current; // sekarang wahananya apa
+    // POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
+
+    // boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      
+    // int upgradeHistoryNEff; // NEff dari upgradeHistory
+
+    // int root; // id tipe awal wahananya apa
+    // int currentLoad; // sekarang isinya ada berapa orang
+    
+    // int timesUsed; // total dipakai berapa kali
+    // int timesUsedToday; // hari ini dipakai berapa kali
+    WAHANA_Instance newWahana;
+
+    newWahana.current = _wType(type);
+    newWahana.position = location;
+    newWahana.upgradeHistoryNEff = 0;
+    newWahana.root = type;
+    newWahana.currentLoad = 0;
+    newWahana.timesUsed = 0;
+    newWahana.timesUsedToday = 0;
+    
+    TypeElmtAtP(_map, location.X, location.Y) = 'W';
+    InfoElmtAtP(_map, location.X, location.Y) = _wCount;
+    _wahana(_wCount) = newWahana;
+    _wCount += 1;
+    
+    return;
+}; 
