@@ -258,26 +258,26 @@ void DrawMapInfo(MAP M)
 int GetObject(MAP *M, char O)
 {
     boolean found = false;
-    POINT pointer = MakePOINT(0, 1); 
-    
-    int count = 3;
-
-    while (!found && count != 0)
+    POINT player = Player(*M);
+    if (TypeElmtAtP(*M, player.X + 1, player.Y) == O)
     {
-        if (TypeElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y) == O)
-        {
-            found = true;
-        } else {
-            Putar(&pointer, M_PI / 2);
-            count -= 1;
-        }
+        return InfoElmtAtP(*M, player.X + 1, player.Y);
     }
-
-    if (found)
+    else if (TypeElmtAtP(*M, player.X, player.Y + 1) == O)
     {
-        return (InfoElmtAtP(*M, Player(*M).X + pointer.X, Player(*M).Y + pointer.Y));
-    } else {
-        return -1;
+        return InfoElmtAtP(*M, player.X, player.Y + 1);
+    }
+    else if (TypeElmtAtP(*M, player.X - 1, player.Y) == O)
+    {
+        return InfoElmtAtP(*M, player.X - 1, player.Y);
+    }
+    else if (TypeElmtAtP(*M, player.X, player.Y - 1) == O)
+    {
+        return InfoElmtAtP(*M, player.X, player.Y - 1);
+    }
+    else
+    {
+        return -10; // Digunakan untuk cek jika tidak ada
     }
 }
 

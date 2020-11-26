@@ -3,6 +3,7 @@
 15
 15
 4
+4 2 2 240
 1 2 5
 Bego
 Deskripsi Bego
@@ -12,6 +13,7 @@ Deskripsi Bego
 15
 15
 15
+2 1 1 200
 4 -1
 Lebih Bego
 Hehehe
@@ -21,6 +23,7 @@ Hehehe
 30
 30
 30
+2 1 1 200
 -1 -1
 Lebih Bego 2
 Hehehe 2  
@@ -30,6 +33,7 @@ Hehehe 2
 60
 60
 60
+2 1 1 200
 -1 -1
 Lebih Bego 3
 Hehehe 3
@@ -39,6 +43,7 @@ Hehehe 3
 601
 601
 601
+2 1 1 100
 -1 -1
 Lebih Bego 4
 Hehehe 4
@@ -48,6 +53,7 @@ Hehehe 4
 15
 15
 4
+4 2 1 200
 1 2 5
 Begobet
 Deskripsi Bego
@@ -57,6 +63,7 @@ Deskripsi Bego
 15
 15
 15
+4 2 1 150
 4 -1
 Lebih Bego
 Hehehe
@@ -66,6 +73,7 @@ Hehehe
 30
 30
 30
+4 2 1 250
 -1 -1
 Lebih Bego 2
 Hehehe 2
@@ -75,6 +83,7 @@ Hehehe 2
 60
 60
 60
+4 2 1 200
 -1 -1
 Lebih Bego 3
 Hehehe 3
@@ -84,6 +93,7 @@ Hehehe 3
 601
 601
 601
+4 2 1 250
 -1 -1
 Lebih Bego 4
 Hehehe 4

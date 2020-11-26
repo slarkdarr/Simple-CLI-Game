@@ -55,13 +55,14 @@ void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
             tAddress nodes[25];
             char name[25], desc[50];
             int cap, dur, price, left, right, upprice, elcount;
+            int wood, stone, iron, buildprice; // bahan bangunan yang diperlukan untuk membuat wahana
 
-            fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d %d\n", &price, &cap, &dur, &upprice,&left, &right, &elcount);
+            fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d %d %d\n %d %d %d\n", &price, &cap, &dur, &upprice, &wood, &stone, &iron, &buildprice, &left, &right, &elcount);
             fgets(name, 25, wtFile);
             fgets(desc, 50, wtFile);
 
             // printf(" %s %s %d\n %d\n %d\n %d\n %d %d %d\n\n", name, desc, price, cap, dur, upprice, left, right, elcount);
-            nodes[0] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right);
+            nodes[0] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right, wood, stone, iron, buildprice); // tambah buat bahan bangunan
 
             // WAHANA_PrintInfo(Akar(nodes[0]));
 
@@ -75,13 +76,13 @@ void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
                 if (line[0] == '#' && line[1] == 'w' && line[2] == 'u')
                 {
                     // fseek(wtFile, 0, SEEK_CUR);
-                    fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d\n", &price, &cap, &dur, &upprice,&left, &right);
+                    fscanf(wtFile, "%d\n %d\n %d\n %d\n %d %d %d %d\n %d %d\n", &price, &cap, &dur, &upprice, &wood, &stone, &iron, &buildprice, &left, &right);
                     fgets(name, 25, wtFile);
                     fgets(desc, 50, wtFile);
 
                     // printf("%d\n %s %s %d\n %d\n %d\n %d\n %d %d\n", i, name, desc, price, cap, dur, upprice, left, right);
 
-                    nodes[i] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right);
+                    nodes[i] = WAHANAT_Alokasi(name, price, cap, dur, desc, left, right, wood, stone, iron, buildprice); // tambah buat bahan bangunan
                 }
 
                 line[0] = 'x';
@@ -116,8 +117,8 @@ void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
     }
     return;
 }
-
-tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right)
+// edited buat naro wood, stone, iron
+tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right, int wood, int stone, int iron, int buildprice)
 {
     // nama
     // harga
@@ -128,12 +129,12 @@ tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], 
     // <id left> <id right>
     tAddress result = malloc(sizeof(WAHANA_UpgradeTree));
 
-    Akar(result) = WAHANAT_Create(CreateKata(name), price, cap, dur, CreateKata(desc));
+    Akar(result) = WAHANAT_Create(CreateKata(name), price, cap, dur, CreateKata(desc), wood, stone, iron, buildprice);
     Right(result) = right;
     Left(result) = left;
 };
-
-WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc)
+// edited buat naro wood, stone, iron
+WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc, int wood, int stone, int iron, int buildprice)
 {
     WAHANA_ElType result;
 
@@ -142,6 +143,10 @@ WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc)
     WahanaKapasitas(result) = cap;
     WahanaDurasi(result) = dur;
     WahanaDeskripsi(result) = desc;
+    WahanaWood(result) = wood;
+    WahanaStone(result) = stone;
+    WahanaIron(result) = iron;
+    WahanaBuildPrice(result) = buildprice;
 
     return result;
 };
@@ -184,6 +189,13 @@ void WAHANA_PrintInfo(tAddress wahanaT)
         printf("NONE");
     }
     printf("\n");
+    // testing purposes buat bahan bangunan
+    printf("Bahan bangunan yang diperlukan\n");
+    printf("Wood : %d\n", WWood(wahanaT));
+    printf("Stone: %d\n", WStone(wahanaT));
+    printf("Iron : %d\n", WIron(wahanaT));
+    printf("Price: %d\n", WBuildPrice(wahanaT));
+    printf("\n");
     printf("\n");
 }
 
@@ -217,3 +229,40 @@ void WAHANA_CreateInstance(POINT location, int type)
     
     return;
 }; 
+
+void WAHANA_PrintUpgrade(tAddress W)
+// Untuk print Upgrade(s)
+{
+    printf("[");
+    if (Left(W) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Left(W)));
+        if (Right(W) != WAHANA_Nil)
+        {
+            printf(", ");
+        }
+    }
+    if (Right(W) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Right(W)));
+    }
+    printf("]");
+}
+
+void WAHANA_PrintCommandUpgrade(tAddress W)
+{
+    printf("List Upgrade : \n");
+    if (Left(W) != -1)
+    {
+        printf("    -  "); PrintKata(WNama(Left(W))); printf("\n");
+        printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Left(W)), WStone(Left(W)), WIron(Left(W)));
+        printf("       Price : %d\n", WBuildPrice(Left(W)));
+    }
+    if (Right(W) != -1)
+    {
+        printf("    -  "); PrintKata(WNama(Right(W))); printf("\n");
+        printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Right(W)), WStone(Right(W)), WIron(Right(W)));
+        printf("       Price : %d\n", WBuildPrice(Right(W)));
+    }
+    // Kenapa ke print?
+}

@@ -27,6 +27,10 @@ typedef struct tWAHANA_Eltype {
     int harga;
     int kapasitas;
     int durasi;    
+    int wood; // Bahan bangunan untuk membuat
+    int stone; // Bahan bangunan untuk membuat
+    int iron; // Bahan bangunan untuk membuat
+    int buildprice; // Harga untuk membuat
 } WAHANA_ElType;
 
 #define WahanaNama(W) (W).nama
@@ -34,6 +38,10 @@ typedef struct tWAHANA_Eltype {
 #define WahanaKapasitas(W) (W).kapasitas
 #define WahanaDurasi(W) (W).durasi
 #define WahanaDeskripsi(W) (W).deskripsi  
+#define WahanaWood(W) (W).wood
+#define WahanaStone(W) (W).stone
+#define WahanaIron(W) (W).iron
+#define WahanaBuildPrice(W) (W).buildprice
 
 
 
@@ -55,6 +63,10 @@ typedef struct tWAHANA_UpgradeTree {
 #define WKapasitas(W) WahanaKapasitas(Akar(W))
 #define WDurasi(W) WahanaDurasi(Akar(W))
 #define WDeskripsi(W) WahanaDeskripsi(Akar(W))
+#define WWood(W) WahanaWood(Akar(W))
+#define WStone(W) WahanaStone(Akar(W))
+#define WIron(W) WahanaIron(Akar(W))
+#define WBuildPrice(W) WahanaBuildPrice(Akar(W))
 
 typedef struct 
 {
@@ -76,12 +88,16 @@ typedef struct
 void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
 
-tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right);
-WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc);
+tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], int left, int right, int wood, int stone, int iron, int buildprice);
+WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc, int wood, int stone, int iron, int buildprice);
 FILE* readWahanaType(tAddress *WAHANAT); 
 
 void WAHANA_PrintInfo(tAddress wahana);
 
 void WAHANA_CreateInstance(POINT location, int type); // Membuat wahana baru di location dengan tipe _wType(type)
+
+void WAHANA_PrintUpgrade(tAddress W);
+
+void WAHANA_PrintCommandUpgrade(tAddress W);
 
 #endif

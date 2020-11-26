@@ -39,10 +39,11 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
     Stack TargetExecution;
     STACK_CreateEmpty(&Actions);
     STACK_CreateEmpty(&TargetExecution);
-    DrawMap(_map, "wtf is this\n");
+    DrawMap(_map, "Prep Phase\n");
     //43200 adalah 12 jam
     //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200)))
     PrintAllMaterials(_mlist); // checking buy function
+    PrintYourMaterials(); // checking functions
     while(prep_phase)
     {
         printf("Perintah : ");
@@ -83,21 +84,30 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     
                     if (JLT(JCheck, batasTime))
                     {
-                        ReadCommand(&nBuy,&buyName);
+                        PrintBuyMaterials(); // Display Material yang dapat dibeli
+                        printf("Kuantitas & Material : "); ReadCommand(&nBuy,&buyName);
                         if (SearchForMaterial(_mlist, buyName))
                         {
                             int price = nBuy * SearchForPrice(_mlist, buyName);
-                            if ((moneyNeeded + price) <= _money)
+                            if ((nBuy > 0) && ((moneyNeeded + price) <= _money))
                             {
                                 int indeks = SearchForIndexMaterial(buyName);
                                 Push(&Actions, command, indeks, nBuy, Player(_map));
                                 timeNeeded = JCheck;
                                 moneyNeeded += price;
                                 DrawMap(_map, "Buy sukses\n");
+                                PrintYourMaterials(); // Cek disini
                             }
                             else
                             {
-                                DrawMap(_map, "Uang tidak mencukupi\n");
+                                if (nBuy <= 0)
+                                {
+                                    DrawMap(_map, "Kuantitas tidak valid\n");
+                                }
+                                else
+                                {
+                                    DrawMap(_map, "Uang tidak mencukupi\n");
+                                }
                             }
                         }
                         else
@@ -121,26 +131,39 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                 }
                 else if (IsKataSama(command, CreateKata("build")))
                 {
-                    if (CheckNearGate(&_map) && CheckObject(&_map, 'O') && CheckObject(&_map, 'W') && CheckObject(&_map, 'w'))
+                    if (CheckNearGate(&_map) && CheckObject(&_map, 'O') && CheckObject(&_map, 'W') && CheckObject(&_map, 'w') && CheckObject(&_map, 'A'))
                     {
-                        PrintBuildableWahana(); // Print Wahana yang dapat dibuat
                         JAM JCheck = NextNDetik(timeNeeded, GetDuration(_actions, command));
-                        if (JLT(JCheck, batasTime))
+                        if (JLT(JCheck, batasTime)) // Mengecek jika waktu cukup untuk command build
                         {
-                            ReadInput(&buildWahana);
+                            PrintBuildableWahana(); // Print Wahana yang dapat dibuat
+                            PrintYourMaterials(); // Print Bahan Bangunan yang dimiliki
+                            printf("Wahana : "); ReadInput(&buildWahana);
                             if (SearchForBuilding(buildWahana))
                             {
                                 int indeks = SearchForIndexBuilding(buildWahana);
-                                TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) = 'w'; // w menandakan sedang dibuat, setelah execute akan menjadi W
-                                InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array
-                                Push(&Actions, command, indeks, 1, Player(_map));
-                                Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
-                                DrawMap(_map, messageBuffer);
-                                // moneyNeeded = 
-                                // item langsung dikurang, check item, tambahin ke inventory kalo undo
-                                // time needed ditambah
-                                // money needed ditambah
-                                timeNeeded = JCheck;
+                                if (CheckMaterialCukup(indeks) && (moneyNeeded + WBuildPrice(_wType(indeks))) <= _money)
+                                {
+                                    MaterialQuantity(_mlist, 0) -= WWood(_wType(indeks)); // Mengonsumsi Wood
+                                    MaterialQuantity(_mlist, 1) -= WStone(_wType(indeks)); // Mengonsumsi Wood
+                                    MaterialQuantity(_mlist, 2) -= WIron(_wType(indeks)); // Mengonsumsi Wood
+
+                                    TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) = 'w'; // w menandakan sedang dibuat, setelah execute akan menjadi W
+                                    InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array //indeks sementara pada map agar tidak bisa dijalani //CEK
+                                    Push(&Actions, command, indeks, 1, Player(_map));
+                                    Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
+                                    DrawMap(_map, messageBuffer);
+                                    // moneyNeeded = 
+                                    // item langsung dikurang, check item, tambahin ke inventory kalo undo
+                                    // time needed ditambah
+                                    // money needed ditambah
+                                    timeNeeded = JCheck;
+                                    moneyNeeded += WBuildPrice(_wType(indeks));
+                                }
+                                else
+                                {
+                                    DrawMap(_map, "Bahan bangunan atau uang tidak cukup untuk build\n");
+                                }
                             }
                             else
                             {
@@ -159,7 +182,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     }
                     else
                     {
-                        DrawMap(_map, "Tidak dapat membangun di depan gerbang atau di dalam Office/dekat office/dekat wahana\n");
+                        DrawMap(_map, "Tidak dapat membangun di depan gerbang atau di dalam Office/dekat office/dekat wahana/dekat Antrian\n");
                         // printf("Tidak dapat membangun di depan gerbang\n");
                     }
                     info_prep(Actions, timeNeeded, moneyNeeded);
@@ -176,6 +199,73 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     else
                     {
                         DrawMap(_map, "Tidak ada aksi untuk di Undo\n");
+                    }
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
+                else if (IsKataSama(command, CreateKata("upgrade")))
+                {
+                    int cekobjek = GetObject(&_map, 'W');
+                    POINT cekpointobjek = GetObjectP(&_map, 'W'); // untuk mengganti W menjadi w sebagai tanda sedang upgrade
+                    if (cekobjek != -10)
+                    {
+                        JAM JCheck = NextNDetik(timeNeeded, GetDuration(_actions, command));
+                        if (JLT(JCheck, batasTime)) // Mengecek jika waktu cukup untuk command upgrade
+                        {
+                            Kata untukUpgrade;
+                            WAHANA_PrintCommandUpgrade((_wahana(cekobjek)).current); // Menampilkan opsi upgrade yang tersedia
+                            printf("Pilihan Upgrade : ");ReadInput(&untukUpgrade); // Input
+                            if (IsKataSama(untukUpgrade, WNama(Left((_wahana(cekobjek)).current)))) // CEK
+                            {
+                                if (CheckUpgradeCukup(Left((_wahana(cekobjek)).current)) && (moneyNeeded + WBuildPrice(Left((_wahana(cekobjek)).current)) <= _money))
+                                //cek jika uang cukup
+                                //cek jika cukup untuk upgrade dan langsung mengurangkan bahan bangunan
+                                {
+                                    MaterialQuantity(_mlist, 0) -= WWood(Left((_wahana(cekobjek)).current));
+                                    MaterialQuantity(_mlist, 1) -= WStone(Left((_wahana(cekobjek)).current));
+                                    MaterialQuantity(_mlist, 2) -= WIron(Left((_wahana(cekobjek)).current));
+                                    Push(&Actions, command, cekobjek, 1, cekpointobjek);
+                                    // 1 berarti left
+                                    moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
+                                    timeNeeded = JCheck;
+                                    TypeElmtAtP(_map, cekpointobjek.X, cekpointobjek.Y) = 'w';
+                                    DrawMap(_map, "Upgrade sukses\n");
+                                }
+                                else
+                                {
+                                    DrawMap(_map, "Bahan bangunan atau uang tidak cukup\n");
+                                }
+                            }
+                            else if (IsKataSama(untukUpgrade, WNama(Right((_wahana(cekobjek)).current))))
+                            {
+                                if (CheckUpgradeCukup(Right((_wahana(cekobjek)).current)) && (moneyNeeded + WBuildPrice(Right((_wahana(cekobjek)).current)) <= _money))
+                                {
+                                    MaterialQuantity(_mlist, 0) -= WWood(Right((_wahana(cekobjek)).current));
+                                    MaterialQuantity(_mlist, 1) -= WStone(Right((_wahana(cekobjek)).current));
+                                    MaterialQuantity(_mlist, 2) -= WIron(Right((_wahana(cekobjek)).current));
+                                    Push(&Actions, command, cekobjek, 0, Player(_map));
+                                    // 0 berarti right
+                                    moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
+                                    timeNeeded = JCheck;
+                                    DrawMap(_map, "Upgrade sukses\n");
+                                }
+                                else
+                                {
+                                    DrawMap(_map, "Bahan bangunan atau uang tidak cukup\n");
+                                }
+                            }
+                            else
+                            {
+                                DrawMap(_map, "Pilihan upgrade tidak terdapat dalam katalog\n");
+                            }
+                        }
+                        else
+                        {
+                            DrawMap(_map, "Waktu tidak cukup untuk upgrade\n");
+                        } 
+                    }
+                    else
+                    {
+                        DrawMap(_map, "Tidak ada Wahana untuk di Upgrade\nTunggu satu hari semenjak build untuk mengupgrade Wahana\nTidak bisa mengupgrade wahana yang sedang dalam proses upgrade\n");
                     }
                     info_prep(Actions, timeNeeded, moneyNeeded);
                 }
@@ -210,6 +300,9 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     // Set jam ke jam buka, pindah ke main phase
                 }
                 break;
+            default :
+                DrawMap(_map, "Perintah tidak diketahui\n");
+                break;
         }
     }
     return -1;
@@ -218,19 +311,32 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
 //ini command yang dijalanin kalo command build, tambahin build ke stack
 void Build(MAP *M, POINT P, int i) //indeks pada array wahana
 {
-    int x = P.X;
-    int y = P.Y;
-    InfoElmtAtP(*M, x, y) = i;
-    TypeElmtAtP(*M, x, y) = 'W';
-    //_money -= moneyNeeded;
-    // time - timeNeeded, 
+    // int x = P.X;
+    // int y = P.Y;
+    // InfoElmtAtP(*M, x, y) = i;
+    // TypeElmtAtP(*M, x, y) = 'W';
+    WAHANA_CreateInstance(P, i);
+    // Memasukkan Wahana pada Array yang berisi wahana yang terdapat dalam map
+    // Mengganti TypeElmtAtP menjadi 'W' dengan Info menunjuk ke array pada wahana
 }
 
 // i merupakan indeks wahana upgrade
-// lebih dari wCount-1 tapi kurang dari wCount*2
-void Upgrade(MAP *M, POINT P, int i) //Mengakses array of tree wahana
+// lebih dari wTCount-1 tapi kurang dari wTCount*2
+void Upgrade(POINT P, int specCommand_, int infoCommand_)
+// Mengakses array of Wahana Instance, upgrade wahana instance
+// specCommand_ merupakan indeks array of Wahana Instance, infoCommand_ menentukan upgrade ke left atau right
+// infoCommand_ == 1 berarti Left, infoCommand_ == 0 berarti Right
 {
-    printf("Upgrade kosong");
+    TypeElmtAtP(_map, P.X, P.Y) = 'W';
+    // ADD Upgrade history disini
+    if (infoCommand_)
+    {
+        (_wahana(specCommand_)).current = Left(_wahana(specCommand_).current);
+    }
+    else
+    {
+        (_wahana(specCommand_)).current = Right(_wahana(specCommand_).current);
+    }
 }
 
 void Buy(TabMaterial *TabMat, int Jumlah, int Index) //Buys shit
@@ -262,6 +368,7 @@ void Execute(Stack *S, int *globalCurrency)
         }
         else if (IsKataSama(command_, KataUpgrade))
         {
+            Upgrade(pointPlayer_, specCommand_, infoCommand_);
             // does things
         }
         else if (IsKataSama(command_, KataBuy))
@@ -317,26 +424,46 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             int y = pointPlayer__.Y;
             InfoElmtAtP(_map, x, y) = -1;
             TypeElmtAtP(_map, x, y) = '-'; //mengembalikan ke '-'
+            Buy(&_mlist, WWood(_wType(specCommand__)), 0); // refund wood
+            Buy(&_mlist, WStone(_wType(specCommand__)), 1); // refund stone
+            Buy(&_mlist, WIron(_wType(specCommand__)), 2); // refund iron
+            *moneyNeeded -= WBuildPrice(_wType(specCommand__));
             // refund bahan bangunan
         }
         else if (IsKataSama(command__, CreateKata("upgrade")))
         {
-            //pointPlayer pada upgrade merupakan point wahana yang akan di upgrade
-            //mengembalikan ke akar dari tree upgrade
-            //mengurangkan timeneeded
-            //mengganti ID pada x dan y menjadi id sebelumnya
-            // tambah material yang dipake
-            if (specCommand__ > (_wTCount - 1) && specCommand__ < (_wTCount * 2))
+            if (infoCommand__) // if infoCommand__ == 1 or true maka Left dari current Wahana
             {
-                int y = specCommand__ % _wTCount;
-                // WNama(Left(_wType(specCommand__))); //Ambil info upgrade bahan bangunan, refund (Buy)
-                // Wnama ganti bahan bangunan yang bakal di refund
+                Buy(&_mlist, WWood(Left((_wahana(specCommand__)).current)), 0); // refund wood
+                Buy(&_mlist, WStone(Left((_wahana(specCommand__)).current)), 1); // refund stone
+                Buy(&_mlist, WIron(Left((_wahana(specCommand__)).current)), 2); // refund iron
+                *moneyNeeded -= WBuildPrice(Left((_wahana(specCommand__)).current)); // refund money
             }
-            else
+            else // infoCommand__ == 0 or false, maka Right dari current Wahana
             {
-                //gamungkin kurang dari _wTCount -1
-                //berarti > wCount*2
+                Buy(&_mlist, WWood(Right((_wahana(specCommand__)).current)), 0); // refund wood
+                Buy(&_mlist, WStone(Right((_wahana(specCommand__)).current)), 1); // refund stone
+                Buy(&_mlist, WIron(Right((_wahana(specCommand__)).current)), 2); // refund iron
+                *moneyNeeded -= WBuildPrice(Right((_wahana(specCommand__)).current)); // refund money
             }
+            POINT posisi = _wahana(specCommand__).position;
+            TypeElmtAtP(_map, posisi.X, posisi.Y) = 'W';
+            // //pointPlayer pada upgrade merupakan point wahana yang akan di upgrade
+            // //mengembalikan ke akar dari tree upgrade
+            // //mengurangkan timeneeded
+            // //mengganti ID pada x dan y menjadi id sebelumnya
+            // // tambah material yang dipake
+            // if (specCommand__ > (_wTCount - 1) && specCommand__ < (_wTCount * 2))
+            // {
+            //     int y = specCommand__ % _wTCount;
+            //     // WNama(Left(_wType(specCommand__))); //Ambil info upgrade bahan bangunan, refund (Buy)
+            //     // Wnama ganti bahan bangunan yang bakal di refund
+            // }
+            // else
+            // {
+            //     //gamungkin kurang dari _wTCount -1
+            //     //berarti > wTCount*2
+            // }
         }
         else if (IsKataSama(command__, CreateKata("buy")))
         {
@@ -476,7 +603,7 @@ void PrintNamaWahana()
     printf("List nama wahana:\n");
     for (int i=0; i<_wTCount;i++)
     {
-        printf("- "); PrintKata(WNama(_wType(i)));
+        printf("- "); PrintKata(WNama(_wType(i))); printf("\n");
     }
 }
 
@@ -494,11 +621,24 @@ void PrintUpgradeWahana(int i) //i adalah indeks base build
 void PrintBuildableWahana()
 // Display Wahana yang dapat di build
 {
+    printf("List Wahana yang dapat dibuat: \n");
     int i;
     for (int i = 0; i < _wTCount; i++)
     {
-        WAHANA_PrintInfo(_wType(i));
+        printf("    -  "); PrintKata(WNama(_wType(i))); printf("\n");
+        printf("       Deskripsi : "); PrintKata(WDeskripsi(_wType(i))); printf("\n");
+        printf("       Bahan     :  Wood : %d  Stone : %d  Iron : %d\n", WWood(_wType(i)), WStone(_wType(i)), WIron(_wType(i)));
+        printf("       Price     : %d\n", WBuildPrice(_wType(i)));
     }
+}
+
+void PrintYourMaterials()
+{
+    printf("Your Materials: \n");
+    printf("Wood : %d\n", MaterialQuantity(_mlist, 0));
+    printf("Stone: %d\n", MaterialQuantity(_mlist, 1));
+    printf("Iron : %d\n", MaterialQuantity(_mlist, 2));
+    // Tidak menggunakan for loop agar indentasi Colon (:) tepat dan enak dilihat
 }
 
 // boolean CheckOffice(MAP *M)
@@ -581,4 +721,41 @@ boolean CheckObject(MAP *M, char C)
     {
         return true;
     }  
+}
+
+boolean CheckMaterialCukup(int i)
+// Mengecek jika material cukup dan langsung ke proses build Wahana (langsung mengurangi bahan bangunan yang dimiliki)
+// Add gold for building
+{
+    if (MaterialQuantity(_mlist, 0) >= WWood(_wType(i)) && MaterialQuantity(_mlist, 1) >= WStone(_wType(i)) && MaterialQuantity(_mlist, 2) >= WIron(_wType(i)))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
+}
+
+void PrintBuyMaterials()
+{
+    printf("List Material : \n");
+    for (int i = 0; i < 3; i++)
+    {
+        printf("    -  "); PrintKata(MaterialName(_mlist, i)); printf("  Harga: %d\n", MaterialPrice(_mlist, i));
+    }
+    // Perlu pake for loop apa gausah ? tentuin nanti
+}
+
+boolean CheckUpgradeCukup(tAddress W)
+// Add money for upgrade
+{
+    if (MaterialQuantity(_mlist, 0) >= WWood(W) && MaterialQuantity(_mlist, 1) >= WStone(W) && MaterialQuantity(_mlist, 2) >= WIron(W))
+    {
+        return true;
+    }
+    else
+    {
+        return false;
+    }
 }

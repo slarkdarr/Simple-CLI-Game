@@ -53,6 +53,7 @@ extern GAME gameInstance;
 #define _money Money(gameInstance) //gua tambahin vin -Noler
 #define _mlist MaterialList(gameInstance)
 #define _actions Actions(gameInstance)
+#define _day Day(gameInstance)
 
 void GAME_Init();
 void GAME_Save();
