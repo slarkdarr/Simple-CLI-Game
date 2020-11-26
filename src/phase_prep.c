@@ -242,7 +242,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                     MaterialQuantity(_mlist, 0) -= WWood(Right((_wahana(cekobjek)).current));
                                     MaterialQuantity(_mlist, 1) -= WStone(Right((_wahana(cekobjek)).current));
                                     MaterialQuantity(_mlist, 2) -= WIron(Right((_wahana(cekobjek)).current));
-                                    Push(&Actions, command, cekobjek, 0, Player(_map));
+                                    Push(&Actions, command, cekobjek, 0, cekpointobjek);
                                     // 0 berarti right
                                     moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
                                     timeNeeded = JCheck;
