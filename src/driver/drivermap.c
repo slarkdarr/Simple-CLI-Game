@@ -43,7 +43,7 @@ int main()
                 break;
         }
     }
-    
+    // Driver matriks dan POINT
     // cara compile
     // gcc -o drivermap drivermap.c ../map.c ../point.c ../mesinkar.c ../mesinkata.c
     // drivermap.exe
