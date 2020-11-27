@@ -40,6 +40,7 @@ int readCommand();
 
 int main()
 {
+    system("cls");
     int cont;
 
     main_menu();

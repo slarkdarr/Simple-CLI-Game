@@ -24,6 +24,17 @@ int main_phase()
     {
         printf("Perintah : ");
         ReadInput(&command);
+
+        if (Durasi(_time, closetiem) < GetDuration(_actions, command))
+        {
+            printf("Time exceeded, moving on to prepare phase.\n");
+            _time = closetiem;
+            return 0;
+        } else {
+            ActionAddTime(_actions, command, &_time);
+        }
+
+        // printf("test\n");
         switch(command.TabKata[0])
         {
             case 'w':
@@ -31,6 +42,7 @@ int main_phase()
                 Move(&_map, 'W', &messageBuffer);
                 DrawMap(_map, messageBuffer);
                 printInfo();
+                
                 break;
             case 'a':
             case 'A':
@@ -98,6 +110,7 @@ int main_phase()
     return 0;
 }
 
+
 void serve(PrioQueue *antrian, PrioQueueWahana *inWahana)
 {
     // Dequeue depan antrian,, Enqueue ke queue wahana
@@ -140,7 +153,7 @@ void office_enter()
 
     while (inOffice)
     {
-        printf("Masukkan perintah (Details / Report / Exit)");
+        printf("Masukkan perintah (Details / Report / Exit)"); ln;
         ReadInput(&O_Command);
 
         switch(O_Command.TabKata[0])
@@ -181,10 +194,9 @@ void office_enter()
 
 void office_details()
 {
-    printf("YOU ASKED FOR DETAILS EH?\n");
     int wahanaId = selectWahanaScreen();
+    WAHANA_PrintOfficeDetails(_wahana(wahanaId));
 
-    printf("YOU WANT WAHANA ID: %d?\n", wahanaId);
     /*
     DETAILS
     Nama
@@ -202,10 +214,9 @@ void office_details()
 
 void office_report()
 {
-    printf("YOU ASKED FOR REPORTS EH?\n");
     int wahanaId = selectWahanaScreen();
+    WAHANA_PrintOfficeReport(_wahana(wahanaId));
 
-    printf("YOU WANT WAHANA ID: %d?\n", wahanaId);
     return;
 };
 void office_exit()
@@ -220,13 +231,19 @@ int selectWahanaScreen()
     printf("Select Wahana\n");
     for (i = 0; i < _wCount; i++)
     {
-        printf("\t");
+        printf("\t%d.", i+1);
         PrintKata(WNama(_wahana(i).current));
         printf("\n");
     }
-    int select;
-    scanf("%d", &select);
-    return select;
+    int select = _wCount+1;
+
+    while (select > _wCount)
+    {
+        printf("Masukkan nomor ID wahana: ");
+        scanf("%d", &select);
+    }
+
+    return select-1;
 }
 
 

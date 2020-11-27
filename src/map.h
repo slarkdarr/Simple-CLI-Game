@@ -3,6 +3,7 @@
 
 #include "boolean.h"
 #include "point.h"
+#include "map.h"
 
 #define MaxEl 100 //pake MaxEl dulu (masih awal awal) nanti kalau mau diganti bebas
 
@@ -14,6 +15,17 @@
 #define M_PI 3.14159
 
 // -1 definisi id dari struct ElType bukan bangunan (bisa berupa -, *)
+
+typedef struct tEdge;
+typedef struct Vertices;
+
+typedef struct tMAP_Graph *gAddress;
+typedef struct tMAP_Graph {
+    MAP map;
+    int degreeIn;
+    //tEdge trail;
+    gAddress next;
+} MAP_Graph_Vertex;
 
 typedef int indeks; //masih belom tau dipake apa engga nanti
 
@@ -33,6 +45,7 @@ typedef struct {
     //catatan untuk POINT Player
     //titik origin (0,0) berada pada indeks matriks MAP (0,0), yang berarti berada di atas kiri MAP
 } MAP;
+
 
 /* Selektor */
 #define Type(E) (E).type //Select type dari struct ElType

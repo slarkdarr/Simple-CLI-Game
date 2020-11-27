@@ -44,6 +44,8 @@ typedef struct {
 
 extern GAME gameInstance;
 
+#define ln printf("\n")
+
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)

@@ -42,8 +42,8 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
     DrawMap(_map, "Prep Phase\n");
     //43200 adalah 12 jam /////
     //while (JLT(PrevNDetik(JCheck, 43200), NextNDetik(JOpening, 43200))) /////
-    PrintAllMaterials(_mlist); // checking buy function /////
-    PrintYourMaterials(); // checking functions /////
+    // PrintAllMaterials(_mlist); // checking buy function /////
+    // PrintYourMaterials(); // checking functions /////
     while(prep_phase)
     {
         printf("Perintah : ");

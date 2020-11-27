@@ -7,6 +7,7 @@
 #include "arrayaction.h"
 #include "boolean.h"
 #include "mesinkata.h"
+#include "jam.h"
 
 ArrayAction_ElType AlokasiElementAction(Kata action, int durasi)
 {
@@ -41,6 +42,12 @@ int GetDuration(ArrayAction_TabInt T, Kata action)
         i++;
     }
     return Duration(ArrayAction_Elmt(T, i));
+}
+
+void ActionAddTime(ArrayAction_TabInt T, Kata action, JAM *time)
+{
+    *time = NextNDetik(*time, GetDuration(T, action));
+    return;
 }
 
 void InitializeArrayAction(ArrayAction_TabInt *Tab)

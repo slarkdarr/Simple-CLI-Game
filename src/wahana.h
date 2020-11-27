@@ -82,6 +82,7 @@ typedef struct
     
     int timesUsed; // total dipakai berapa kali
     int timesUsedToday; // hari ini dipakai berapa kali
+    int totalIncome;
     
     boolean status;
 } WAHANA_Instance;
@@ -100,21 +101,20 @@ void WAHANA_CreateInstance(POINT location, int type); // Membuat wahana baru di 
 void WAHANA_PrintDetails(WAHANA_Instance W);
 
 void WAHANA_PrintUpgrade(tAddress W);
-
 void WAHANA_PrintCommandUpgrade(tAddress W);
 
 boolean WAHANA_TREE_IsOneElmt(tAddress W);
-
 boolean WAHANA_TREE_IsOneElmt(tAddress W);
-
 boolean WAHANA_TREE_IsBiner(tAddress W);
-
 boolean WAHANA_TREE_IsUnerLeft(tAddress W);
-
 boolean WAHANA_TREE_IsUnerRight(tAddress W);
 
 void WAHANA_PrintCommandUpgradeLeft(tAddress W);
-
 void WAHANA_PrintCommandUpgradeRight(tAddress W);
+
+void WAHANA_PrintOfficeDetails(WAHANA_Instance W);
+void WAHANA_PrintOfficeReport(WAHANA_Instance W);
+void WAHANA_PrintHistory(WAHANA_Instance W);
+
 
 #endif

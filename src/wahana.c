@@ -224,6 +224,7 @@ void WAHANA_CreateInstance(POINT location, int type)
     newWahana.timesUsed = 0;
     newWahana.timesUsedToday = 0;
     newWahana.status = true;
+    newWahana.totalIncome = 0;
     
     TypeElmtAtP(_map, location.X, location.Y) = 'W';
     InfoElmtAtP(_map, location.X, location.Y) = _wCount;
@@ -280,14 +281,20 @@ void WAHANA_PrintDetails(WAHANA_Instance W)
 
     printf("Lokasi      : ");
     TulisPOINT(W.position);
-    printf("\n");
 
     printf("Upgrade(s)  : [");
     if (Left(W.current) != WAHANA_Nil)
     {
         PrintKata(WNama(Left(W.current)));
-        printf(", ");
+        
+        if (Right(W.current) != WAHANA_Nil)
+        {
+            printf(",");
+        }
     }
+
+    
+
     if (Right(W.current) != WAHANA_Nil)
     {
         PrintKata(WNama(Right(W.current)));
@@ -295,26 +302,7 @@ void WAHANA_PrintDetails(WAHANA_Instance W)
     printf("]\n");
 
     printf("History     : ");
-    int i; 
-    tAddress pointer;
-
-    pointer = _wType(W.root);
-    PrintKata(WNama(pointer));
-
-    if (W.upgradeHistoryNEff > 0)
-    {
-        for(i = 1; i <= W.upgradeHistoryNEff; i++)
-        {
-            printf(" -> ");
-            if (W.upgradeHistory[i])
-            {
-                pointer = Left(pointer);    
-            } else {
-                pointer = Right(pointer);
-            }
-            PrintKata(WNama(pointer));
-        }
-    }
+    WAHANA_PrintHistory(W);
     printf("\n");
     
     printf("Status      : ");
@@ -366,5 +354,77 @@ void WAHANA_PrintCommandUpgradeRight(tAddress W)
         printf("    -  "); PrintKata(WNama(Right(W))); printf("\n");
         printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Right(W)), WStone(Right(W)), WIron(Right(W)));
         printf("       Price : %d\n", WBuildPrice(Right(W)));
+    }
+}
+
+void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
+{
+    /*
+    DETAILS
+    Nama
+    Tipe
+    Harga
+    Lokasi
+    Deskripsi
+    Kapasitas
+    History Upgrade
+    Durasi
+    Ukuran
+    */
+    printf("Nama            : ");
+    PrintKata(WNama(W.current)); ln;
+
+    printf("Tipe            : ");
+    PrintKata(WNama(_wType(W.root))); ln;
+
+    printf("Harga           : %d\n", WHarga(W.current));
+
+    printf("Lokasi          : ");
+    TulisPOINT(W.position);
+
+    printf("Deskripsi       : ");
+    PrintKata(WDeskripsi(W.current)); ln;
+
+    printf("Kapasitas       : %d\n", WKapasitas(W.current));
+    
+    printf("History         : ");
+    WAHANA_PrintHistory(W); ln;
+
+    printf("Durasi          : %d", WDurasi(W.current)); ln;
+    
+    printf("Ukuran          : 1\n");
+    
+}
+
+void WAHANA_PrintOfficeReport(WAHANA_Instance W)
+{
+    PrintKata(WNama(W.current)); ln;
+    printf("Dinaiki sebanyak %d kali (total), %d hari ini", W.timesUsed, W.timesUsedToday); ln;
+    printf("Penghasilan:"); ln;
+    printf("\tTotal\t%d", W.totalIncome); ln;
+    printf("\tHari Ini\t%d", W.timesUsedToday*WHarga(W.current)); ln;
+}
+
+void WAHANA_PrintHistory(WAHANA_Instance W)
+{
+    int i; 
+    tAddress pointer;
+
+    pointer = _wType(W.root);
+    PrintKata(WNama(pointer));
+
+    if (W.upgradeHistoryNEff > 0)
+    {
+        for(i = 1; i <= W.upgradeHistoryNEff; i++)
+        {
+            printf(" -> ");
+            if (W.upgradeHistory[i])
+            {
+                pointer = Left(pointer);    
+            } else {
+                pointer = Right(pointer);
+            }
+            PrintKata(WNama(pointer));
+        }
     }
 }

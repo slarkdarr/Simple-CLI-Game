@@ -8,6 +8,7 @@
 
 #include "boolean.h"
 #include "mesinkata.h"
+#include "jam.h"
 
 /*  Kamus Umum */
 #define ArrayAction_IdxMax 9
@@ -66,6 +67,8 @@ int GetDuration(ArrayAction_TabInt T, Kata action);
 // /* F.S. X adalah nilai elemen terakhir T sebelum penghapusan, */
 // /*      Banyaknya elemen tabel berkurang satu */
 // /*      Tabel T mungkin menjadi kosong */
+
+void ActionAddTime(ArrayAction_TabInt T, Kata action, JAM *time);
 
 void InitializeArrayAction(ArrayAction_TabInt *Tab);
 
