@@ -65,7 +65,7 @@ Deskripsi Bego
 15
 4 2 1 150
 4 -1
-Lebih Bego
+Lebih Begobet
 Hehehe
 
 #wu
@@ -75,7 +75,7 @@ Hehehe
 30
 4 2 1 250
 -1 -1
-Lebih Bego 2
+Lebih Begobet 2
 Hehehe 2
 
 #wu
@@ -85,7 +85,7 @@ Hehehe 2
 60
 4 2 1 200
 -1 -1
-Lebih Bego 3
+Lebih Begobet 3
 Hehehe 3
 
 #wu
@@ -95,5 +95,5 @@ Hehehe 3
 601
 4 2 1 250
 -1 -1
-Lebih Bego 4
+Lebih Begobet 4
 Hehehe 4
