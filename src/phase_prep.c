@@ -204,7 +204,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                 }
                 else if (IsKataSama(command, CreateKata("upgrade")))
                 {
-                    int cekobjek = GetObject(&_map, 'W');
+                    int cekobjek = GetObject(_map, 'W');
                     POINT cekpointobjek = GetObjectP(&_map, 'W'); // untuk mengganti W menjadi w sebagai tanda sedang upgrade
                     if (cekobjek != -10)
                     {
@@ -306,7 +306,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                 break;
         }
     }
-    return -1;
+    return 0;
 }
 
 //ini command yang dijalanin kalo command build, tambahin build ke stack

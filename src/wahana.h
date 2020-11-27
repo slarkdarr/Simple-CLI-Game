@@ -82,6 +82,8 @@ typedef struct
     
     int timesUsed; // total dipakai berapa kali
     int timesUsedToday; // hari ini dipakai berapa kali
+    
+    boolean status;
 } WAHANA_Instance;
 
 
@@ -95,6 +97,7 @@ FILE* readWahanaType(tAddress *WAHANAT);
 void WAHANA_PrintInfo(tAddress wahana);
 
 void WAHANA_CreateInstance(POINT location, int type); // Membuat wahana baru di location dengan tipe _wType(type)
+void WAHANA_PrintDetails(WAHANA_Instance W);
 
 void WAHANA_PrintUpgrade(tAddress W);
 

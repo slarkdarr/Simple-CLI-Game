@@ -161,7 +161,7 @@ void EnqueueWahana (PrioQueueWahana * Wahana, Pengunjung X, int idWahana)
 {
   /* Create Penumpang */
   Penumpang PNew;
-  int durasi = JAMToDetik(WahanaDurasi(_wType(idWahana))) + JAMToDetik(_time);
+  int durasi = WDurasi(_wType(idWahana)) + JAMToDetik(_time);
   JAM out = DetikToJAM(durasi);
 
   CreatePenumpang(&PNew, out, idWahana, X, durasi);

@@ -86,8 +86,6 @@ int main_phase()
                 break;
         }
     }
-
-
     return 0;
 }
 
@@ -95,9 +93,57 @@ void serve();
 
 void repair();
 
-void detail();
+void detail()
+{
+    int id = GetObject(_map, 'W');
+    if (id != -1)
+    {
+        WAHANA_PrintDetails(_wahana(id));
+    } else {
+        printf("Tidak ada wahana didekat anda");
+    }
+};
 
-void office_enter();
+void office_enter()
+{
+    boolean inOffice = true;
+    Kata O_Command;
+
+    while (inOffice)
+    {
+        printf("Masukkan perintah (Details / Report / Exit)");
+        ReadInput(&O_Command);
+
+        switch(O_Command.TabKata[0])
+        {
+            case 'D':
+                if (O_Command.Length > 1)
+                {
+                    if (IsKataSama(O_Command, CreateKata("Details")))
+                    {
+                        office_details();
+                    }
+                }
+            case 'R':
+                if (O_Command.Length > 1)
+                    {
+                        if (IsKataSama(O_Command, CreateKata("Report")))
+                        {
+                            office_report();
+                        }
+                    }
+            case 'E':
+            if (O_Command.Length > 1)
+                {
+                    if (IsKataSama(O_Command, CreateKata("Exit")))
+                    {
+                        office_exit();
+                    }
+                }
+        }
+    }
+};
+
 void office_details();
 void office_report();
 void office_exit();

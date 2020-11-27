@@ -60,47 +60,16 @@ int readCommand()
     const JAM OpeningTime = MakeJAM(9, 0, 0);
     const JAM ClosingTime = MakeJAM(21, 0, 0);
     
-    // Kata command;
-    // int cont = 0;
-    // char* messageBuffer;
-    // ReadInput(&command);
+    int cont = 0;
 
-    // switch(command.TabKata[0])
-    // {
-    //     case 'w':
-    //     case 'W':
-    //         Move(&_map, 'W', &messageBuffer);
-    //         DrawMap(_map, messageBuffer);
-    //         break;
-    //     case 'a':
-    //     case 'A':
-    //         Move(&_map, 'A', &messageBuffer);
-    //         DrawMap(_map, messageBuffer);
-    //         break;
-    //     case 's':
-    //     case 'S':
-    //         Move(&_map, 'S', &messageBuffer);
-    //         DrawMap(_map, messageBuffer);
-    //         break;
-    //     case 'd':
-    //     case 'D':
-    //         Move(&_map, 'D', &messageBuffer);
-    //         DrawMap(_map, messageBuffer);
-    //         break;
-    //     case 'x':
-    //         cont = -1;
-    //         break;
-    // }
+    while(cont != -1)
+    {
+
+    }
+
     preparation_phase();
 
-    // if (JLT(_time, OpeningTime) | JGT(_time, ClosingTime))
-    // {
-    //     /* COMMAND UNTUK PREP */
-    //     preparation_phase();
-    // } else {
-    //     /* COMMAND UNTUK PREP*/
-    //     // phase_main();
-    // }
+
 
     return 0;
 }

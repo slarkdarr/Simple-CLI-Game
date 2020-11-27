@@ -221,6 +221,7 @@ void WAHANA_CreateInstance(POINT location, int type)
     newWahana.currentLoad = 0;
     newWahana.timesUsed = 0;
     newWahana.timesUsedToday = 0;
+    newWahana.status = true;
     
     TypeElmtAtP(_map, location.X, location.Y) = 'W';
     InfoElmtAtP(_map, location.X, location.Y) = _wCount;
@@ -265,4 +266,57 @@ void WAHANA_PrintCommandUpgrade(tAddress W)
         printf("       Price : %d\n", WBuildPrice(Right(W)));
     }
     // Kenapa ke print?
+}
+
+
+void WAHANA_PrintDetails(WAHANA_Instance W)
+{
+    printf("Nama        : ");
+    PrintKata(WNama(W.current));
+    printf("\n");
+
+    printf("Lokasi      : ");
+    TulisPOINT(W.position);
+    printf("\n");
+
+    printf("Upgrade(s)  : [");
+    if (Left(W.current) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Left(W.current)));
+        printf(", ");
+    }
+    if (Right(W.current) != WAHANA_Nil)
+    {
+        PrintKata(WNama(Right(W.current)));
+    }
+    printf("]\n");
+
+    printf("History     : ");
+    int i; 
+    tAddress pointer;
+
+    pointer = _wType(W.root);
+    PrintKata(WNama(pointer));
+
+    for(i = 0; i < W.upgradeHistoryNEff; i++)
+    {
+        printf(" -> ");
+        PrintKata(WNama(pointer));
+
+        if (W.upgradeHistory[i])
+        {
+            pointer = Left(pointer);    
+        } else {
+            pointer = Right(pointer);
+        }
+    }
+    printf("\n");
+    
+    printf("Status      : ");
+    if (W.status)
+    {
+        printf("Berfungsi\n");
+    } else {
+        printf("Tidak Berfungsi\n");
+    }
 }

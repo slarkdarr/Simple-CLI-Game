@@ -255,63 +255,31 @@ void DrawMapInfo(MAP M)
     }
 }
 
-int GetObject(MAP *M, char O)
+int GetObject(MAP M, char O)
 {
     boolean found = false;
-    POINT player = Player(*M);
-    if (TypeElmtAtP(*M, player.X + 1, player.Y) == O)
+    POINT player = Player(M);
+    if (TypeElmtAtP(M, player.X + 1, player.Y) == O)
     {
-        return InfoElmtAtP(*M, player.X + 1, player.Y);
+        return InfoElmtAtP(M, player.X + 1, player.Y);
     }
-    else if (TypeElmtAtP(*M, player.X, player.Y + 1) == O)
+    else if (TypeElmtAtP(M, player.X, player.Y + 1) == O)
     {
-        return InfoElmtAtP(*M, player.X, player.Y + 1);
+        return InfoElmtAtP(M, player.X, player.Y + 1);
     }
-    else if (TypeElmtAtP(*M, player.X - 1, player.Y) == O)
+    else if (TypeElmtAtP(M, player.X - 1, player.Y) == O)
     {
-        return InfoElmtAtP(*M, player.X - 1, player.Y);
+        return InfoElmtAtP(M, player.X - 1, player.Y);
     }
-    else if (TypeElmtAtP(*M, player.X, player.Y - 1) == O)
+    else if (TypeElmtAtP(M, player.X, player.Y - 1) == O)
     {
-        return InfoElmtAtP(*M, player.X, player.Y - 1);
+        return InfoElmtAtP(M, player.X, player.Y - 1);
     }
     else
     {
-        return -10; // Digunakan untuk cek jika tidak ada
+        return -1; //cek jika 0,0 maka tidak bisa build
     }
 }
-
-// POINT GetObjectP(MAP *M, char O)
-// {
-//     boolean found = false;
-//     POINT pointer = MakePOINT(0, 1);
-//     int count = 3;
-//     POINT pointerputer;
-//     while (!found && count != 0)
-//     {
-//         pointerputer = MakePOINT(Player(*M).X + pointer.X, Player(*M).Y + pointer.Y);
-//         if (TypeElmtAtP(*M, pointerputer.X, pointerputer.Y) == O)
-//         {
-//             found = true;
-//         } 
-//         else 
-//         {
-//             Putar(&pointer, 90);
-//             TulisPOINT(pointerputer);
-//             count -= 1;
-//         }
-//     }
-
-//     if (found)
-//     {
-//         TulisPOINT(pointer);
-//         return pointerputer;
-//     } 
-//     else 
-//     {
-//         return MakePOINT(0, 0); // CEK
-//     }
-// }
 
 POINT GetObjectP(MAP *M, char O)
 {
