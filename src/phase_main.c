@@ -181,20 +181,42 @@ void office_enter()
 
 void office_details()
 {
-    printf("YOU ASKED FOR DETAILS EH?");
+    printf("YOU ASKED FOR DETAILS EH?\n");
+    int wahanaId = selectWahanaScreen();
+
+    printf("YOU WANT WAHANA ID: %d?\n", wahanaId);
     return;
 };
 
 void office_report()
 {
-    printf("YOU ASKED FOR REPORTS EH?");
+    printf("YOU ASKED FOR REPORTS EH?\n");
+    int wahanaId = selectWahanaScreen();
+
+    printf("YOU WANT WAHANA ID: %d?\n", wahanaId);
     return;
 };
 void office_exit()
 {
-    printf("YOU WANT TO EXIT EH?");
+    printf("YOU WANT TO EXIT EH?\n");
     return;
 };
+
+int selectWahanaScreen()
+{
+    int i;
+    printf("Select Wahana\n");
+    for (i = 0; i < _wCount; i++)
+    {
+        printf("\t");
+        PrintKata(WNama(_wahana(i).current));
+        printf("\n");
+    }
+    int select;
+    scanf("%d", &select);
+    return select;
+}
+
 
 void prepare()
 {
