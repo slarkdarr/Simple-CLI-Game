@@ -185,6 +185,18 @@ void office_details()
     int wahanaId = selectWahanaScreen();
 
     printf("YOU WANT WAHANA ID: %d?\n", wahanaId);
+    /*
+    DETAILS
+    Nama
+    Tipe
+    Harga
+    Lokasi
+    Deskripsi
+    Kapasitas
+    History Upgrade
+    Durasi
+    Ukuran
+    */
     return;
 };
 

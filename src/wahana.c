@@ -301,16 +301,18 @@ void WAHANA_PrintDetails(WAHANA_Instance W)
     pointer = _wType(W.root);
     PrintKata(WNama(pointer));
 
-    for(i = 0; i < W.upgradeHistoryNEff; i++)
+    if (W.upgradeHistoryNEff > 0)
     {
-        printf(" -> ");
-        PrintKata(WNama(pointer));
-
-        if (W.upgradeHistory[i])
+        for(i = 1; i <= W.upgradeHistoryNEff; i++)
         {
-            pointer = Left(pointer);    
-        } else {
-            pointer = Right(pointer);
+            printf(" -> ");
+            if (W.upgradeHistory[i])
+            {
+                pointer = Left(pointer);    
+            } else {
+                pointer = Right(pointer);
+            }
+            PrintKata(WNama(pointer));
         }
     }
     printf("\n");
