@@ -158,7 +158,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                     InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array //indeks sementara pada map agar tidak bisa dijalani //CEK
                                     Push(&Actions, command, indeks, 1, Player(_map));
                                     Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
-                                    DrawMap(_map, messageBuffer);
+                                    DrawMap(_map, "");
                                     // moneyNeeded =  /////
                                     // item langsung dikurang, check item, tambahin ke inventory kalo undo /////
                                     // time needed ditambah /////

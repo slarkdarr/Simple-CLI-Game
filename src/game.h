@@ -7,6 +7,7 @@
 #include "materials.h"
 #include "mesinkata.h"
 #include "phase_prep.h"
+#include "phase_main.h"
 #include "arrayaction.h"
 
 typedef struct {

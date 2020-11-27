@@ -9,7 +9,7 @@ void GAME_Init()
     WahanaCount(gameInstance) = 0;
     AntrianData(gameInstance) = 0;
     Money(gameInstance) = 0;
-    Time(gameInstance) = MakeJAM(9, 0, 0);
+    Time(gameInstance) = MakeJAM(21, 0, 0);
     Day(gameInstance) = 1;
     LoadMaterial(&MaterialList(gameInstance), "material.txt");
     InitializeArrayAction(&Actions(gameInstance));

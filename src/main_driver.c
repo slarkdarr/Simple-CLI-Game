@@ -62,13 +62,15 @@ int readCommand()
     
     int cont = 0;
 
-    while(cont != -1)
+    while (cont == 0)
     {
-
+        if (JGET(_time, ClosingTime) || JLT(_time, OpeningTime))
+        {
+            cont = preparation_phase();
+        } else {
+            cont = main_phase();
+        }
     }
-
-    preparation_phase();
-
 
 
     return 0;

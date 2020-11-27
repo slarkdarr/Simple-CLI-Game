@@ -14,7 +14,7 @@
 
 int main_phase();
 
-void serve();
+void serve(PrioQueue *antrian, PrioQueueWahana *inWahana);
 
 void repair();
 
@@ -26,5 +26,7 @@ void office_report();
 void office_exit();
 
 void prepare();
+
+void printInfo();
 
 #endif

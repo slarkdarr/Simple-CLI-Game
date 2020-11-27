@@ -54,6 +54,8 @@ void TulisJAM (JAM J);
    tanpa karakter apa pun di depan atau belakangnya, termasuk spasi, enter, dll.
    Jika jam / menit / detik hanya satu digit, tuliskan satu digit tanpa 0 di depannya. */
 
+void PrintJAM (JAM J);
+
 /* ***************************************************************** */
 /* KELOMPOK KONVERSI TERHADAP TYPE                                   */
 /* ***************************************************************** */
@@ -80,6 +82,12 @@ boolean JLT (JAM J1, JAM J2);
 /* Mengirimkan true jika J1<J2, false jika tidak */
 boolean JGT (JAM J1, JAM J2);
 /* Mengirimkan true jika J1>J2, false jika tidak */
+
+boolean JLET (JAM J1, JAM J2);
+/* Mengirimkan true jika J1<J2, false jika tidak */
+boolean JGET (JAM J1, JAM J2);
+/* Mengirimkan true jika J1>J2, false jika tidak */
+
 /* *** Operator aritmatika JAM *** */
 JAM NextDetik (JAM J);
 /* Mengirim 1 detik setelah J dalam bentuk JAM */

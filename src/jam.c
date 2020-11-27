@@ -75,6 +75,24 @@ void TulisJAM (JAM J)
    tanpa karakter apa pun di depan atau belakangnya, termasuk spasi, enter, dll.
    Jika jam / menit / detik hanya satu digit, tuliskan satu digit tanpa 0 di depannya. */
 
+void PrintJAM (JAM J)
+{
+    if (Hour(J) != 0)
+    {
+        printf("%d hour(s) ", Hour(J));
+    }
+
+    if (Minute(J) != 0)
+    {
+        printf("%d minute(s) ", Minute(J));
+    }
+
+    if (Second(J) != 0)
+    {
+        printf("%d seconds(s)", Second(J));
+    }
+}
+
 /* ***************************************************************** */
 /* KELOMPOK KONVERSI TERHADAP TYPE                                   */
 /* ***************************************************************** */
@@ -137,6 +155,18 @@ boolean JGT (JAM J1, JAM J2)
     return (JAMToDetik(J1) > JAMToDetik(J2));
 }
 /* Mengirimkan true jika J1>J2, false jika tidak */
+
+boolean JLET (JAM J1, JAM J2)
+{
+    return (JAMToDetik(J1) <= JAMToDetik(J2));
+}
+/* Mengirimkan true jika J1<=J2, false jika tidak */
+boolean JGET (JAM J1, JAM J2)
+{
+    return (JAMToDetik(J1) >= JAMToDetik(J2));
+}
+/* Mengirimkan true jika J1>=J2, false jika tidak */
+
 /* *** Operator aritmatika JAM *** */
 JAM NextDetik (JAM J)
 {
