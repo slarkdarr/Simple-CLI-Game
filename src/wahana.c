@@ -88,16 +88,16 @@ void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int* Wcount)
                 line[0] = 'x';
             }
 
-            for (int i = 0; i < elcount-1; i++)
+            for (int i = 0; i < elcount; i++) // -1
             {
-                if (nodes[(int)Left(nodes[i])] == -1)
+                if (Left(nodes[i]) == -1)
                 {
                     Left(nodes[i]) = WAHANA_Nil;
                 } else {
                     Left(nodes[i]) = nodes[(int)Left(nodes[i])];
                 }
 
-                if (nodes[(int)Right(nodes[i])] == -1)
+                if (Right(nodes[i]) == -1)
                 {
                     Right(nodes[i]) = WAHANA_Nil;
                 } else {
@@ -132,6 +132,8 @@ tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], 
     Akar(result) = WAHANAT_Create(CreateKata(name), price, cap, dur, CreateKata(desc), wood, stone, iron, buildprice);
     Right(result) = right;
     Left(result) = left;
+
+    return result;
 };
 // edited buat naro wood, stone, iron
 WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc, int wood, int stone, int iron, int buildprice)
@@ -251,18 +253,61 @@ void WAHANA_PrintUpgrade(tAddress W)
 
 void WAHANA_PrintCommandUpgrade(tAddress W)
 {
+    // Cek IsOneELmtTree kalo isOneElmtTree ga print apa apa
     printf("List Upgrade : \n");
-    if (Left(W) != -1)
+    if (Left(W) != WAHANA_Nil)
     {
         printf("    -  "); PrintKata(WNama(Left(W))); printf("\n");
         printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Left(W)), WStone(Left(W)), WIron(Left(W)));
         printf("       Price : %d\n", WBuildPrice(Left(W)));
     }
-    if (Right(W) != -1)
+    if (Right(W) != WAHANA_Nil)
     {
         printf("    -  "); PrintKata(WNama(Right(W))); printf("\n");
         printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Right(W)), WStone(Right(W)), WIron(Right(W)));
         printf("       Price : %d\n", WBuildPrice(Right(W)));
     }
     // Kenapa ke print?
+}
+
+boolean WAHANA_TREE_IsOneElmt(tAddress W)
+{
+    return (Right(W) == WAHANA_Nil && Left(W) == WAHANA_Nil);
+}
+
+boolean WAHANA_TREE_IsBiner(tAddress W)
+{
+    return (Right(W) != WAHANA_Nil && Left(W) != WAHANA_Nil);
+}
+
+boolean WAHANA_TREE_IsUnerLeft(tAddress W)
+{
+    return (Left(W) != WAHANA_Nil && Right(W) == WAHANA_Nil);
+}
+
+boolean WAHANA_TREE_IsUnerRight(tAddress W)
+{
+    return (Right(W) != WAHANA_Nil && Left(W) == WAHANA_Nil);
+}
+
+void WAHANA_PrintCommandUpgradeLeft(tAddress W)
+{
+    printf("List Upgrade : \n");
+    if (Left(W) != WAHANA_Nil)
+    {
+        printf("    -  "); PrintKata(WNama(Left(W))); printf("\n");
+        printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Left(W)), WStone(Left(W)), WIron(Left(W)));
+        printf("       Price : %d\n", WBuildPrice(Left(W)));
+    }
+}
+
+void WAHANA_PrintCommandUpgradeRight(tAddress W)
+{
+    printf("List Upgrade : \n");
+    if (Right(W) != WAHANA_Nil)
+    {
+        printf("    -  "); PrintKata(WNama(Right(W))); printf("\n");
+        printf("       Bahan : Wood : %d  Stone : %d  Iron : %d\n", WWood(Right(W)), WStone(Right(W)), WIron(Right(W)));
+        printf("       Price : %d\n", WBuildPrice(Right(W)));
+    }
 }

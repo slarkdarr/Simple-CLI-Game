@@ -95,7 +95,19 @@ void serve();
 
 void repair();
 
-void detail();
+void detail()
+{
+    int indeks = GetObject(&_map, 'W');
+    if (indeks != -10)
+    {
+        printf("Detail Wahana: \n");
+        printf("Nama    : "); PrintKata(WNama(_wahana(indeks).current)); printf("\n");
+    }
+    else
+    {
+        DrawMap(_map, "Tidak terdapat wahana di sekitar Anda\n");
+    }
+}
 
 void office_enter();
 void office_details();

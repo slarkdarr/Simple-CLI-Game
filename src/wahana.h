@@ -100,4 +100,18 @@ void WAHANA_PrintUpgrade(tAddress W);
 
 void WAHANA_PrintCommandUpgrade(tAddress W);
 
+boolean WAHANA_TREE_IsOneElmt(tAddress W);
+
+boolean WAHANA_TREE_IsOneElmt(tAddress W);
+
+boolean WAHANA_TREE_IsBiner(tAddress W);
+
+boolean WAHANA_TREE_IsUnerLeft(tAddress W);
+
+boolean WAHANA_TREE_IsUnerRight(tAddress W);
+
+void WAHANA_PrintCommandUpgradeLeft(tAddress W);
+
+void WAHANA_PrintCommandUpgradeRight(tAddress W);
+
 #endif
