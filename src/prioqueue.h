@@ -124,6 +124,8 @@ void Enqueue (PrioQueue * Antrian, Pengunjung X);
 void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int durasiWahana, JAM CurrTime);
 /* Prosesdur menambahkan penunpang ke isi wahana */
 
+void EnqueueWahanaP(PrioQueueWahana * QWahana, Penumpang X);
+
 void Dequeue (PrioQueue * Antrian, Pengunjung *X);
 /* Prosedur mengeluarkan pengunjung dari antrian */
 
@@ -136,7 +138,8 @@ boolean PengunjungWahana(Pengunjung X, int idxWahana, int nWahana);
 void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana, int nWahana);
 /* Dequeue dengan mengecek apakah pengunjung ingin menaiki wahana terkait */
 
-void DequeueWahana(PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime, int nWahana);
+// void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X);
+void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X);
 /* Dequeue pengunjung dari isi wahana */
 
 void DequeueWahana2 (PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b);

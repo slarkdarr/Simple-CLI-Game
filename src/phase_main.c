@@ -45,14 +45,12 @@ int main_phase()
                 Move(&_map, 'W', &messageBuffer);
                 ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
-                printInfo(antrian);
                 break;
             case 'a':
             case 'A':
                 Move(&_map, 'A', &messageBuffer);
                 ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
-                printInfo(antrian);
                 break;
             case 's':
             case 'S':
@@ -61,7 +59,6 @@ int main_phase()
                     Move(&_map, 'S', &messageBuffer);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
-                    printInfo(antrian);
                 } else {
                     Kata WahanaServe;
                     // printf("HUHI"); /////
@@ -81,7 +78,6 @@ int main_phase()
                                 serve(&antrian, &inWahana, idw);
                                 ActionAddTime(_actions, CreateKata("serve"), &_time);
                                 DrawMap(_map, messageBuffer);
-                                printInfo(antrian);
                             }
                             else
                             {
@@ -106,7 +102,6 @@ int main_phase()
                     Move(&_map, 'D', &messageBuffer);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
-                    printInfo(antrian);
                 } else {
                     if (IsKataSama(command, CreateKata("detail")))
                     {
@@ -135,7 +130,7 @@ int main_phase()
                 {
                     if (IsKataSama(command, CreateKata("prepare")))
                     {
-                        prepare();
+                        prepare(antrian, inWahana);
                         main_phase = false;
                     }
                 }
@@ -153,6 +148,10 @@ int main_phase()
         
         DecrKesabaran(&antrian);
         KesabaranHabis(&antrian);
+        if (JAMToDetik(_time) < JAMToDetik(closetiem))
+        {
+            printInfo(antrian);
+        }
     }
     return 0;
 }
@@ -255,7 +254,7 @@ void office_enter()
                 }
                 break;
             default:
-                printf("Command tidak ada");
+                printf("Command tidak ada\n");
         }
     }
 };
@@ -305,19 +304,28 @@ int selectWahanaScreen()
     }
     int select = _wCount+1;
 
-    while (select > _wCount)
+    while (select > _wCount || select <= 0)
     {
         printf("Masukkan nomor ID wahana: ");
-        scanf("%d", &select);
+        ReadInputInteger(&select);
+        if (select <= 0)
+        {
+            printf("Masukkan tidak valid, silahkan input ulang angka\n");
+        }
     }
 
     return select-1;
 }
 
 
-void prepare()
+void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
 {
     _time = MakeJAM(21, 0, 0);
+    DeAlokasi(&antrian);
+    DeAlokasiQWahana(&inWahana);
+    // reset times used today
+    // reset currentLoad?
+    // reset antrian, dan antrian wahana?
     return;
 };
 
@@ -432,4 +440,27 @@ int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
     {
         return -10;
     }
+}
+
+/* Apabila ada wahana rusak */
+
+void RemoveFromWahana(PrioQueue *Antrian, PrioQueueWahana *QWahana, int idWahana, int nWahana)
+{
+  PrioQueueWahana QNew;
+
+  CreateEmptyPrioQueueWahana(&QNew, MaxElPrioQueue(*QWahana));
+
+  while (!IsEmptyPrioQueueW(*QWahana))
+  {
+    Penumpang X;
+    DequeueWahana(QWahana, &X);
+
+    if (CurrWahana(X) == idWahana)
+      if (!IsFullPrioQueue(*Antrian)) 
+        Enqueue(Antrian, Pengunjung(X));
+
+    else EnqueueWahanaP(&QNew, X);
+  }
+
+  *QWahana = QNew;
 }
