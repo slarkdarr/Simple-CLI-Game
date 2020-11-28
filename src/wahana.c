@@ -420,6 +420,8 @@ void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
     printf("Deskripsi       : ");
     PrintKata(WDeskripsi(W.current)); ln;
 
+    printf("Isi             : %d", W.currentLoad); ln;
+
     printf("Kapasitas       : %d\n", WKapasitas(W.current));
     
     printf("History         : ");

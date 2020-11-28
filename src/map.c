@@ -244,8 +244,8 @@ void LoadFullMap(MAP *M, char* fileName)
                 }
             }
 
-            printf("%d %d\n", NBrs(*M), NKol(*M));
-            DrawMap(*M, "");
+            // printf("%d %d\n", NBrs(*M), NKol(*M));
+            // DrawMap(*M, "");
 
             Test(4);
             VertexMap(node) = *M;
@@ -264,7 +264,7 @@ void LoadFullMap(MAP *M, char* fileName)
     Test(5);
 
     // DrawMap(VertexMap(mapsBuffer[0]), "");
-    printf("%d", mapsBufferN);
+    // printf("%d", mapsBufferN);
 
     for (i = 0; i < mapsBufferN-1; i++)
     {
@@ -362,7 +362,7 @@ void Move(MAP *M, char X, char* message[])
 
 void DrawMap(MAP M, char message[])
 {
-    // system("cls");
+    system("cls");
     for (int i = 0; i < NBrs(M); i++)
     {
         for (int j = 0; j < NKol(M); j++)

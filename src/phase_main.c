@@ -145,8 +145,13 @@ int main_phase()
             Penumpang X;
             WahanaToAntrian(&inWahana,&X,_time,&antrian,_wCount,&deq);
             // decr current load
-            int idWahana = CurrWahana(X);
-            _wahana(idWahana).currentLoad--;
+            if (deq)
+            {
+                int idWahana = CurrWahana(X);
+                printf("%d", idWahana);
+                _wahana(idWahana).currentLoad--;
+            }
+            
 
         }
         
@@ -394,47 +399,47 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
     }
   }
 }
-void SearchForIndexWahana(Kata W, int idWahana, Pengunjung *X, int *ret)
-/* JANGAN DIPAKE */ /////
-{
-    boolean found = false;
-    int i = idWahana%_wCount;
+// void SearchForIndexWahana(Kata W, int idWahana, Pengunjung *X, int *ret)
+// /* JANGAN DIPAKE */ /////
+// {
+//     boolean found = false;
+//     int i = idWahana%_wCount;
 
-    if (WAHANA_IsFull(_wahana(idWahana)))
-    {   
-        do{
-            if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
-            {
-                found = true;
-            }
-            else
-            {
-                i = (i+1)%_wCount;
-            }
-        } while(i != idWahana);
+//     if (WAHANA_IsFull(_wahana(idWahana)))
+//     {   
+//         do{
+//             if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
+//             {
+//                 found = true;
+//             }
+//             else
+//             {
+//                 i = (i+1)%_wCount;
+//             }
+//         } while(i != idWahana);
         
-        if (found)
-        {
-            *ret = i;
-            // Ubah tujuan dari si pengunjun
-            ListWahana L = ListWP(*X);
+//         if (found)
+//         {
+//             *ret = i;
+//             // Ubah tujuan dari si pengunjun
+//             ListWahana L = ListWP(*X);
 
-            for (int k = 0; k < _wCount; k++)
-            {
-                if (k==idWahana)
-                    ElmtWahana(L, k) = -1;
-                if (k==*ret)
-                    ElmtWahana(L, k) = 1;
-            }
-        }
-        else
-        {
-            *ret = -10;
-        }
-    }
+//             for (int k = 0; k < _wCount; k++)
+//             {
+//                 if (k==idWahana)
+//                     ElmtWahana(L, k) = -1;
+//                 if (k==*ret)
+//                     ElmtWahana(L, k) = 1;
+//             }
+//         }
+//         else
+//         {
+//             *ret = -10;
+//         }
+//     }
 
-    *ret = idWahana;
-}
+//     *ret = idWahana;
+// }
 
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
 {

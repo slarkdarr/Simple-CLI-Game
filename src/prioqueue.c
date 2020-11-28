@@ -1,6 +1,7 @@
 #include "boolean.h"
 #include "jam.h"
 #include "prioqueue.h"
+#include "game.h"
 #include <stdlib.h>
 #include <stdio.h>
 #include <time.h>
@@ -249,10 +250,13 @@ void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X)
 
 void WahanaToAntrian (PrioQueueWahana *QWahana, Penumpang *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b)
 {
+  Test(1);
   if (!IsEmptyPrioQueueW(*QWahana))
   {  
+    Test(66);
     if (JGT(CurrTime, JAMOut(InfoHeadW(*QWahana))))
     {
+      Test(2);
       *X = InfoHeadW(*QWahana);
       DelWahana(&ListWP(Pengunjung(*X)), CurrWahana(InfoHeadW(*QWahana)), nWahana);
       Prio(Pengunjung(*X)) = -1;
@@ -269,18 +273,20 @@ void WahanaToAntrian (PrioQueueWahana *QWahana, Penumpang *X, JAM CurrTime,PrioQ
       }
       
       //printf("work\n");
-      if (!IsEmptyWahana(ListWP(Pengunjung(*X)), nWahana))
-        Enqueue(Antrian, Pengunjung(*X));
+      Test(3);
+      if (!IsEmptyWahana(ListWP(Pengunjung(*X)), nWahana)) Enqueue(Antrian, Pengunjung(*X));
       
       *b = true;
     }
     else
     {
+      Test(77);
       *b = false;
     }
   }
   else
   {
+    Test(4);
     *b = false;
   }
   
