@@ -2,9 +2,10 @@
 #define prioqueuechar_H
 
 #include "boolean.h"
+#include "wahana.h"
+#include "jam.h"
 #include <stdlib.h>
 #include <stdio.h>
-#include "wahana.h"
 #include <time.h>
 #define Nil -1
 
@@ -32,7 +33,7 @@ typedef struct {
 } PrioQueue;
 
 typedef struct{
-    Pengunjung T;
+    Pengunjung Cust;
     JAM out; // waktu dia keluar
     int idWahana; // id wahana yang dinaiki
     int durasi; // durasi wahana
@@ -45,78 +46,101 @@ typedef struct{
     int MaxElPrioQueue;
 } PrioQueueWahana;
 
+/* Selektor pengunjung */
 #define Prio(e)     (e).prio
 #define Kesabaran(e) (e).kesabaran
-#define ListWahana(e) (e).listWahana
-#define ElmtWahana(l,i) (L).W[(i)]
-#define Info(e)     (e).W
+#define ListWP(e) (e).listWahana
+
+/* Selektor listWahana */
+#define ElmtWahana(L,i) (L).W[(i)]
+#define ListW(L) (L).W
+
+/* Selektor Queue */
 #define Head(Q)     (Q).HEAD
 #define Tail(Q)     (Q).TAIL
-#define InfoHead(Q) (Q).T[(Q).HEAD]
-#define InfoHeadW(W) (W).P[(W).HEAD]
-#define InfoTail(Q) (Q).T[(Q).TAIL]
-#define InfoTailW(W) (W).P[(W).TAIL]
 #define MaxElPrioQueue(Q)    (Q).MaxElPrioQueue
+
+/* Selektor Queue Pengunjung */
+#define InfoHead(Q) (Q).T[(Q).HEAD]
+#define InfoTail(Q) (Q).T[(Q).TAIL]
 #define ElmtQ(Q,i)   (Q).T[(i)]
+
+/* Selektor Queue Wahana */
+#define InfoHeadW(W) (W).P[(W).HEAD]
+#define InfoTailW(W) (W).P[(W).TAIL]
 #define ElmtW(W, i) (W).P[(i)] 
+
+/* Selektor Penumpang */
 #define JAMOut(P)   (P).out
 #define Dur(P) (P).durasi 
-#define Pengunjung(P) (P).T 
-#define CurrWahana(P) (P).idWahana 
+#define Pengunjung(P) (P).Cust 
+#define CurrWahana(P) (P).idWahana
 
-void CreateEmptyPrioQueue(PrioQueue *Q, int MaxElPrioQueue);
+void CreateEmptyPrioQueue(PrioQueue *Antrian, int Max);
 /* Prosedur membuat antrian kosong dengan MaxElPrioQueue sebagai panjang antrian maksimal definisi antrian kosong Head(Q) = Tail(Q) = Nil dengan queue circular buffer */
 
-void CreateEmptyPrioQueueWahana(PrioQueueWahana *Wahana);
+void CreateEmptyPrioQueueWahana(PrioQueueWahana *QWahana, int MaxCap);
+/* Prosedur membuat isi wahana */
 
-void CreateEmptyPenumpang(Penumpang *P);
+void CreatePenumpang(Penumpang *P, JAM out, int idWahana, Pengunjung X, int durasi);
+/* Prosedur membuat penumpang */
 
-void CreateEmptyListWahana(ListWahana *W);
+void CreateEmptyListWahana(ListWahana *W, int nWahana);
+/* Prosedur membuat list wahana kosong */
 
 boolean IsEmptyPrioQueue (PrioQueue Antrian);
 /* Fungsi ini mengecek apakah suatu antrian kosong atau tidak */
 
-boolean IsEmptyPrioQueueW (PrioQueueWahana Antrian);
+boolean IsEmptyPrioQueueW (PrioQueueWahana QWahana);
 /* Versi prioqueue wahana */
 
+boolean IsEmptyWahana(ListWahana LWahana, int nWahana);
+/* Mengirimkan true apabila listwahana kosong */
+
 boolean IsFullPrioQueue (PrioQueue Antrian);
-/* Fungsi ini mengecek apakah suatu antrian penuh atau tidak, definisi antrian penuh adalah Head(Antrian) dan Tail(Antrian) bersebelahan */
+/* Mengirimkan true apabila antrian penuh */
 
 int NBElmtPrioQueue (PrioQueue Antrian);
-/* Fungsi ini mengembalikan jumlah orang dalam antrian */
+/* Mengirimkan jumlah pengunjung dalam antrian */
 
-int NBElmtWahana(ListWahana SW);
-/* Fungsi ini mengembalikan jumlah wahana yang ingin dinaiki pengunjung */
+int NBElmtWahana(ListWahana W, int nWahana);
+/* Mengirimkan jumlah wahana yang ingin dinaiki seorang pengunjung */
 
-int NBElmtPrioQueueW (PrioQueueWahana Antrian);
-/* Versi prioqueue isi wahana */
+int NBElmtPrioQueueW (PrioQueueWahana QWahana);
+/* Mengirimkan jumlah isi wahana */
 
 void DeAlokasi(PrioQueue * Antrian);
-/* Prosedur untuk dealokasi dan pengosongan antrian */
+/* Dealokasi antrian */
 
-void DeAlokasiQWahana(PrioQueueWahana *Wahana);
+void DeAlokasiQWahana(PrioQueueWahana *QWahana);
+/* Dealokasi isi wahana */
 
-void DelWahana(ListWahana *Wahana, int idxWahana);
+void DelWahana(ListWahana *W, int idxWahana, int nWahana);
+/* Menghapus wahana pada list wahana */
 
 void Enqueue (PrioQueue * Antrian, Pengunjung X);
 /* Prosedur menambahkan pengunjung ke antrian */
 
-void EnqueueWahana (PrioQueueWahana * Wahana, Pengunjung X, int idWahana);
+void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int durasiWahana, JAM CurrTime);
 /* Prosesdur menambahkan penunpang ke isi wahana */
 
 void Dequeue (PrioQueue * Antrian, Pengunjung *X);
 /* Prosedur mengeluarkan pengunjung dari antrian */
 
-boolean adaWahana(ListWahana LW, int idxWahana);
+boolean adaWahana(ListWahana LW, int idxWahana, int nWahana);
+/* Mengirimkan true apabila ada wahana dengan idxWahana pada sebuah list wahana */
 
-void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana);
+boolean PengunjungWahana(Pengunjung X, int idxWahana, int nWahana);
+/* Mengirimkan true apabila pengunjung X memiliki idxWahana pada list wahana yang dimilikinya */
+
+void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana, int nWahana);
 /* Dequeue dengan mengecek apakah pengunjung ingin menaiki wahana terkait */
 
-void DequeueWahana(PrioQueueWahana *Wahana, Pengunjung *X);
+void DequeueWahana(PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime, int nWahana);
 /* Dequeue pengunjung dari isi wahana */
 
-// void DequeueVersi2 (PrioQueue * Q, Pengunjung * X, int *Minute, int *money, int idxWahana);
-/* Prosedur mengeluarkan pengunjung dari antrian dan mencatat durasi dan uang yang dibutuhkan serta idWahana */
+void DequeueWahana2 (PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b);
+/* Dequeue pengunjung dari isi wahana dan langsung enqueue */
 
 void DecrKesabaran(PrioQueue *Antrian);
 /* Prosedur decrement kesabaran dari pengunjung dalam antrian */
@@ -124,20 +148,13 @@ void DecrKesabaran(PrioQueue *Antrian);
 void KesabaranHabis(PrioQueue *Antrian);
 /* Prosedur mengeluarkan pengunjung yang kesabarannya habis dari antrian */
 
-void PrintPrioQueue(PrioQueue Antrian);
-/* Prosedur menampilkan list wahana yang ingin dinaiki pengunjung serta kesabarannya */
-
-void RandomEnqueue(PrioQueue *Q);
-/* Prosedur menambahkan pengunjung ke antrian secara acak */
-
 void setPrio(Pengunjung *X, int prio);
 /* Set prio ketika pengunjung ingin balik ke antrian */
 
-// WAHANA_ElType indeksToWahana(int index);
+void RandomEnqueue(PrioQueue *Antrian, int nWahana);
+/* Prosedur menambahkan pengunjung ke antrian secara acak */
 
-// int wahanaToIndex(WAHANA_ElType Wahana);
-
-boolean IsEmptyWahana(ListWahana LW);
-/* Fungsi mengecek apakah wahana yang ingin dinaiki pengunjung kosong  */
+void PrintPrioQueue(PrioQueue Antrian, int nWahana);
+/* Prosedur menampilkan list wahana yang ingin dinaiki pengunjung serta kesabarannya */
 
 #endif
