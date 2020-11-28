@@ -17,11 +17,11 @@ int main_phase()
     PrioQueue antrian;
     PrioQueueWahana inWahana;
     
-    DrawMap(_map, "");
-    printInfo();
+    CreateEmptyPrioQueue(&antrian, 5);
+    CreateEmptyPrioQueueWahana(&inWahana, 10);
 
-    CreateEmptyPrioQueue(&antrian, 3);
-    CreateEmptyListWahana(&inWahana, 3);
+    DrawMap(_map, "");
+    printInfo(antrian);
 
     while(main_phase)
     {
@@ -46,14 +46,14 @@ int main_phase()
             case 'W':
                 Move(&_map, 'W', &messageBuffer);
                 DrawMap(_map, messageBuffer);
-                printInfo();
+                printInfo(antrian);
                 
                 break;
             case 'a':
             case 'A':
                 Move(&_map, 'A', &messageBuffer);
                 DrawMap(_map, messageBuffer);
-                printInfo();
+                printInfo(antrian);
                 break;
             case 's':
             case 'S':
@@ -61,7 +61,7 @@ int main_phase()
                 {
                     Move(&_map, 'S', &messageBuffer);
                     DrawMap(_map, messageBuffer);
-                    printInfo();
+                    printInfo(antrian);
                 } else {
                     if (IsKataSama(command, CreateKata("serve")))
                     {
@@ -76,7 +76,7 @@ int main_phase()
                 {
                     Move(&_map, 'D', &messageBuffer);
                     DrawMap(_map, messageBuffer);
-                    printInfo();
+                    printInfo(antrian);
                 } else {
                     if (IsKataSama(command, CreateKata("detail")))
                     {
@@ -134,7 +134,7 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
         Pengunjung X;
         DequeueAntrian(antrian, &X, idw, _wTCount);
     
-        // EnqueueWahana(inWahana, X, idw, WDurasi(_wType(idWahana)), _time);
+        EnqueueWahana(inWahana, X, idw, WDurasi(_wahana(idw).current), _time);
         // tambah kapasitas
     
     }
@@ -280,7 +280,7 @@ void prepare()
     return;
 };
 
-void printInfo()
+void printInfo(PrioQueue Antrian)
 {
     Kata KName = CreateKata(_name);
     JAM ClosingTime = MakeJAM(21, 0, 0);
@@ -291,9 +291,10 @@ void printInfo()
     printf("Current Time                    :   "); TulisJAM(_time); printf("\n"); 
     printf("Closing Time                    :   21:0:0\n"); 
     printf("Time Remaining                  :   "); PrintJAM(TimeRemaining); printf("\n");
+    PrintAntrian(Antrian, _wCount);
 }
 
-void printAntrian(PrioQueue Antrian, int nWahana)
+void PrintAntrian(PrioQueue Antrian, int nWahana)
 {
   printf("Antrian [%d/%d]\n", NBElmtPrioQueue(Antrian), MaxElPrioQueue(Antrian));
   if (!IsEmptyPrioQueue(Antrian))

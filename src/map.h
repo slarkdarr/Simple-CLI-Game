@@ -16,17 +16,6 @@
 
 // -1 definisi id dari struct ElType bukan bangunan (bisa berupa -, *)
 
-typedef struct tEdge;
-typedef struct Vertices;
-
-typedef struct tMAP_Graph *gAddress;
-typedef struct tMAP_Graph {
-    MAP map;
-    int degreeIn;
-    //tEdge trail;
-    gAddress next;
-} MAP_Graph_Vertex;
-
 typedef int indeks; //masih belom tau dipake apa engga nanti
 
 typedef char keytype;
@@ -45,6 +34,24 @@ typedef struct {
     //catatan untuk POINT Player
     //titik origin (0,0) berada pada indeks matriks MAP (0,0), yang berarti berada di atas kiri MAP
 } MAP;
+
+// typedef struct tEdge;
+// typedef struct Vertices;
+
+// typedef struct tMAP_gVertex *gAddress_V;
+// typedef struct tMAP_gVertex {
+//     MAP map;
+//     int degreeIn; // Derajat masuk
+//     int id;
+//     gAddress_E trail; // List MAP selanjutnya
+//     gAddress_V next; // Next simpul
+// } MAP_gVertex;
+
+// typedef struct tMAP_gEdge *gAddress_E;
+// typedef struct tMAP_gEdge {
+//     gAddress_V vertex;
+//     gAddress_E next;
+// } MAP_gEdge; ///// masih bermasalah
 
 
 /* Selektor */

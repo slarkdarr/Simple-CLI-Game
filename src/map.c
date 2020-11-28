@@ -277,7 +277,7 @@ int GetObject(MAP M, char O)
     }
     else
     {
-        return -10; //cek jika 0,0 maka tidak bisa build
+        return -10; // Digunakan untuk cek jika tidak ada
     }
 }
 

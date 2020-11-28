@@ -69,4 +69,7 @@ void ReadCommand(int *out, Kata *InputKata);
 void ReadServe(Kata *InputKata1, Kata *InputKata2);
 /* membaca input user dengan format kata diikuti dengan kata */ // untuk serve
 
+void ReadServeName(Kata *WahanaServe);
+/* Membaca input user dengan mengabaikan kata serve di depan, dan hanya mengambil nama wahana yang ingin di serve */
+
 #endif

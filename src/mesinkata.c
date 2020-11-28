@@ -254,3 +254,21 @@ void ReadServe(Kata *InputKata1, Kata *InputKata2)
     }
     (*InputKata2).Length = count2;
 }
+
+void ReadServeName(Kata *WahanaServe)
+{
+    int count = 0;
+    START();
+    while (CC != BLANK)
+    {
+        ADV();
+    }
+    IgnoreBlank();
+    while (CC != MARK)
+    {
+        (*WahanaServe).TabKata[count] = CC;
+        count += 1;
+        ADV();
+    }
+    (*WahanaServe).Length = count;
+}

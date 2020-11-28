@@ -394,6 +394,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                 break;
             default :
                 DrawMap(_map, "Perintah tidak diketahui\n");
+                info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
         }
     }

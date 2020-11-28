@@ -27,6 +27,7 @@ void office_exit();
 
 void prepare();
 
-void printInfo();
+void printInfo(PrioQueue Antrian);
+void PrintAntrian(PrioQueue Antrian, int nWahana);
 
 #endif
