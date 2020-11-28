@@ -142,8 +142,12 @@ int main_phase()
         boolean deq = true;
         while (deq)
         {
-            Pengunjung X;
-            DequeueWahana2(&inWahana,&X,_time,&antrian,_wCount,&deq);
+            Penumpang X;
+            WahanaToAntrian(&inWahana,&X,_time,&antrian,_wCount,&deq);
+            // decr current load
+            int idWahana = CurrWahana(X);
+            _wahana(idWahana).currentLoad--;
+
         }
         
         DecrKesabaran(&antrian);
@@ -172,16 +176,19 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
             Pengunjung X;
             DequeueAntrian(antrian, &X, idw, _wCount);
             EnqueueWahana(inWahana, X, idw, WDurasi(_wahana(idw).current), _time);
-            // tambah kapasitas
-        
+            
+            _wahana(idw).currentLoad++;
+            _wahana(idw).timesUsed++;
+            _wahana(idw).timesUsedToday++;
+
+            _wahana(idw).totalIncome += WHarga(_wahana(idw).current);
+            _money += WHarga(_wahana(idw).current);
         }
         else
         {
             printf("Pengunjung tidak berencana naik wahana ini\n");
         }
     }
-
-
 }
 
 void repair(Kata command)
@@ -323,8 +330,15 @@ void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
     _time = MakeJAM(21, 0, 0);
     DeAlokasi(&antrian);
     DeAlokasiQWahana(&inWahana);
-    // reset times used today
-    // reset currentLoad?
+
+    for (int i = 0; i<_wCount; i++)
+    {
+        _wahana(i).currentLoad = 0;
+        _wahana(i).timesUsed = 0;
+        _wahana(i).timesUsedToday = 0;
+        _wahana(i).status = true;   
+    }
+
     // reset antrian, dan antrian wahana?
     return;
 };
@@ -380,30 +394,46 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
     }
   }
 }
-int SearchForIndexWahana(Kata W)
+void SearchForIndexWahana(Kata W, int idWahana, Pengunjung *X, int *ret)
 /* JANGAN DIPAKE */ /////
 {
     boolean found = false;
-    int i = 0;
-    while (!found && i < _wCount)
-    {
-        if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
+    int i = idWahana%_wCount;
+
+    if (WAHANA_IsFull(_wahana(idWahana)))
+    {   
+        do{
+            if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
+            {
+                found = true;
+            }
+            else
+            {
+                i = (i+1)%_wCount;
+            }
+        } while(i != idWahana);
+        
+        if (found)
         {
-            found = true;
+            *ret = i;
+            // Ubah tujuan dari si pengunjun
+            ListWahana L = ListWP(*X);
+
+            for (int k = 0; k < _wCount; k++)
+            {
+                if (k==idWahana)
+                    ElmtWahana(L, k) = -1;
+                if (k==*ret)
+                    ElmtWahana(L, k) = 1;
+            }
         }
         else
         {
-            i++;
+            *ret = -10;
         }
     }
-    if (found)
-    {
-        return i;
-    }
-    else
-    {
-        return -10;
-    }
+
+    *ret = idWahana;
 }
 
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
@@ -443,7 +473,6 @@ int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
 }
 
 /* Apabila ada wahana rusak */
-
 void RemoveFromWahana(PrioQueue *Antrian, PrioQueueWahana *QWahana, int idWahana, int nWahana)
 {
   PrioQueueWahana QNew;
@@ -459,7 +488,7 @@ void RemoveFromWahana(PrioQueue *Antrian, PrioQueueWahana *QWahana, int idWahana
       if (!IsFullPrioQueue(*Antrian)) 
         Enqueue(Antrian, Pengunjung(X));
 
-    else EnqueueWahanaP(&QNew, X);
+    else EnqueuePenumpang(&QNew, X);
   }
 
   *QWahana = QNew;
