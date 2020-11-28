@@ -75,9 +75,39 @@ int main_phase()
                             printf("idw yang didapat : %d\n", idw); /////
                             if (idw != -10)
                             {
-                                serve(&antrian, &inWahana, idw);
-                                ActionAddTime(_actions, CreateKata("serve"), &_time);
-                                DrawMap(_map, messageBuffer);
+                                if (_wahana(idw).status)
+                                {
+                                    serve(&antrian, &inWahana, idw);
+                                    ActionAddTime(_actions, CreateKata("serve"), &_time);
+                                    DrawMap(_map, messageBuffer);
+
+                                    // random to break
+                                    time_t t;
+                                    srand((unsigned)time(&t));
+
+                                    int random = rand();
+
+                                    printf("%d\n", random%6);
+
+                                    if ((random%6) == 0)
+                                    {
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+                                        printf("FUCK RUSAK ANJING\n");
+
+                                        _wahana(idw).status = false;
+                                        RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
+                                    }
+                                } else {
+                                    printf("Wahana rusak anjing\n");
+                                }
+                                
                             }
                             else
                             {
@@ -137,6 +167,9 @@ int main_phase()
             case 'x':
                 return -1;
                 break;
+            case 'q':
+                ActionAddTime(_actions, command, &_time);
+                break;
         }
         // Dequeue isi wahana
         boolean deq = true;
@@ -145,8 +178,12 @@ int main_phase()
             Penumpang X;
             WahanaToAntrian(&inWahana,&X,_time,&antrian,_wCount,&deq);
             // decr current load
-            int idWahana = CurrWahana(X);
-            _wahana(idWahana).currentLoad--;
+            if (deq)
+            {
+                int idWahana = CurrWahana(X);
+                _wahana(idWahana).currentLoad--;
+            }
+            
 
         }
         
@@ -393,47 +430,6 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
       j++;
     }
   }
-}
-void SearchForIndexWahana(Kata W, int idWahana, Pengunjung *X, int *ret)
-/* JANGAN DIPAKE */ /////
-{
-    boolean found = false;
-    int i = idWahana%_wCount;
-
-    if (WAHANA_IsFull(_wahana(idWahana)))
-    {   
-        do{
-            if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
-            {
-                found = true;
-            }
-            else
-            {
-                i = (i+1)%_wCount;
-            }
-        } while(i != idWahana);
-        
-        if (found)
-        {
-            *ret = i;
-            // Ubah tujuan dari si pengunjun
-            ListWahana L = ListWP(*X);
-
-            for (int k = 0; k < _wCount; k++)
-            {
-                if (k==idWahana)
-                    ElmtWahana(L, k) = -1;
-                if (k==*ret)
-                    ElmtWahana(L, k) = 1;
-            }
-        }
-        else
-        {
-            *ret = -10;
-        }
-    }
-
-    *ret = idWahana;
 }
 
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
