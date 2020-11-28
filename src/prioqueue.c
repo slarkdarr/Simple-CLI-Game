@@ -173,7 +173,7 @@ void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int d
   }
 }
 
-void EnqueueWahanaP (PrioQueueWahana * QWahana, Penumpang X)
+void EnqueuePenumpang (PrioQueueWahana * QWahana, Penumpang X)
 {
   Penumpang PNew = X;
 
@@ -247,17 +247,16 @@ void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X)
   }
 }
 
-void DequeueWahana2 (PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b)
+void WahanaToAntrian (PrioQueueWahana *QWahana, Penumpang *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b)
 {
   if (!IsEmptyPrioQueueW(*QWahana))
   {  
     if (JGT(CurrTime, JAMOut(InfoHeadW(*QWahana))))
     {
-      *X = Pengunjung(InfoHeadW(*QWahana));
-
-      DelWahana(&ListWP(*X), CurrWahana(InfoHeadW(*QWahana)), nWahana);
-      Prio(*X) = -1;
-      Kesabaran(*X) = MaxElPrioQueue(*Antrian) + 5;
+      *X = InfoHeadW(*QWahana);
+      DelWahana(&ListWP(Pengunjung(*X)), CurrWahana(InfoHeadW(*QWahana)), nWahana);
+      Prio(Pengunjung(*X)) = -1;
+      Kesabaran(Pengunjung(*X)) = MaxElPrioQueue(*Antrian) + 5;
 
       if (Head(*QWahana) == Tail(*QWahana))
       {
@@ -269,9 +268,9 @@ void DequeueWahana2 (PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime,PrioQ
         Head(*QWahana) = (Head(*QWahana)+1)%MaxElPrioQueue(*QWahana);
       }
       
-      printf("work\n");
-      if (!IsEmptyWahana(ListWP(*X), nWahana))
-        Enqueue(Antrian, *X);
+      //printf("work\n");
+      if (!IsEmptyWahana(ListWP(Pengunjung(*X)), nWahana))
+        Enqueue(Antrian, Pengunjung(*X));
       
       *b = true;
     }
@@ -330,6 +329,7 @@ void setPrio(Pengunjung *X, int prio)
 }
 void RandomEnqueue(PrioQueue *Antrian, int nWahana) // Memunculkan Pengunjung
 {
+
   if (IsEmptyPrioQueue(*Antrian))
   {
     int nEnque = rand() % 2 + 1;
