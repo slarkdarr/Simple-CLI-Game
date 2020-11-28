@@ -20,8 +20,13 @@ int main_phase()
     DrawMap(_map, "");
     printInfo();
 
+    CreateEmptyPrioQueue(&antrian, 3);
+    CreateEmptyListWahana(&inWahana, 3);
+
     while(main_phase)
     {
+        RandomEnqueue(&antrian, _wTCount);
+
         printf("Perintah : ");
         ReadInput(&command);
 
@@ -60,7 +65,8 @@ int main_phase()
                 } else {
                     if (IsKataSama(command, CreateKata("serve")))
                     {
-                        serve(&antrian, &inWahana);
+                        int idw; // id wahana yang ingin di serve
+                        serve(&antrian, &inWahana, idw);
                     }
                 }
                 break;
@@ -106,16 +112,37 @@ int main_phase()
             case 'x':
                 break;
         }
+        // Dequeue isi wahana
+        boolean deq = true;
+        while (deq)
+        {
+            Pengunjung X;
+            DequeueWahana2(&inWahana,&X,_time,&antrian,_wTCount,&deq);
+        }
+        
+        DecrKesabaran(&antrian);
+        KesabaranHabis(&antrian);
     }
     return 0;
 }
 
 
-void serve(PrioQueue *antrian, PrioQueueWahana *inWahana)
+void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
 {
-    // Dequeue depan antrian,, Enqueue ke queue wahana
-    return;
-};
+    if (PengunjungWahana(InfoHead(*antrian), idw, _wTCount))
+    {
+        Pengunjung X;
+        DequeueAntrian(antrian, &X, idw, _wTCount);
+    
+        // EnqueueWahana(inWahana, X, idw, WDurasi(_wType(idWahana)), _time);
+        // tambah kapasitas
+    
+    }
+    else
+    {
+        printf("Pengunjung tidak berencana naik wahana ini\n");
+    }
+}
 
 void repair(Kata command)
 {
