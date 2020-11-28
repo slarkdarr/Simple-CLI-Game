@@ -121,6 +121,171 @@ void LoadMap(MAP *M, char* fileName)
     return;
 }
 
+void LoadFullMap(MAP *M, char* fileName)
+{
+    /*
+    Membaca data map dari file mulai dari penanda #map. 
+    Bisa untuk membaca dari file map.txt dan state.txt
+    FORMAT:
+        #map
+        id H W
+        gateCount dest1 dest2 dest3
+        <matriks M> 
+        
+        KETERANGAN:
+        H, W            : int, dimensi dari M
+        M               : matriks of char
+        id              : int, id dari map
+        gateCount       : int, jumlah gate pada map
+        dest<N>         : int, id dari tujuan gate ke-N (penomoran gate dibaca terurut seperti paragraf)
+    
+    Ukuran M adalah HxW
+
+    Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
+    (Untuk map.txt, tidak ada Wahana atau Antrian)
+    (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
+
+    NOTES:
+        Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
+        Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
+    */
+
+    FILE *mapFile;
+    char line[100];
+
+    
+
+    gAddress_V mapsBuffer[25];
+    // int mapCount = 0;
+    int mapsBufferN = 0;
+
+    gAddress_E edgeBuffer[50];
+    // int vertexCount = 0;
+    int edgeBufferN = 0;
+
+    int mapH, mapW, mapID;
+    int gateCount = 0;
+
+    POINT gates[10];
+
+    mapFile = fopen(fileName, "r"); 
+    if (mapFile == NULL)
+    {
+        printf("FAILED TO READ MAP\n");
+        return;
+    }
+
+    while (fgets(line, 100, mapFile) != NULL)
+    {
+        if (line[0] == '#' && line[1] == 'm')
+        {
+            // fseek(mapFile, ftell(mapFile), SEEK_SET);
+            // Mulai dari data map
+            Test(1);
+            gAddress_V node = malloc(sizeof(MAP_gVertex));
+
+            fscanf(mapFile, "%d %d %d", &mapID, &mapH, &mapW);
+            fscanf(mapFile, "%d", &gateCount);
+
+            int* gateDestinations = malloc(gateCount * sizeof(int));
+            int trailStart = edgeBufferN;
+            
+            Test(2);
+            for (int i = 0; i < gateCount; i++)
+            {
+                fscanf(mapFile, "%d", &gateDestinations[i]);
+                edgeBuffer[edgeBufferN] = malloc(sizeof(MAP_gEdge));
+                EdgeDest(edgeBuffer[edgeBufferN]) = gateDestinations[i];
+                edgeBufferN++;
+                
+            }
+
+            Test(3);
+            
+            // printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
+            // printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
+            fgets(line, 100, mapFile);
+
+            NBrs(*M) = mapH;
+            NKol(*M) = mapW;
+
+            int gate = 0;
+
+            for (int i = 0; i < mapH + 1; i++)
+            {
+                fgets(line, 100, mapFile);
+                
+                for (int j = 0; j < mapW; j++)
+                {
+                    switch(line[j])
+                    {
+                        case '<':
+                        case '>':
+                        case '^':
+                        case 'V':
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = gateDestinations[gate];
+                            gate++;
+                            break;
+                        case 'P':
+                            Player(*M) = MakePOINT(j, i);
+                            TypeElmt(*M, i, j) = '-';
+                            InfoElmt(*M, i, j) = -1;
+                            break;
+                        case '-':
+                        case 'O':
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = -1;
+                            break;   
+                        default:
+                            TypeElmt(*M, i, j) = line[j];
+                            InfoElmt(*M, i, j) = 0;                            
+                    }
+                }
+            }
+
+            printf("%d %d\n", NBrs(*M), NKol(*M));
+            DrawMap(*M, "");
+
+            Test(4);
+            VertexMap(node) = *M;
+            VertexId(node) = mapsBufferN;
+            VertexTrail(node) = edgeBuffer[trailStart];
+
+            mapsBuffer[mapsBufferN] = node;
+            mapsBufferN++;
+
+            free(gateDestinations);
+            // Akhir dari data map
+        }
+    }
+
+    int i;
+    Test(5);
+
+    // DrawMap(VertexMap(mapsBuffer[0]), "");
+    printf("%d", mapsBufferN);
+
+    for (i = 0; i < mapsBufferN-1; i++)
+    {
+        Test(i);
+        VertexNext(mapsBuffer[i]) = mapsBuffer[i+1];
+        Test(i+1);
+    }
+    VertexNext(mapsBuffer[i]) = NULL;
+
+    Test(6);
+    for (i = 0; i < edgeBufferN; i++)
+    {
+        EdgeDest(edgeBuffer[i]) = edgeBuffer[(int)EdgeDest(edgeBuffer[i])];
+    } 
+
+    *M = VertexMap(mapsBuffer[0]);
+
+    fclose(mapFile);
+    return;
+}
+
 /* GETTER DAN SETTER */
 
 /* PROSEDUR */

@@ -27,8 +27,11 @@ void office_exit();
 
 void prepare();
 
+int selectWahanaScreen();
 void printInfo(PrioQueue Antrian);
 void PrintAntrian(PrioQueue Antrian, int nWahana);
 int SearchForIndexWahana(Kata W);
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W);
+void printAntrian(PrioQueue Antrian, int nWahana);
+
 #endif

@@ -35,24 +35,32 @@ typedef struct {
     //titik origin (0,0) berada pada indeks matriks MAP (0,0), yang berarti berada di atas kiri MAP
 } MAP;
 
-// typedef struct tEdge;
-// typedef struct Vertices;
+typedef struct tEdge;
+typedef struct Vertices;
 
-// typedef struct tMAP_gVertex *gAddress_V;
-// typedef struct tMAP_gVertex {
-//     MAP map;
-//     int degreeIn; // Derajat masuk
-//     int id;
-//     gAddress_E trail; // List MAP selanjutnya
-//     gAddress_V next; // Next simpul
-// } MAP_gVertex;
+typedef struct tMAP_gVertex *gAddress_V;
+typedef struct tMAP_gEdge *gAddress_E;
 
-// typedef struct tMAP_gEdge *gAddress_E;
-// typedef struct tMAP_gEdge {
-//     gAddress_V vertex;
-//     gAddress_E next;
-// } MAP_gEdge; ///// masih bermasalah
+typedef struct tMAP_gVertex {
+    MAP map;
+    // int degreeIn; // Derajat masuk (kayaknya ga perlu)
+    int id;
+    gAddress_E trail; // List MAP selanjutnya
+    gAddress_V next; // Next simpul
+} MAP_gVertex;
 
+typedef struct tMAP_gEdge {
+    gAddress_V vertex;
+    gAddress_E next;
+} MAP_gEdge; ///// masih bermasalah
+
+#define EdgeDest(E) (E)->vertex
+#define NextEdge(E) (E)->next
+
+#define VertexId(V) (V)->id
+#define VertexMap(V) (V)->map
+#define VertexTrail(V) (V)->trail
+#define VertexNext(V) (V)->next
 
 /* Selektor */
 #define Type(E) (E).type //Select type dari struct ElType
@@ -66,6 +74,8 @@ typedef struct {
 #define TypeElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).type // X, Y format for TypeElmt
 #define InfoElmt(M, i, j) ((M).Mem[(i)][(j)]).id //Select id dari struct ElType pada MAP indeks baris i dan kolom j
 #define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id // X, Y format for InfoElmt
+
+#define Test(i) printf("THIS IS TEST %d\n", i)
 
 // typedef struct MAP_Node* MAP_Address;
 // typedef struct {
@@ -95,5 +105,7 @@ void DrawMap(MAP M, char message[]);
 void DrawMapInfo(MAP M);
 int GetObject(MAP M, char O);
 POINT GetObjectP(MAP *M, char O);
+
+void LoadFullMap(MAP *M, char* fileName);
 
 #endif

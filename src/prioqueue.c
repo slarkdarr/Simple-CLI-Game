@@ -299,7 +299,6 @@ void setPrio(Pengunjung *X, int prio)
 }
 void RandomEnqueue(PrioQueue *Antrian, int nWahana) // Memunculkan Pengunjung
 {
-
   if (IsEmptyPrioQueue(*Antrian))
   {
     int nEnque = rand() % 2 + 1;

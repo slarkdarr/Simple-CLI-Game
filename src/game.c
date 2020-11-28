@@ -4,7 +4,7 @@ GAME gameInstance;
 
 void GAME_Init()
 {
-    LoadMap(&Map(gameInstance), "map.txt");
+    LoadFullMap(&Map(gameInstance), "map.txt");
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
     WahanaCount(gameInstance) = 0;
     AntrianData(gameInstance) = 0;

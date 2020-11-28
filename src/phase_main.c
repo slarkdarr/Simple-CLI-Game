@@ -181,6 +181,8 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
             printf("Pengunjung tidak berencana naik wahana ini\n");
         }
     }
+
+
 }
 
 void repair(Kata command)
