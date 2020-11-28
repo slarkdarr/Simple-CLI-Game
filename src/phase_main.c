@@ -292,3 +292,39 @@ void printInfo()
     printf("Closing Time                    :   21:0:0\n"); 
     printf("Time Remaining                  :   "); PrintJAM(TimeRemaining); printf("\n");
 }
+
+void printAntrian(PrioQueue Antrian, int nWahana)
+{
+  printf("Antrian [%d/%d]\n", NBElmtPrioQueue(Antrian), MaxElPrioQueue(Antrian));
+  if (!IsEmptyPrioQueue(Antrian))
+  {
+    PrioQueue printAntrian = Antrian;
+    int j = 0;
+    while (!IsEmptyPrioQueue(printAntrian))
+    {
+      Pengunjung X;
+      Dequeue(&printAntrian, &X);
+      printf("(");
+      boolean first = true;
+      for (int i =0; i < nWahana; i++)
+      {
+        if(X.listWahana.W[i] == 1 && first)
+        {
+          printf("%d",i);
+          // i = idwahana
+          first = false;
+        }
+        else if (X.listWahana.W[i] == 1 && !first)
+        {
+          printf(",%d",i);
+          // i = idwahana
+        }
+        
+      }
+      printf(") ");
+      printf("| kesabaran %d", Kesabaran(X));
+      printf("\n\n");
+      j++;
+    }
+  }
+}
