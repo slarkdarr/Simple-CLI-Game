@@ -420,7 +420,7 @@ void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
     printf("Deskripsi       : ");
     PrintKata(WDeskripsi(W.current)); ln;
 
-    printf("Kapasitas       : %d\n", WKapasitas(W.current));
+    printf("Kapasitas       : %d/%d\n", W.currentLoad, WKapasitas(W.current));
     
     printf("History         : ");
     WAHANA_PrintHistory(W); ln;
@@ -436,8 +436,8 @@ void WAHANA_PrintOfficeReport(WAHANA_Instance W)
     PrintKata(WNama(W.current)); ln;
     printf("Dinaiki sebanyak %d kali (total), %d hari ini", W.timesUsed, W.timesUsedToday); ln;
     printf("Penghasilan:"); ln;
-    printf("\tTotal\t%d", W.totalIncome); ln;
-    printf("\tHari Ini\t%d", W.timesUsedToday*WHarga(W.current)); ln;
+    printf("  Total         : %d", W.totalIncome); ln;
+    printf("  Hari Ini      : %d", W.timesUsedToday*WHarga(W.current)); ln;
 }
 
 void WAHANA_PrintHistory(WAHANA_Instance W)

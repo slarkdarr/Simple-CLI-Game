@@ -17,24 +17,24 @@ RUN COMMANd:
 MAKEFILE COMING SOON
 */
 
-void run_test(Kata input)
-{
-    boolean end_game = false;
-    char* message;
-    Move(&_map, input.TabKata[0], &message);
-    DrawMap(_map, message);
-    _money = 1000;
-    /*
-    Name: wangkie kumalasari
-    Money: 1000
-    Current Time: 21.00
-    Opening Time: 09.00
-    Time Remaining: 12 hour(s)
-    Total aksi yang akan dilakukan: 0
-    Total waktu yang dibutuhkan: 0
-    Total uang yang dibutuhkan: 0
-    */
-};
+// void run_test(Kata input)
+// {
+//     boolean end_game = false;
+//     char* message;
+//     Move(&_map, input.TabKata[0], &message);
+//     DrawMap(_map, message);
+//     _money = 1000;
+//     /*
+//     Name: wangkie kumalasari
+//     Money: 1000
+//     Current Time: 21.00
+//     Opening Time: 09.00
+//     Time Remaining: 12 hour(s)
+//     Total aksi yang akan dilakukan: 0
+//     Total waktu yang dibutuhkan: 0
+//     Total uang yang dibutuhkan: 0
+//     */
+// };
 
 int readCommand();
 

@@ -42,13 +42,13 @@ int main_phase()
         {
             case 'w':
             case 'W':
-                Move(&_map, 'W', &messageBuffer);
+                Move(&_map, 'W', &messageBuffer, &_fullMap);
                 ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
                 break;
             case 'a':
             case 'A':
-                Move(&_map, 'A', &messageBuffer);
+                Move(&_map, 'A', &messageBuffer, &_fullMap);
                 ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
                 break;
@@ -56,7 +56,7 @@ int main_phase()
             case 'S':
                 if (command.Length == 1)
                 {
-                    Move(&_map, 'S', &messageBuffer);
+                    Move(&_map, 'S', &messageBuffer, &_fullMap);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
                 } else {
@@ -75,39 +75,35 @@ int main_phase()
                             printf("idw yang didapat : %d\n", idw); /////
                             if (idw != -10)
                             {
-                                if (_wahana(idw).status)
+                                serve(&antrian, &inWahana, idw);
+                                ActionAddTime(_actions, CreateKata("serve"), &_time);
+                                DrawMap(_map, messageBuffer);
+
+                                // random to break
+                                time_t t;
+                                srand((unsigned)time(&t));
+
+                                int random = rand();
+
+                                printf("%d\n", random%6);
+
+                                if ((random%6) == 0)
                                 {
-                                    serve(&antrian, &inWahana, idw);
-                                    ActionAddTime(_actions, CreateKata("serve"), &_time);
-                                    DrawMap(_map, messageBuffer);
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
+                                    printf("FUCK RUSAK ANJING\n");
 
-                                    // random to break
-                                    time_t t;
-                                    srand((unsigned)time(&t));
-
-                                    int random = rand();
-
-                                    printf("%d\n", random%6);
-
-                                    if ((random%6) == 0)
-                                    {
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-                                        printf("FUCK RUSAK ANJING\n");
-
-                                        _wahana(idw).status = false;
-                                        RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
-                                    }
-                                } else {
-                                    printf("Wahana rusak anjing\n");
+                                    
+                                    RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
+                                    _wahana(idw).status = false;
                                 }
-                                
+                            
                             }
                             else
                             {
@@ -129,7 +125,7 @@ int main_phase()
             case 'D':
                 if (command.Length == 1)
                 {
-                    Move(&_map, 'D', &messageBuffer);
+                    Move(&_map, 'D', &messageBuffer, &_fullMap);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
                 } else {
@@ -204,7 +200,7 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
         printf("Wahana yang ingin dinaiki sudah penuh\n");
     else
     {
-        if (_wahana(idw).status = false)
+        if (_wahana(idw).status == false)
         {
             printf("Wahana yang ingin dinaiki rusak\n");
         }
@@ -371,7 +367,6 @@ void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
     for (int i = 0; i<_wCount; i++)
     {
         _wahana(i).currentLoad = 0;
-        _wahana(i).timesUsed = 0;
         _wahana(i).timesUsedToday = 0;
         _wahana(i).status = true;   
     }
@@ -479,6 +474,7 @@ void RemoveFromWahana(PrioQueue *Antrian, PrioQueueWahana *QWahana, int idWahana
   {
     Penumpang X;
     DequeueWahana(QWahana, &X);
+    _wahana(idWahana).currentLoad--;
 
     if (CurrWahana(X) == idWahana)
       if (!IsFullPrioQueue(*Antrian)) 

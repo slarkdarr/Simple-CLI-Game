@@ -52,25 +52,25 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
         {
             case 'w':
             case 'W':
-                Move(&_map, 'W', &messageBuffer);
+                Move(&_map, 'W', &messageBuffer, &_fullMap);
                 DrawMap(_map, messageBuffer);
                 info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 'a':
             case 'A':
-                Move(&_map, 'A', &messageBuffer);
+                Move(&_map, 'A', &messageBuffer, &_fullMap);
                 DrawMap(_map, messageBuffer);
                 info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 's':
             case 'S':
-                Move(&_map, 'S', &messageBuffer);
+                Move(&_map, 'S', &messageBuffer, &_fullMap);
                 DrawMap(_map, messageBuffer);
                 info_prep(Actions, timeNeeded, moneyNeeded);
                 break;
             case 'd':
             case 'D':
-                Move(&_map, 'D', &messageBuffer);
+                Move(&_map, 'D', &messageBuffer, &_fullMap);
                 DrawMap(_map, messageBuffer);
                 info_prep(Actions, timeNeeded, moneyNeeded);
                 break;

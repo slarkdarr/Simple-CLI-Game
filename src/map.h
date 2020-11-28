@@ -100,12 +100,14 @@ typedef struct tMAP_gEdge {
 
 void MakeEmptyMAP(MAP *M);
 void LoadMap(MAP *M, char fileName[]);
-void Move(MAP *M, char X, char* message[]);
+void Move(MAP *M, char X, char* message[], gAddress_V *fullMap);
 void DrawMap(MAP M, char message[]);
 void DrawMapInfo(MAP M);
 int GetObject(MAP M, char O);
 POINT GetObjectP(MAP *M, char O);
 
-void LoadFullMap(MAP *M, char* fileName);
+boolean IsGate(MAP M, POINT P);
+void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId);
+void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap);
 
 #endif

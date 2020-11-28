@@ -11,7 +11,7 @@
 #include "arrayaction.h"
 
 typedef struct {
-    gAddress_E fullMap;
+    gAddress_V fullMap;
     MAP map;
     char PName[25];
     tAddress wahanaType[10];
@@ -27,6 +27,7 @@ typedef struct {
 } GAME;
 
 // #define FullMap(G) (G).fullMap
+#define FullMap(G) (G).fullMap
 #define Map(G) (G).map
 #define PName(G) (G).PName
 #define WahanaType(G) (G).wahanaType
@@ -48,6 +49,7 @@ extern GAME gameInstance;
 #define ln printf("\n")
 
 // #define _fullmap FullMap(gameInstance)
+#define _fullMap FullMap(gameInstance)
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
 #define _time Time(gameInstance)

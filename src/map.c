@@ -121,7 +121,7 @@ void LoadMap(MAP *M, char* fileName)
     return;
 }
 
-void LoadFullMap(MAP *M, char* fileName)
+void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
 {
     /*
     Membaca data map dari file mulai dari penanda #map. 
@@ -181,7 +181,7 @@ void LoadFullMap(MAP *M, char* fileName)
         {
             // fseek(mapFile, ftell(mapFile), SEEK_SET);
             // Mulai dari data map
-            Test(1);
+            // Test(1);
             gAddress_V node = malloc(sizeof(MAP_gVertex));
 
             fscanf(mapFile, "%d %d %d", &mapID, &mapH, &mapW);
@@ -190,17 +190,21 @@ void LoadFullMap(MAP *M, char* fileName)
             int* gateDestinations = malloc(gateCount * sizeof(int));
             int trailStart = edgeBufferN;
             
-            Test(2);
+            // Test(2);
             for (int i = 0; i < gateCount; i++)
             {
                 fscanf(mapFile, "%d", &gateDestinations[i]);
                 edgeBuffer[edgeBufferN] = malloc(sizeof(MAP_gEdge));
                 EdgeDest(edgeBuffer[edgeBufferN]) = gateDestinations[i];
                 edgeBufferN++;
-                
             }
 
-            Test(3);
+            if (edgeBufferN != 0)
+            {
+                EdgeDest(edgeBuffer[edgeBufferN-1]) = NULL;
+            }
+
+            // Test(3);
             
             // printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
             // printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
@@ -245,11 +249,11 @@ void LoadFullMap(MAP *M, char* fileName)
             }
 
             printf("%d %d\n", NBrs(*M), NKol(*M));
-            DrawMap(*M, "");
+            // DrawMap(*M, "");
 
-            Test(4);
+            // Test(4);
             VertexMap(node) = *M;
-            VertexId(node) = mapsBufferN;
+            VertexId(node) = mapID;
             VertexTrail(node) = edgeBuffer[trailStart];
 
             mapsBuffer[mapsBufferN] = node;
@@ -261,26 +265,29 @@ void LoadFullMap(MAP *M, char* fileName)
     }
 
     int i;
-    Test(5);
+    // Test(5);
 
     // DrawMap(VertexMap(mapsBuffer[0]), "");
-    printf("%d", mapsBufferN);
+    // printf("%d", mapsBufferN);
 
     for (i = 0; i < mapsBufferN-1; i++)
     {
-        Test(i);
+        // Test(i);
         VertexNext(mapsBuffer[i]) = mapsBuffer[i+1];
-        Test(i+1);
+        // Test(i+1);
     }
     VertexNext(mapsBuffer[i]) = NULL;
 
-    Test(6);
+    // Test(6);
     for (i = 0; i < edgeBufferN; i++)
     {
-        EdgeDest(edgeBuffer[i]) = edgeBuffer[(int)EdgeDest(edgeBuffer[i])];
+        EdgeDest(edgeBuffer[i]) = mapsBuffer[(int)EdgeDest(edgeBuffer[i])];
     } 
 
     *M = VertexMap(mapsBuffer[0]);
+    *fullMap = mapsBuffer[0];
+
+    printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
 
     fclose(mapFile);
     return;
@@ -289,9 +296,10 @@ void LoadFullMap(MAP *M, char* fileName)
 /* GETTER DAN SETTER */
 
 /* PROSEDUR */
-void Move(MAP *M, char X, char* message[])
+void Move(MAP *M, char X, char* message[], gAddress_V *fullMap)
 {
     POINT P = Player(*M);
+    POINT collisionPoint;
     boolean collision = false;
     // DrawMapInfo(*M);
     switch (X)
@@ -311,6 +319,7 @@ void Move(MAP *M, char X, char* message[])
             }
             else
             {
+                collisionPoint = MakePOINT(Absis(P), (Ordinat(P)-1));
                 collision = true;
             }
             break;
@@ -322,6 +331,7 @@ void Move(MAP *M, char X, char* message[])
             }
             else
             {
+                collisionPoint = MakePOINT(Absis(P)-1, (Ordinat(P)));
                 collision = true;
             }
             break;
@@ -333,6 +343,7 @@ void Move(MAP *M, char X, char* message[])
             }
             else
             {
+                collisionPoint = MakePOINT(Absis(P), (Ordinat(P)+1));
                 collision = true;
             }
             break;
@@ -344,6 +355,7 @@ void Move(MAP *M, char X, char* message[])
             }
             else
             {
+                collisionPoint = MakePOINT(Absis(P)+1, (Ordinat(P)));
                 collision = true;
             }
             break;
@@ -354,15 +366,109 @@ void Move(MAP *M, char X, char* message[])
     Player(*M) = P; //set POINT baru Player pada MAP
     if (collision)
     {
-        *message = "Anda tertabrak\n"; //Output jika Player menabrak bangunan/border
+        if (!IsGate(*M, collisionPoint))
+        {
+            printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            *message = "Anda tertabrak\n"; //Output jika Player menabrak bangunan/border
+        } else {
+            printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            EnterGate(M, InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y), fullMap, VertexId(*fullMap));
+            *message = "";
+        }
+        
     } else {
         *message = "";
     }
 }
 
+boolean IsGate(MAP M, POINT P)
+{
+    boolean gate;
+    switch(TypeElmtAtP(M, P.X, P.Y))
+    {
+        case 'V':
+        case '^':
+        case '>':
+        case '<':
+            return true;
+        default:
+            return false;
+    }
+}
+
+void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
+{
+    gAddress_V P = *fullMap;
+
+    printf("WE AT %d\n", VertexId(*fullMap));
+    printf("WE WANT %d\n", destId);
+
+    gAddress_E roads = VertexTrail(*fullMap);
+
+    Test(555);
+    while (VertexId(EdgeDest(roads)) != destId)
+    {
+        Test(111);
+        roads = NextEdge(roads);
+    }
+
+    // fullMap = P;
+    *M = VertexMap(EdgeDest(roads));
+    *fullMap = EdgeDest(roads);
+
+    Test(666);
+    int i = 0;
+    int j = 0;
+    boolean foundGate = false;
+
+    while (!foundGate && i < NBrs(*M))
+    {
+        j = 0;
+        while(!foundGate && (j < NKol(*M)))
+        {
+            Test(999);
+            if (TypeElmt(*M, i, j) == 'V' || TypeElmt(*M, i, j) == '<' || TypeElmt(*M, i, j) == '>' || TypeElmt(*M, i, j) == '^')
+            {
+                Test(101010);
+                printf("%d %d\n", InfoElmt(*M, i, j), originId);
+                if (InfoElmt(*M, i, j) == originId)
+                {
+                    switch(TypeElmt(*M, i, j))
+                    {
+                        case 'V':
+                            Test(1000);
+                            Player(*M) = MakePOINT(j, i-1);
+                            break;
+                        case '<':
+                            Test(2000);
+                            Player(*M) = MakePOINT(j+1, i);
+                            break;
+                        case '>':
+                            Test(3000);
+                            Player(*M) = MakePOINT(j-1, i);
+                            break;
+                        case '^':
+                            Test(4000);
+                            Player(*M) = MakePOINT(j, i+1);
+                            break;
+                    }
+                    TulisPOINT(Player(*M));
+                    foundGate = true;
+                } 
+            }
+            j++; 
+        }
+        i++;
+        Test(777);
+    }
+    return;
+}
+
 void DrawMap(MAP M, char message[])
 {
-    system("cls");
+    // system("cls");
     for (int i = 0; i < NBrs(M); i++)
     {
         for (int j = 0; j < NKol(M); j++)
