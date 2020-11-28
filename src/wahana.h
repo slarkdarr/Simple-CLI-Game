@@ -46,6 +46,7 @@ typedef struct tWAHANA_Eltype {
 
 
 typedef struct tWAHANA_UpgradeTree *tAddress;
+typedef struct tUpgradeHistory* upgrade;
 #define WAHANA_Nil NULL
 
 typedef struct tWAHANA_UpgradeTree {
@@ -68,13 +69,18 @@ typedef struct tWAHANA_UpgradeTree {
 #define WIron(W) WahanaIron(Akar(W))
 #define WBuildPrice(W) WahanaBuildPrice(Akar(W))
 
+typedef struct tUpgradeHistory 
+{
+    tAddress upgradeNode;
+    upgrade next;
+} UpgradeHistory;
+
 typedef struct 
 {
     tAddress current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
 
-    boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      
-    int upgradeHistoryNEff; // NEff dari upgradeHistory
+    upgrade upgrades;
     // Example tftttf: left right left left left right (dari root)
 
     int root; // id tipe awal wahananya apa
@@ -86,6 +92,10 @@ typedef struct
     
     boolean status;
 } WAHANA_Instance;
+
+#define UpgradeInfo(U) (U)->upgradeNode
+#define UpgradeName(U) WNama((U)->upgradeNode)
+#define NextUpgrade(U) (U)->next
 
 
 void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
@@ -116,5 +126,8 @@ void WAHANA_PrintOfficeDetails(WAHANA_Instance W);
 void WAHANA_PrintOfficeReport(WAHANA_Instance W);
 void WAHANA_PrintHistory(WAHANA_Instance W);
 boolean WAHANA_IsFull (WAHANA_Instance W);
+
+upgrade AlokUpgrade(tAddress WahanaType);
+void AddToUpgradeHistory(upgrade *UpgradeHistory, boolean Left);
 
 #endif

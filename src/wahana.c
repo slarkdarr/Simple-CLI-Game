@@ -216,9 +216,13 @@ void WAHANA_CreateInstance(POINT location, int type)
     // int timesUsedToday; // hari ini dipakai berapa kali
     WAHANA_Instance newWahana;
 
+    Test(4);
+
     newWahana.current = _wType(type);
     newWahana.position = location;
-    newWahana.upgradeHistoryNEff = 0;
+    Test(3);
+    newWahana.upgrades = AlokUpgrade(_wType(type));
+    Test(2);
     newWahana.root = type;
     newWahana.currentLoad = 0;
     newWahana.timesUsed = 0;
@@ -233,6 +237,37 @@ void WAHANA_CreateInstance(POINT location, int type)
     
     return;
 }; 
+
+upgrade AlokUpgrade(tAddress WahanaType)
+{
+    upgrade result = malloc(sizeof(UpgradeHistory));
+    UpgradeInfo(result) = WahanaType;
+    NextUpgrade(result) = NULL;
+
+    return result;
+}
+
+void AddToUpgradeHistory(upgrade *UpgradeHistory, boolean Left)
+{
+    Test(20);
+    upgrade P = *UpgradeHistory;
+    while (NextUpgrade(P) != NULL)
+    {
+        P = NextUpgrade(P);
+    }
+
+    Test(21);
+    tAddress lastUp = UpgradeInfo(P);
+    if (Left)
+    {
+        NextUpgrade(P) = AlokUpgrade(Left(lastUp));
+        Test(23);
+    } else {
+        NextUpgrade(P) = AlokUpgrade(Right(lastUp));
+        Test(23);
+    }
+    return;
+}
 
 void WAHANA_PrintUpgrade(tAddress W)
 // Untuk print Upgrade(s)
@@ -408,24 +443,16 @@ void WAHANA_PrintOfficeReport(WAHANA_Instance W)
 void WAHANA_PrintHistory(WAHANA_Instance W)
 {
     int i; 
-    tAddress pointer;
+    upgrade upgrades = W.upgrades;
 
-    pointer = _wType(W.root);
-    PrintKata(WNama(pointer));
+    PrintKata(UpgradeName(upgrades));
+    upgrades = NextUpgrade(upgrades);
 
-    if (W.upgradeHistoryNEff > 0)
+    while (upgrades != NULL)
     {
-        for(i = 1; i <= W.upgradeHistoryNEff; i++)
-        {
-            printf(" -> ");
-            if (W.upgradeHistory[i])
-            {
-                pointer = Left(pointer);    
-            } else {
-                pointer = Right(pointer);
-            }
-            PrintKata(WNama(pointer));
-        }
+        printf(" -> ");
+        PrintKata(UpgradeName(upgrades));
+        upgrades = NextUpgrade(upgrades);
     }
 }
 

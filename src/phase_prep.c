@@ -422,14 +422,19 @@ void Upgrade(POINT P, int specCommand_, int infoCommand_)
     if (infoCommand_) // Jika infoCommand_ == 1 atau true maka Left
     {
         (_wahana(specCommand_)).current = Left(_wahana(specCommand_).current); // Mengganti current wahana Type pada Array of Wahana
-        (_wahana(specCommand_)).upgradeHistory[(_wahana(specCommand_)).upgradeHistoryNEff] = true; // Insersi pada NEff array boolean
-        (_wahana(specCommand_)).upgradeHistoryNEff += 1; // Menambah NEff dari history upgrade wahana
+        Test(17);
+        AddToUpgradeHistory(&_wahana(specCommand_).upgrades, true); // Menambahkan left dari upgrade terakhir ke history
+        // (_wahana(specCommand_)).upgradeHistory[(_wahana(specCommand_)).upgradeHistoryNEff] = true; // Insersi pada NEff array boolean
+        // (_wahana(specCommand_)).upgradeHistoryNEff += 1; // Menambah NEff dari history upgrade wahana
     }
     else // Jika infoCommand_ == 0 atau false maka Right
     {
+        Test(18);
         (_wahana(specCommand_)).current = Right(_wahana(specCommand_).current); // Mengganti current wahana Type pada Array of Wahana
-        (_wahana(specCommand_)).upgradeHistory[(_wahana(specCommand_)).upgradeHistoryNEff] = false; // Insersi pada NEff array boolean
-        (_wahana(specCommand_)).upgradeHistoryNEff += 1; // Menambah NEff dari history upgrade wahana
+        Test(19);
+        AddToUpgradeHistory(&_wahana(specCommand_).upgrades, false); // Menambahkan left dari upgrade terakhir ke history
+        // (_wahana(specCommand_)).upgradeHistory[(_wahana(specCommand_)).upgradeHistoryNEff] = false; // Insersi pada NEff array boolean
+        // (_wahana(specCommand_)).upgradeHistoryNEff += 1; // Menambah NEff dari history upgrade wahana
     }
 }
 
