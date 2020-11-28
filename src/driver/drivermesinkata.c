@@ -21,16 +21,16 @@ int main()
     }
     // gcc -o drivermesinkata drivermesinkata.c ../mesinkata.c ../mesinkar.c
     // drivermesinkata.exe
-    //int integer;
-    //ReadInputInteger(&integer);
-    //printf("%d\n", integer);
+    int integer;
+    ReadInputInteger(&integer);
+    printf("%d\n", integer);
 
-    //int int2; Kata kata;
-    //ReadInputInteger(&int2);
-    //ReadInput(&kata);
+    int int2; Kata kata;
+    ReadInputInteger(&int2);
+    ReadInput(&kata);
 
-    //printf("%d\n", int2);
-    //PrintKata(kata);
+    printf("%d\n", int2);
+    PrintKata(kata);
 
     /* Menggunakan format int diikuti dengan Kata */
     int quantity; Kata primogem;
@@ -47,6 +47,12 @@ int main()
     printf("length 1 : %d\n", INPUT1.Length);
     PrintKata(INPUT2); printf("\n");
     printf("length 2 : %d\n", INPUT2.Length);
+
+    Kata command;
+    ReadInput(&command);
+    Kata WNAMA = ParseKata(command, CreateKata("serve "));
+    PrintKata(WNAMA); printf("\n");
+    printf("%d\n", WNAMA.Length);
 
     return 0;
 }

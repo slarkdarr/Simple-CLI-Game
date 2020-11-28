@@ -238,7 +238,7 @@ void DequeueWahana2 (PrioQueueWahana *QWahana, Pengunjung *X, JAM CurrTime,PrioQ
         Head(*QWahana) = (Head(*QWahana)+1)%MaxElPrioQueue(*QWahana);
       }
       
-      printf("work\n");
+      // printf("work\n");
       if (!IsEmptyWahana(ListWP(*X), nWahana))
         Enqueue(Antrian, *X);
       

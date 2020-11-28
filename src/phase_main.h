@@ -29,5 +29,6 @@ void prepare();
 
 void printInfo(PrioQueue Antrian);
 void PrintAntrian(PrioQueue Antrian, int nWahana);
-
+int SearchForIndexWahana(Kata W);
+int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W);
 #endif

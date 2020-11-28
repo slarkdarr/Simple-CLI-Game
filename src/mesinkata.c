@@ -272,3 +272,39 @@ void ReadServeName(Kata *WahanaServe)
     }
     (*WahanaServe).Length = count;
 }
+
+Kata ParseKata(Kata Command, Kata Serve)
+{
+    // Kata Serve = CreateKata("Serve ")
+    boolean sama = true;
+    int length = Serve.Length;
+    int check = 0;
+    while (sama && (check < length))
+    { 
+        if (Command.TabKata[check] != Serve.TabKata[check])
+        {
+            sama = false;
+        }
+        else
+        {
+            check += 1;
+        }
+    }
+    Kata toReturn;
+    int tr = 0;
+    if (sama && (Command.Length > 6))
+    {
+        while (check < Command.Length)
+        {
+            toReturn.TabKata[tr] = Command.TabKata[check];
+            check++;
+            tr++;
+        }
+        toReturn.Length = tr;
+        return toReturn;
+    }
+    else
+    {
+        return (CreateKata("."));
+    }
+}

@@ -41,6 +41,7 @@ int GetDuration(ArrayAction_TabInt T, Kata action)
     {
         i++;
     }
+
     return Duration(ArrayAction_Elmt(T, i));
 }
 

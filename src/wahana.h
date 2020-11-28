@@ -115,6 +115,6 @@ void WAHANA_PrintCommandUpgradeRight(tAddress W);
 void WAHANA_PrintOfficeDetails(WAHANA_Instance W);
 void WAHANA_PrintOfficeReport(WAHANA_Instance W);
 void WAHANA_PrintHistory(WAHANA_Instance W);
-
+boolean WAHANA_IsFull (WAHANA_Instance W);
 
 #endif

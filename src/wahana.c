@@ -428,3 +428,8 @@ void WAHANA_PrintHistory(WAHANA_Instance W)
         }
     }
 }
+
+boolean WAHANA_IsFull (WAHANA_Instance W)
+{
+    return (WKapasitas(W.current) == W.currentLoad);
+}

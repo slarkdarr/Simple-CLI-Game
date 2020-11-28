@@ -25,18 +25,16 @@ int main_phase()
 
     while(main_phase)
     {
-        RandomEnqueue(&antrian, _wTCount);
-
+        RandomEnqueue(&antrian, _wCount);
+        Kata Wnama;
         printf("Perintah : ");
         ReadInput(&command);
-
-        if (Durasi(_time, closetiem) < GetDuration(_actions, command))
+        // if (Durasi(_time, closetiem) < GetDuration(_actions, command))
+        if (JAMToDetik(_time) >= JAMToDetik(closetiem))
         {
             printf("Time exceeded, moving on to prepare phase.\n");
             _time = closetiem;
             return 0;
-        } else {
-            ActionAddTime(_actions, command, &_time);
         }
 
         // printf("test\n");
@@ -45,13 +43,14 @@ int main_phase()
             case 'w':
             case 'W':
                 Move(&_map, 'W', &messageBuffer);
+                ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
                 printInfo(antrian);
-                
                 break;
             case 'a':
             case 'A':
                 Move(&_map, 'A', &messageBuffer);
+                ActionAddTime(_actions, command, &_time);
                 DrawMap(_map, messageBuffer);
                 printInfo(antrian);
                 break;
@@ -60,13 +59,43 @@ int main_phase()
                 if (command.Length == 1)
                 {
                     Move(&_map, 'S', &messageBuffer);
+                    ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
                     printInfo(antrian);
                 } else {
-                    if (IsKataSama(command, CreateKata("serve")))
+                    Kata WahanaServe;
+                    // printf("HUHI"); /////
+                    WahanaServe = ParseKata(command, CreateKata("serve "));
+                    // printf("Huhi2"); /////
+                    if (WahanaServe.Length > 1)
                     {
-                        int idw; // id wahana yang ingin di serve
-                        serve(&antrian, &inWahana, idw);
+                        if (GetObject(_map, 'A') != -10)
+                        {
+                            // ListWahana p = ListWP(InfoHead(antrian));
+                            // akses elemen ElmtWahana(p,i);
+                            // printf("HAHA");
+                            int idw = SearchForIndexWahanaFromAntrian(antrian, WahanaServe);
+                            printf("idw yang didapat : %d\n", idw); /////
+                            if (idw != -10)
+                            {
+                                serve(&antrian, &inWahana, idw);
+                                ActionAddTime(_actions, CreateKata("serve"), &_time);
+                                DrawMap(_map, messageBuffer);
+                                printInfo(antrian);
+                            }
+                            else
+                            {
+                                printf("Wahana tidak ditemukan\n");
+                            }
+                        }
+                        else
+                        {
+                            printf("Harus bersebelahan dengan Antrian untuk serve\n");
+                        }
+                    }
+                    else
+                    {
+                        printf("Input tidak benar\n");
                     }
                 }
                 break;
@@ -75,6 +104,7 @@ int main_phase()
                 if (command.Length == 1)
                 {
                     Move(&_map, 'D', &messageBuffer);
+                    ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
                     printInfo(antrian);
                 } else {
@@ -110,6 +140,7 @@ int main_phase()
                     }
                 }
             case 'x':
+                return -1;
                 break;
         }
         // Dequeue isi wahana
@@ -117,7 +148,7 @@ int main_phase()
         while (deq)
         {
             Pengunjung X;
-            DequeueWahana2(&inWahana,&X,_time,&antrian,_wTCount,&deq);
+            DequeueWahana2(&inWahana,&X,_time,&antrian,_wCount,&deq);
         }
         
         DecrKesabaran(&antrian);
@@ -129,18 +160,26 @@ int main_phase()
 
 void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
 {
-    if (PengunjungWahana(InfoHead(*antrian), idw, _wTCount))
-    {
-        Pengunjung X;
-        DequeueAntrian(antrian, &X, idw, _wTCount);
-    
-        EnqueueWahana(inWahana, X, idw, WDurasi(_wahana(idw).current), _time);
-        // tambah kapasitas
-    
-    }
+    if (idw== -10)
+        printf("Wahana yang ingin dinaiki sudah penuh\n");
     else
     {
-        printf("Pengunjung tidak berencana naik wahana ini\n");
+        if (_wahana(idw).status = false)
+        {
+            printf("Wahana yang ingin dinaiki rusak\n");
+        }
+        else if (PengunjungWahana(InfoHead(*antrian), idw, _wCount))
+        {
+            Pengunjung X;
+            DequeueAntrian(antrian, &X, idw, _wCount);
+            EnqueueWahana(inWahana, X, idw, WDurasi(_wahana(idw).current), _time);
+            // tambah kapasitas
+        
+        }
+        else
+        {
+            printf("Pengunjung tidak berencana naik wahana ini\n");
+        }
     }
 }
 
@@ -152,7 +191,7 @@ void repair(Kata command)
         if (!_wahana(id).status)
         {
             _wahana(id).status = true;
-            _time = NextNDetik(_time, GetDuration(_actions, command));
+            ActionAddTime(_actions, command, &_time);
         } else {
             printf("Wahana sudah ok\n");
         }
@@ -312,11 +351,13 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
         if(X.listWahana.W[i] == 1 && first)
         {
           printf("%d",i);
+          PrintKata(WNama((_wahana(i)).current));
           // i = idwahana
           first = false;
         }
         else if (X.listWahana.W[i] == 1 && !first)
         {
+          PrintKata(WNama(_wahana(i).current));
           printf(",%d",i);
           // i = idwahana
         }
@@ -328,4 +369,65 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
       j++;
     }
   }
+}
+int SearchForIndexWahana(Kata W)
+/* JANGAN DIPAKE */ /////
+{
+    boolean found = false;
+    int i = 0;
+    while (!found && i < _wCount)
+    {
+        if (IsKataSama(WNama(_wahana(i).current), W) && !WAHANA_IsFull(_wahana(i)))
+        {
+            found = true;
+        }
+        else
+        {
+            i++;
+        }
+    }
+    if (found)
+    {
+        return i;
+    }
+    else
+    {
+        return -10;
+    }
+}
+
+int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
+{
+    boolean found = false;
+    int i = 0;
+    PrioQueue cekAntrian = Antrian;
+    Pengunjung Check;
+    Dequeue(&cekAntrian, &Check);
+    while (!found && i < _wCount)
+    {
+        if (Check.listWahana.W[i] == 1)
+        {
+            if (IsKataSama(W, WNama((_wahana(i)).current)))
+            {
+                found = true;
+                PrintKata(WNama((_wahana(i)).current));printf("\n\n\n");
+            }
+            else
+            {
+                i++;
+            }
+        }
+        else
+        {
+            i++;
+        }
+    }
+    if (found)
+    {
+        return i;
+    }
+    else
+    {
+        return -10;
+    }
 }

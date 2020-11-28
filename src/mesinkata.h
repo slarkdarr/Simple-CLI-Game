@@ -72,4 +72,7 @@ void ReadServe(Kata *InputKata1, Kata *InputKata2);
 void ReadServeName(Kata *WahanaServe);
 /* Membaca input user dengan mengabaikan kata serve di depan, dan hanya mengambil nama wahana yang ingin di serve */
 
+Kata ParseKata(Kata Command, Kata Serve);
+/* Membaca input user dan mengambil Nama Wahana setelah kata serve */
+
 #endif
