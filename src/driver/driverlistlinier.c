@@ -9,6 +9,7 @@ int main()
 {
     WAHANA_Instance Wahana;
     tAddress wahanaType[10];
+    WAHANA_CreateInstance(MakePOINT(12, 12), 0, _fullMap);
     LoadWahanaTypes(&wahanaType[10], "../wahana.txt", 10);
     Wahana.upgrades = AlokUpgrade(_wType(1));
     for (int i = 0; i < 6; i++)

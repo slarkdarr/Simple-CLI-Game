@@ -44,8 +44,6 @@ typedef struct tWAHANA_Eltype {
 #define WahanaIron(W) (W).iron
 #define WahanaBuildPrice(W) (W).buildprice
 
-
-
 typedef struct tWAHANA_UpgradeTree *tAddress;
 typedef struct tUpgradeHistory* upgrade;
 #define WAHANA_Nil NULL

@@ -1,8 +1,8 @@
 // Main Driver Willy Wangky's World //
 
+#include "jam.h"
 #include <stdio.h>
 #include "boolean.h"
-// #include "matriks.h"
 #include "game.h"
 #include "main_menu.h"
 #include "mesinkata.h"
@@ -47,6 +47,7 @@ int main()
     WAHANA_PrintInfo(_wType(1));
     printf("WCOUNT FAK %d\n", _wCount);
     printf("Mann is this compiling?777777\n");
+    printf("HUHI");
 
     while (cont != -1)
     {

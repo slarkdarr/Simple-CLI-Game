@@ -391,7 +391,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                 if (CheckMaterialCukup(indeks) && (moneyNeeded + WBuildPrice(_wType(indeks))) <= _money)
                                 {
                                     MaterialQuantity(_mlist, 0) -= WWood(_wType(indeks)); // Mengonsumsi Wood
-                                    MaterialQuantity(_mlist, 1) -= WStone(_wType(indeks)); // Mengonsumsi Wood
+                                    MaterialQuantity(_mlist, 1) -= WStone(_wType(indeks)); // Mengonsumsi Wood                
                                     MaterialQuantity(_mlist, 2) -= WIron(_wType(indeks)); // Mengonsumsi Wood
 
                                     TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) = 'w'; // w menandakan sedang dibuat, setelah execute akan menjadi W
@@ -405,6 +405,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                     // money needed ditambah /////
                                     timeNeeded = JCheck;
                                     moneyNeeded += WBuildPrice(_wType(indeks));
+                                    
                                 }
                                 else
                                 {
@@ -431,6 +432,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                         DrawMap(_map, "Tidak dapat membangun di depan gerbang atau di dalam Office/dekat office/dekat wahana/dekat Antrian\n");
                         // printf("Tidak dapat membangun di depan gerbang\n");
                     }
+                    TulisIsiTab(_actions);
                     info_prep(Actions, timeNeeded, moneyNeeded);
                 }
                 break;
@@ -662,6 +664,17 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             *moneyNeeded -= infoCommand__ * MaterialPrice(_mlist, specCommand__);
             // Mengurangkan moneyNeeded (menambahkan uang yang dapat digunakan)
         } else if (IsKataSama(command__, CreateKata("build")))
+        {
+            int x = pointPlayer__.X;
+            int y = pointPlayer__.Y;
+            InfoElmtAtP(VertexMap(mapStack__), x, y) = -1; // Mengembalikan info elemen agar dapat dilangkahi lagi oleh player
+            TypeElmtAtP(VertexMap(mapStack__), x, y) = '-'; // Mengembalikan ke karakter '-'
+            Buy(&_mlist, WWood(_wType(specCommand__)), 0); // refund wood
+            Buy(&_mlist, WStone(_wType(specCommand__)), 1); // refund stone
+            Buy(&_mlist, WIron(_wType(specCommand__)), 2); // refund iron
+            *moneyNeeded -= WBuildPrice(_wType(specCommand__)); // refund uang
+            // refund bahan bangunan dan uang
+        } else if (IsKataSama(command__, CreateKata("extend")))
         {
             int x = pointPlayer__.X;
             int y = pointPlayer__.Y;

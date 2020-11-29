@@ -388,6 +388,7 @@ void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
         _wahana(i).timesUsedToday = 0;
         _wahana(i).status = true;   
     }
+    _day += 1;
 
     // reset antrian, dan antrian wahana?
     return;
