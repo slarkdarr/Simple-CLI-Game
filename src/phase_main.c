@@ -19,6 +19,7 @@ int main_phase()
     
     CreateEmptyPrioQueue(&antrian, 5);
     CreateEmptyPrioQueueWahana(&inWahana, 10);
+    RandomEnqueue(&antrian, _wCount);
 
     DrawMap(_map, "");
     printInfo(antrian);
@@ -29,7 +30,7 @@ int main_phase()
         Kata Wnama;
         printf("Perintah : ");
         ReadInput(&command);
-        // if (Durasi(_time, closetiem) < GetDuration(_actions, command))
+        // if (Durasi(_time, closetiem) < GetDuration(_actions, command)) /////
         if (JAMToDetik(_time) >= JAMToDetik(closetiem))
         {
             printf("Time exceeded, moving on to prepare phase.\n");
@@ -37,7 +38,7 @@ int main_phase()
             return 0;
         }
 
-        // printf("test\n");
+        // printf("test\n"); /////
         switch(command.TabKata[0])
         {
             case 'w':
@@ -66,58 +67,63 @@ int main_phase()
                     // printf("Huhi2"); /////
                     if (WahanaServe.Length > 1)
                     {
-                        if (GetObject(_map, 'A') != -10)
+                        if (GetObject(_map, 'A') != -10 && !IsEmptyPrioQueue(antrian))
                         {
                             // ListWahana p = ListWP(InfoHead(antrian));
                             // akses elemen ElmtWahana(p,i);
-                            // printf("HAHA");
+                            // printf("HAHA"); /////
                             int idw = SearchForIndexWahanaFromAntrian(antrian, WahanaServe);
-                            printf("idw yang didapat : %d\n", idw); /////
+                            // printf("idw yang didapat : %d\n", idw); /////
                             if (idw != -10)
                             {
-                                serve(&antrian, &inWahana, idw);
-                                ActionAddTime(_actions, CreateKata("serve"), &_time);
-                                DrawMap(_map, messageBuffer);
-
-                                // random to break
-                                time_t t;
-                                srand((unsigned)time(&t));
-
-                                int random = rand();
-
-                                printf("%d\n", random%6);
-
-                                if ((random%6) == 0)
+                                if (_wahana(idw).status)
                                 {
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
-                                    printf("FUCK RUSAK ANJING\n");
+                                    serve(&antrian, &inWahana, idw);
+                                    ActionAddTime(_actions, CreateKata("serve"), &_time);
 
-                                    
-                                    RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
-                                    _wahana(idw).status = false;
+                                    // random to break
+                                    time_t t;
+                                    srand((unsigned)time(&t));
+
+                                    int random = rand();
+
+                                    // printf("%d\n", random%10); /////
+                                    DrawMap(_map, "");
+                                    if ((random%10) == 0)
+                                    {
+                                        printf("Wahana dengan id %d rusak, memulai proses mengeluarkan penumpang\n", idw);
+                                        RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
+                                        _wahana(idw).status = false;
+                                    }
                                 }
-                            
+                                else
+                                {
+                                    DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
+                                }
                             }
                             else
                             {
-                                printf("Wahana tidak ditemukan\n");
+                                DrawMap(_map, "Wahana tidak ditemukan\n");
+                                // printf("Wahana tidak ditemukan\n"); /////
                             }
                         }
                         else
                         {
-                            printf("Harus bersebelahan dengan Antrian untuk serve\n");
+                            if (IsEmptyPrioQueue(antrian))
+                            {
+                                DrawMap(_map, "Antrian kosong, tidak ada pengunjung untuk di serve\n");
+                            }
+                            else
+                            {
+                                DrawMap(_map, "Harus bersebelahan dengan Antrian untuk serve\n");
+                            }
+                            // printf("Harus bersebelahan dengan Antrian untuk serve\n"); /////
                         }
                     }
                     else
                     {
-                        printf("Input tidak benar\n");
+                        DrawMap(_map, "Input tidak benar\n");
+                        // printf("Input tidak benar\n"); /////
                     }
                 }
                 break;
@@ -185,7 +191,7 @@ int main_phase()
         
         DecrKesabaran(&antrian);
         KesabaranHabis(&antrian);
-        if (JAMToDetik(_time) < JAMToDetik(closetiem))
+        if (JAMToDetik(_time) < JAMToDetik(closetiem) && JGT(_time, opentiem))
         {
             printInfo(antrian);
         }
@@ -233,11 +239,14 @@ void repair(Kata command)
         {
             _wahana(id).status = true;
             ActionAddTime(_actions, command, &_time);
+            _money -= WBuildPrice((_wahana(id)).current) / 2;
         } else {
-            printf("Wahana sudah ok\n");
+            DrawMap(_map, "Wahana sudah berfungsi dengan baik\n");
+            // printf("Wahana sudah ok\n");
         }
     } else {
-        printf("Tidak ada wahana didekat anda\n");
+        DrawMap(_map, "Tidak ada wahana di dekat Anda\n");
+        // printf("Tidak ada wahana didekat anda\n");
     }
     return;
 };
@@ -406,15 +415,16 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
       {
         if(X.listWahana.W[i] == 1 && first)
         {
-          printf("%d",i);
+          // printf("%d",i); /////
           PrintKata(WNama((_wahana(i)).current));
           // i = idwahana
           first = false;
         }
         else if (X.listWahana.W[i] == 1 && !first)
         {
+          printf(", ");
           PrintKata(WNama(_wahana(i).current));
-          printf(",%d",i);
+          // printf(",%d",i);
           // i = idwahana
         }
         
