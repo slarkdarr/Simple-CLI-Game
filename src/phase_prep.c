@@ -368,6 +368,8 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     SetOpen(&_time);
                     // Mengganti variable global JAM _time menjadi jam untuk buka Wahana
                     TulisJAM(_time); printf("\n"); /////
+                    STACK_CreateEmpty(&Actions);
+                    STACK_CreateEmpty(&TargetExecution);
                     DrawMap(_map, "Pindah ke main phase\n"); //testing
                     // Set jam ke jam buka, pindah ke main phase
                 } else if (IsKataSama(command, CreateKata("extend")))
@@ -447,7 +449,8 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     SetOpen(&_time);
                     // Mengganti variable global JAM _time menjadi jam saatnya untuk buka Wahana
                     TulisJAM(_time);printf("\n"); /////
-                    info_prep(Actions, timeNeeded, moneyNeeded); /////
+                    STACK_CreateEmpty(&Actions);
+                    STACK_CreateEmpty(&TargetExecution);
                     DrawMap(_map, "Pindah ke main phase\n");
                     printf("testing\n"); /////
                     // Set jam ke jam buka, pindah ke main phase

@@ -171,6 +171,7 @@ int main_phase()
                     {
                         prepare(antrian, inWahana);
                         main_phase = false;
+                        return 0;
                     }
                 }
                 break;

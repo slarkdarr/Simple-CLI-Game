@@ -62,5 +62,5 @@ void InitializeArrayAction(ArrayAction_TabInt *Tab)
     ArrayAction_Elmt(*Tab, 6) = AlokasiElementAction(CreateKata("buy"), 3600);      // aksi 1 jam
     ArrayAction_Elmt(*Tab, 7) = AlokasiElementAction(CreateKata("serve"), 600);     // Aksi serve 10 menit
     ArrayAction_Elmt(*Tab, 8) = AlokasiElementAction(CreateKata("repair"), 3600);   // Aksi repair 1 jam
-    ArrayAction_Elmt(*Tab, 9) = AlokasiElementAction(CreateKata("q"), 600);   // Aksi repair 1 jam
+    ArrayAction_Elmt(*Tab, 9) = AlokasiElementAction(CreateKata("extend"), 3600);   // Aksi extend 1 jam
 }
