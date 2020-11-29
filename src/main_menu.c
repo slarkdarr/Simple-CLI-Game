@@ -5,31 +5,56 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void main_menu()
+int main_menu()
 {
     boolean endGame = false;
     printf("Welcome to Willy Wangky's World!!\n");
-    printf("New / Load / Exit\n");
+    
 
     // scanf("%c", &commandTemp);
     Kata commandTemp;
-    ReadInput(&commandTemp);
     
-    switch(commandTemp.TabKata[0])
+    
+    while(!endGame)
     {
-        case 'N':
-        case 'n':
-            new_game();
-            break;
-        case 'L':
-        case 'l':
-            GAME_Load();
-            break;
-        case 'E':
-        case 'e':
-            endGame = true;
-            break;
+        printf("New / Load / Exit\n");
+        ReadInput(&commandTemp);
+        switch(commandTemp.TabKata[0])
+        {
+            case 'N':
+            case 'n':
+                if (IsKataSama(commandTemp, CreateKata("new")))
+                {
+                    new_game();
+                    endGame = true;
+                }
+                break;
+            case 'L':
+            case 'l':
+                if (IsKataSama(commandTemp, CreateKata("load")))
+                {
+                    GAME_Load();
+                    endGame = true;
+                }
+                
+                break;
+            case 'E':
+            case 'e':
+                if (IsKataSama(commandTemp, CreateKata("exit")))
+                {
+                    endGame = true;
+                    return -1;
+                }
+                break;
+        }
+        system("cls");
+        if (!endGame)
+        {
+            printf("Input tidak dikenali\n");
+        }
     }
+    
+    return 0;
 }
 
 void new_game()

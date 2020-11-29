@@ -26,6 +26,7 @@
     undo
     execute
     main
+    extend
 
     MAIN
     serve
@@ -33,6 +34,7 @@
     detail
     office
     prepare
+    save
 
     IN OFFICE
     Details

@@ -3,7 +3,7 @@
 
 #include "game.h"
 
-void main_menu();
+int main_menu();
 
 // New game. Wahana dan Barang placeholder, ADT wahana dan barang belum ada
 // Wahana -> Tree dari tipe wahana dari file

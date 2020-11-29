@@ -177,7 +177,6 @@ void GAME_Save()
     fprintf(savefile, "%d\n", _day);
     fprintf(savefile, "%d %d %d\n\n", _time.HH, _time.MM, _time.SS);
 
-    fprintf(savefile, "#C\n");
     fprintf(savefile, "%d\n", _wCount);
 
     for (int i = 0; i < _wCount; i++)

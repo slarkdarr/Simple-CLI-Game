@@ -43,7 +43,7 @@ int main()
     system("cls");
     int cont;
 
-    main_menu();
+    cont = main_menu();
     // WAHANA_PrintInfo(_wType(1));
 
     while (cont != -1)
@@ -51,6 +51,7 @@ int main()
         cont = readCommand();
     }
 
+    printf("\nThank you and goodbye\n");
     return 0;
 }
 
