@@ -31,7 +31,8 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
     Stack TargetExecution;
     STACK_CreateEmpty(&Actions);
     STACK_CreateEmpty(&TargetExecution);
-    DrawMap(_map, "Prep Phase\n");
+    DrawMap(_map, "");
+    info_prep(Actions, timeNeeded, moneyNeeded);
     while(prep_phase)
     {
         printf("Perintah : ");

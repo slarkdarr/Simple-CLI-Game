@@ -27,7 +27,12 @@ int main_phase()
     while(main_phase)
     {
         Kata Wnama;
-        printf("Perintah : ");
+        printf("Perintah  ");
+        if(TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) == 'O')
+        {
+            printf("(Masukkan 'office' untuk mengakses office) ");
+        }
+        printf(": \n");
         ReadInput(&command);
         if (JAMToDetik(_time) >= JAMToDetik(closetiem))
         {
@@ -154,6 +159,7 @@ int main_phase()
                 } else {
                     if (IsKataSama(command, CreateKata("detail")))
                     {
+                        DrawMap(_map, "");
                         detail();
                     }
                 }
@@ -192,7 +198,8 @@ int main_phase()
                         {
                             office_enter();
                         } else {
-                            printf("Anda tidak berada didalam office\n");
+                            DrawMap(_map, "Anda tidak berada didalam office\n");
+                            printInfo(antrian);
                         }
                         
                     }
@@ -217,6 +224,8 @@ int main_phase()
                         return -1;
                     }
                 }
+            default:
+                DrawMap(_map, "Input tidak dikenali\n");
         }
         // Dequeue isi wahana
         boolean deq = true;
@@ -280,7 +289,7 @@ void detail()
     {
         WAHANA_PrintDetails(_wahana(id));
     } else {
-        printf("Tidak ada wahana didekat anda");
+        printf("Tidak ada wahana didekat anda\n");
     }
 };
 
@@ -444,7 +453,7 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
     {
       Pengunjung X;
       Dequeue(&printAntrian, &X);
-      printf("(");
+      printf("   (");
       boolean first = true;
       for (int i =0; i < nWahana; i++)
       {
@@ -466,10 +475,11 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
       }
       printf(") ");
       printf("| kesabaran %d", Kesabaran(X));
-      printf("\n\n");
+      printf("\n");
       j++;
     }
   }
+  printf("\n");
 }
 
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)

@@ -386,12 +386,12 @@ void Move(MAP *M, char X, char* message[], gAddress_V *fullMap)
     {
         if (!IsGate(*M, collisionPoint))
         {
-            printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
-            printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            // printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            // printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
             *message = "Anda tertabrak\n"; //Output jika Player menabrak bangunan/border
         } else {
-            printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
-            printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            // printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
+            // printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
             EnterGate(M, InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y), fullMap, VertexId(*fullMap));
             *message = "";
         }
