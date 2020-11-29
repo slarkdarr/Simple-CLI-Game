@@ -36,10 +36,16 @@ void GAME_Init()
 
 void GAME_Load()
 {
+    LoadFullMap(&Map(gameInstance), "map.txt", &FullMap(gameInstance));
+    RootMap(gameInstance) = FullMap(gameInstance);
+    LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
+    LoadMaterial(&MaterialList(gameInstance), "material.txt");
+    InitializeArrayAction(&Actions(gameInstance));
+
     FILE *loadFile;
     char line[100];
 
-    loadFile = fopen("./savefile.txt", "w");
+    loadFile = fopen("./savefile.txt", "r");
 
 
     if (loadFile == NULL)
@@ -52,55 +58,109 @@ void GAME_Load()
     {
         int jam, menit, detik;
 
-        fscanf(loadFile, "%s\n", &_name); // <PName>
-        fscanf(loadFile, "%d\n", &_money); // <money>
-        fscanf(loadFile, "%d\n", &_day); // <day>
-        fscanf(loadFile, "%d %d %d\n", &jam, &menit, &detik); // <time>
+        fscanf(loadFile, "%s", &_name); // <PName>
+        fscanf(loadFile, "%d", &_money); // <money>
+        fscanf(loadFile, "%d", &_day); // <day>
+        fscanf(loadFile, "%d %d %d", &jam, &menit, &detik); // <time>
         
         _time = MakeJAM(jam, menit, detik);
+        fscanf(loadFile, "%d", &_wCount);
 
+        // fseek(loadFile, 0, SEEK_CUR );
+        
+        
+        printf("%d", _wCount);
+
+        int i = 0;
         while (fgets(line, 100, loadFile) != NULL)
-        {  
-            if (line[0] == "#" && line[1] == "C")
+        {   
+            printf("%c\n", line[0]);
+            if (line[0] == '#' && line[1] == 'W' && line[2] == 'I')
             {
-                fscanf(loadFile, "%d\n", &_wCount);
-            }
-            
-            for (int i = 0; i < _wCount; i++)
-            {
-                if (line[0] == "#" && line[1] == "W" && line[2] == "I")
+                printf("haha\n");
+                int root, timesUsed, timesUsedToday, totalIncome, size, status, mapId;
+                fscanf(loadFile, "%d %d %d %d %d %d %d", &root, &timesUsed, &timesUsedToday, &totalIncome, &size, &status, &mapId);
+                printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
+
+                WAHANA_Instance newWahana;
+
+                // Test(4);
+
+                newWahana.current = _wType(root);
+                // Test(3);
+                printf("H1\n");
+                newWahana.upgrades = AlokUpgrade(_wType(root));
+                printf("H1\n");
+                // Test(2);
+                newWahana.size = size;
+                printf("H1\n");
+
+                newWahana.root = root;
+                newWahana.currentLoad = 0;
+                newWahana.timesUsed = 0;
+                newWahana.timesUsedToday = 0;
+                newWahana.status = true;
+                newWahana.totalIncome = 0;
+                printf("H1\n");
+
+                int x, y;
+                for (int j = 0; j < newWahana.size; j++)
                 {
-                    fscanf(loadFile, "%d\n %d %d\n %d\n %d\n %d\n %d\n", &_wahana(i).root, &_wahana(i).timesUsed, &_wahana(i).timesUsedToday, &_wahana(i).totalIncome, &_wahana(i).size, &_wahana(i).status, &_wahana(i).mapId);
-
-                    for (int j = 0; j < _wahana(i).size; j++)
-                    {
-                        int x, y;
-                        fscanf("%d %d\n", &x, &y);
-                        _wahana(i).exPosition[j] = MakePOINT(x,y);
-                    }
-
-                    // upgrades?
-                    char up[50];
-                    fgets(up, 25, loadFile);
-                    
-                    int k = 0;
-                    while (up[k] != "n" && up[k] != 0 && up[k] != NULL)
-                    {
-                        /* int roott = _wahana(j).root; */
-                        if (up[k] == "L")
-                        {
-                            _wahana(k).current = Left(_wahana(k).current);
-                        }
-                        else if (up[k] == "R")
-                        {
-                            _wahana(k).current = Right(_wahana(k).current);
-                        }
-                        k++;
-                    }
+                    printf("%d %d", j, newWahana.size);
+                    fscanf(loadFile, "%d %d", &x, &y);
+                    newWahana.exPosition[j] = MakePOINT(x,y);
                 }
+
+                printf("POSITION READ %d %d\n", x, y);
+
+                printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
+
+                newWahana.position = newWahana.exPosition[0];
+                gAddress_V map = _rootmap;
+                newWahana.mapId = mapId;
+
+                while(VertexId(map) != mapId)
+                {
+                    map = VertexNext(map);
+                }
+
+                
+
+                for (int j = 0; j < newWahana.size; j++)
+                {
+                    POINT PP = newWahana.exPosition[j];
+                    TypeElmtAtP(VertexMap(map), PP.X, PP.Y) = 'W';
+                    InfoElmtAtP(VertexMap(map), PP.X, PP.Y) = i;
+                }
+
+                DrawMap(VertexMap(map), "");
+
+                // upgrades?
+                char up[50];
+                fgets(up, 25, loadFile);
+                
+                int k = 0;
+                while (up[k] != "n" && up[k] != 0 && up[k] != NULL)
+                {
+                    /* int roott = _wahana(j).root; */
+                    if (up[k] == "L")
+                    {
+                        newWahana.current = Left(newWahana.current);
+                    }
+                    else if (up[k] == "R")
+                    {
+                        _wahana(k).current = Right(newWahana.current);
+                    }
+                    k++;
+                }
+
+                _wahana(i) = newWahana;
+                WAHANA_PrintDetails(newWahana);
             }
-        }   
+        }
+        i++;
     }
+    _map = VertexMap(_rootmap);
 };
 
 void GAME_Save()

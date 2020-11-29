@@ -23,7 +23,7 @@ void main_menu()
             break;
         case 'L':
         case 'l':
-            // load_game();
+            GAME_Load();
             break;
         case 'E':
         case 'e':

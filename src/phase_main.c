@@ -22,7 +22,7 @@ int main_phase()
     RandomEnqueue(&antrian, _wCount);
 
     DrawMap(_map, "");
-    printInfo(antrian);
+    // printInfo(antrian);
 
     while(main_phase)
     {
@@ -239,8 +239,6 @@ int main_phase()
                 int idWahana = CurrWahana(X);
                 _wahana(idWahana).currentLoad--;
             }
-            
-
         }
         
         DecrKesabaran(&antrian);
