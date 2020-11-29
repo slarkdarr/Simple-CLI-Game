@@ -74,7 +74,7 @@ int main_phase()
                             // printf("HAHA"); /////
                             int idw = SearchForIndexWahanaFromAntrian(antrian, WahanaServe);
                             // printf("idw yang didapat : %d\n", idw); /////
-                            if (idw != -10)
+                            if (idw != -10 || idw != -11)
                             {
                                 if (_wahana(idw).status)
                                 {
@@ -101,11 +101,16 @@ int main_phase()
                                     DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
                                 }
                             }
-                            else
+                            else if (idw == -10)
                             {
                                 DrawMap(_map, "Wahana tidak ditemukan\n");
                                 // printf("Wahana tidak ditemukan\n"); /////
                             }
+                            else
+                            {
+                                DrawMap(_map, "Kapasitas wahana penuh\n");
+                            }
+                            
                         }
                         else
                         {
@@ -149,6 +154,7 @@ int main_phase()
                         repair(command);
                     }
                 }
+                break;
             case 'o':
                 if (command.Length > 1)
                 {
@@ -157,6 +163,7 @@ int main_phase()
                         office_enter();
                     }
                 }
+                break;
             case 'p':
                 if (command.Length > 1)
                 {
@@ -166,12 +173,13 @@ int main_phase()
                         main_phase = false;
                     }
                 }
-            case 'x':
+                break;
+            /* case 'x':
                 return -1;
                 break;
             case 'q':
                 ActionAddTime(_actions, command, &_time);
-                break;
+                break; */
         }
         // Dequeue isi wahana
         boolean deq = true;
@@ -465,7 +473,12 @@ int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
     }
     if (found)
     {
-        return i;
+        if (!WAHANA_IsFull(_wahana(i)))
+            return i;
+        else
+        {
+            return -11;
+        }
     }
     else
     {

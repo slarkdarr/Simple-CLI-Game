@@ -126,14 +126,13 @@ void Enqueue (PrioQueue * Antrian, Pengunjung X)
     Head(*Antrian) = 0;
   
   Tail(*Antrian) = (Tail(*Antrian)+1) % MaxElPrioQueue(*Antrian);
-  
   InfoTail(*Antrian) = X;
   
   int i = Tail(*Antrian);
   int j = (i + MaxElPrioQueue(*Antrian)-1)% MaxElPrioQueue(*Antrian);
 
   Pengunjung temp;
-  while (i != Head(*Antrian) && Prio(ElmtQ(*Antrian, i))<Prio(ElmtQ(*Antrian, j))){    
+  while (i != Head(*Antrian) && Prio(ElmtQ(*Antrian, i)) < Prio(ElmtQ(*Antrian, j))){    
     temp = ElmtQ(*Antrian, i);
     ElmtQ(*Antrian, i) = ElmtQ(*Antrian, j);
     ElmtQ(*Antrian, j) = temp;
@@ -145,7 +144,6 @@ void Enqueue (PrioQueue * Antrian, Pengunjung X)
 
 void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int durasiWahana, JAM CurrTime)
 {
-  /* Create Penumpang */
   Penumpang PNew;
   int durasi = durasiWahana + JAMToDetik(CurrTime);
   JAM out = DetikToJAM(durasi);
@@ -156,7 +154,6 @@ void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int d
     Head(*QWahana) = 0;
   
   Tail(*QWahana) = (Tail(*QWahana)+1) % MaxElPrioQueue(*QWahana);
-  
   InfoTailW(*QWahana) = PNew;
   
   int i = Tail(*QWahana);
@@ -181,7 +178,6 @@ void EnqueuePenumpang (PrioQueueWahana * QWahana, Penumpang X)
     Head(*QWahana) = 0;
   
   Tail(*QWahana) = (Tail(*QWahana)+1) % MaxElPrioQueue(*QWahana);
-  
   InfoTailW(*QWahana) = PNew;
   
   int i = Tail(*QWahana);

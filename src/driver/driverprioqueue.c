@@ -41,7 +41,7 @@ int main ()
     DecrKesabaran(&Antrian);
     scanf("%d %d", &serve, &idw);
     
-    if (serve == 1)
+    if (serve == 1 && !IsEmptyPrioQueue(Antrian))
     {
       if (PengunjungWahana(InfoHead(Antrian), idw, nWahana))
       {
@@ -60,7 +60,7 @@ int main ()
     boolean deq = true;
     while (deq)
     {
-      DequeueWahana2(&QWahana, &Y, CurrTime, &Antrian, nWahana, &deq);
+      WahanaToAntrian(&QWahana, &B, CurrTime, &Antrian, nWahana, &deq);
     }
     
     //printf("%d\n",head);
