@@ -10,6 +10,8 @@
 /*
 COMPILE COMMAND (ganti dir ke src):
     gcc -o that main_driver.c point.c stacklist.c materials.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c arrayaction.c phase_main.c prioqueue.c -lm
+    gcc -o wangk main_driver.c point.c stacklist.c materials.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c arrayaction.c phase_main.c prioqueue.c -lm
+
 
 RUN COMMAND:
     ./test.exe
