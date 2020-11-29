@@ -469,7 +469,7 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
 
 void DrawMap(MAP M, char message[])
 {
-    // system("cls");
+    system("cls");
     for (int i = 0; i < NBrs(M); i++)
     {
         for (int j = 0; j < NKol(M); j++)

@@ -11,7 +11,7 @@
 #include "jam.h"
 
 /*  Kamus Umum */
-#define ArrayAction_IdxMax 9
+#define ArrayAction_IdxMax 10
 /* Indeks maksimum array */
 #define ArrayAction_IdxMin 0
 /* Indeks minimum array */

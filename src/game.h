@@ -1,6 +1,7 @@
 #ifndef GAME_H
 #define GAME_H
 
+#include "jam.h"
 #include "map.h"
 #include "wahana.h"
 #include "jam.h"
