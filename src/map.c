@@ -415,6 +415,7 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
     }
 
     // fullMap = P;
+    VertexMap(*fullMap) = *M;
     *M = VertexMap(EdgeDest(roads));
     *fullMap = EdgeDest(roads);
 
