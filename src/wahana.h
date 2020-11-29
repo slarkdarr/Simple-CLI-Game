@@ -80,6 +80,8 @@ typedef struct
 {
     tAddress current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
+    POINT exPosition[14]; // [EXTENDED POSITIONS] ukuran disimpan sebagai list implementasi array
+    int size; // size adalah NEff+1 dari exPosition
 
     upgrade upgrades;
     // Example tftttf: left right left left left right (dari root)
@@ -94,10 +96,11 @@ typedef struct
     boolean status;
 } WAHANA_Instance;
 
+#define wCapacity(W) WKapasitas(W.current)*W.size
+
 #define UpgradeInfo(U) (U)->upgradeNode
 #define UpgradeName(U) WNama((U)->upgradeNode)
 #define NextUpgrade(U) (U)->next
-
 
 void LoadWahanaTypes(tAddress *wahanaTypes[], char *fileName, int *count);
 void LoadWahanas(WAHANA_ElType *wahana[], char* filename);
@@ -109,6 +112,7 @@ FILE* readWahanaType(tAddress *WAHANAT);
 void WAHANA_PrintInfo(tAddress wahana);
 
 void WAHANA_CreateInstance(POINT location, int type, gAddress_V map); // Membuat wahana baru di location dengan tipe _wType(type)
+void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana);
 void WAHANA_PrintDetails(WAHANA_Instance W);
 
 void WAHANA_PrintUpgrade(tAddress W);

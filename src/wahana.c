@@ -216,13 +216,15 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     // int timesUsedToday; // hari ini dipakai berapa kali
     WAHANA_Instance newWahana;
 
-    Test(4);
+    // Test(4);
 
     newWahana.current = _wType(type);
     newWahana.position = location;
-    Test(3);
+    // Test(3);
     newWahana.upgrades = AlokUpgrade(_wType(type));
-    Test(2);
+    // Test(2);
+    newWahana.size = 1;
+
     newWahana.root = type;
     newWahana.currentLoad = 0;
     newWahana.timesUsed = 0;
@@ -238,6 +240,18 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     
     return;
 }; 
+
+void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana)
+{
+    _wahana(idWahana).exPosition[_wahana(idWahana).size-1] = P;
+    _wahana(idWahana).size++;
+
+    TypeElmtAtP(VertexMap(M), P.X, P.Y) = 'W';
+    InfoElmtAtP(VertexMap(M), P.X, P.Y) = idWahana;
+
+    return;
+}
+
 
 upgrade AlokUpgrade(tAddress WahanaType)
 {
@@ -421,14 +435,14 @@ void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
     printf("Deskripsi       : ");
     PrintKata(WDeskripsi(W.current)); ln;
 
-    printf("Kapasitas       : %d/%d\n", W.currentLoad, WKapasitas(W.current));
+    printf("Kapasitas       : %d/%d\n", W.currentLoad, wCapacity(W));
     
     printf("History         : ");
     WAHANA_PrintHistory(W); ln;
 
     printf("Durasi          : %d", WDurasi(W.current)); ln;
     
-    printf("Ukuran          : 1\n");
+    printf("Ukuran          : %d\n", W.size);
     
 }
 
