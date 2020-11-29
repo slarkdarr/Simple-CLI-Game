@@ -22,7 +22,7 @@ int main_phase()
     RandomEnqueue(&antrian, _wCount);
 
     DrawMap(_map, "");
-    // printInfo(antrian);
+    printInfo(antrian);
 
     while(main_phase)
     {

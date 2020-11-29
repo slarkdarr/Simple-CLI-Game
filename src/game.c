@@ -80,7 +80,7 @@ void GAME_Load()
                 printf("haha\n");
                 int root, timesUsed, timesUsedToday, totalIncome, size, status, mapId;
                 fscanf(loadFile, "%d %d %d %d %d %d %d", &root, &timesUsed, &timesUsedToday, &totalIncome, &size, &status, &mapId);
-                printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
+                // printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
 
                 WAHANA_Instance newWahana;
 
@@ -88,12 +88,12 @@ void GAME_Load()
 
                 newWahana.current = _wType(root);
                 // Test(3);
-                printf("H1\n");
+                // printf("H1\n");
                 newWahana.upgrades = AlokUpgrade(_wType(root));
-                printf("H1\n");
+                // printf("H1\n");
                 // Test(2);
                 newWahana.size = size;
-                printf("H1\n");
+                // printf("H1\n");
 
                 newWahana.root = root;
                 newWahana.currentLoad = 0;
@@ -106,14 +106,14 @@ void GAME_Load()
                 int x, y;
                 for (int j = 0; j < newWahana.size; j++)
                 {
-                    printf("%d %d", j, newWahana.size);
+                    // printf("%d %d", j, newWahana.size);
                     fscanf(loadFile, "%d %d", &x, &y);
                     newWahana.exPosition[j] = MakePOINT(x,y);
                 }
 
-                printf("POSITION READ %d %d\n", x, y);
+                // printf("POSITION READ %d %d\n", x, y);
 
-                printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
+                // printf("WWWW %d %d %d %d %d %d %d\n", root, timesUsed, timesUsedToday, totalIncome, size, status, mapId);
 
                 newWahana.position = newWahana.exPosition[0];
                 gAddress_V map = _rootmap;
@@ -155,10 +155,13 @@ void GAME_Load()
                 }
 
                 _wahana(i) = newWahana;
+                // printf("%d %d", i, _wCount);
+                i++;
                 WAHANA_PrintDetails(newWahana);
             }
+            
         }
-        i++;
+        
     }
     _map = VertexMap(_rootmap);
 };
