@@ -73,7 +73,7 @@ int main_phase()
                 } else if (IsKataSama(command, CreateKata("save")))
                 {
                     GAME_Save();
-                    DrawMap(_map, "GAME SAVED");
+                    DrawMap(_map, "GAME SAVED\n");
                 } else {
                     Kata WahanaServe;
                     // printf("HUHI"); /////
