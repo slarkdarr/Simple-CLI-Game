@@ -80,7 +80,7 @@ typedef struct
 {
     tAddress current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
-    POINT exPosition[14]; // [EXTENDED POSITIONS] ukuran disimpan sebagai list implementasi array
+    POINT exPosition[15]; // [EXTENDED POSITIONS] ukuran disimpan sebagai list implementasi array
     int size; // size adalah NEff+1 dari exPosition
 
     upgrade upgrades;

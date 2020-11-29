@@ -224,6 +224,7 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     newWahana.upgrades = AlokUpgrade(_wType(type));
     // Test(2);
     newWahana.size = 1;
+    newWahana.exPosition[0] = location;
 
     newWahana.root = type;
     newWahana.currentLoad = 0;
@@ -243,7 +244,7 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
 
 void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana)
 {
-    _wahana(idWahana).exPosition[_wahana(idWahana).size-1] = P;
+    _wahana(idWahana).exPosition[_wahana(idWahana).size] = P;
     _wahana(idWahana).size++;
 
     TypeElmtAtP(VertexMap(M), P.X, P.Y) = 'W';
