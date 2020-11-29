@@ -20,7 +20,6 @@ typedef struct {
     int wahanaTypeCount;
     WAHANA_Instance wahana[50];
     int wahanaCount;
-    int antrianData;
     int money;
     JAM time;
     int day; //penanda hari ke berapa

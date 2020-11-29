@@ -9,7 +9,6 @@ void GAME_Init()
     // printf("THIS IS ID OF FIRST MAP %d", VertexId(VertexNext(_fullMap)));
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
     WahanaCount(gameInstance) = 0;
-    AntrianData(gameInstance) = 0;
     Money(gameInstance) = 0;
     Time(gameInstance) = MakeJAM(21, 0, 0);
     Day(gameInstance) = 1;

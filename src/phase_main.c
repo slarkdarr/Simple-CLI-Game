@@ -188,7 +188,13 @@ int main_phase()
                 {
                     if (IsKataSama(command, CreateKata("office")))
                     {
-                        office_enter();
+                        if (TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) == 'O')
+                        {
+                            office_enter();
+                        } else {
+                            printf("Anda tidak berada didalam office\n");
+                        }
+                        
                     }
                 }
                 break;
@@ -326,8 +332,13 @@ void office_enter()
 
 void office_details()
 {
-    int wahanaId = selectWahanaScreen();
-    WAHANA_PrintOfficeDetails(_wahana(wahanaId));
+    if(_wCount != 0)
+    {
+        int wahanaId = selectWahanaScreen();
+        WAHANA_PrintOfficeDetails(_wahana(wahanaId));
+    } else {
+        printf("Belum ada wahana\n");
+    }
 
     /*
     DETAILS
@@ -346,14 +357,21 @@ void office_details()
 
 void office_report()
 {
-    int wahanaId = selectWahanaScreen();
-    WAHANA_PrintOfficeReport(_wahana(wahanaId));
+    if (_wCount != 0)
+    {
+        int wahanaId = selectWahanaScreen();
+        WAHANA_PrintOfficeReport(_wahana(wahanaId));
+    } else {
+        printf("Belum ada wahana\n");
+    }
+
+    
 
     return;
 };
 void office_exit()
 {
-    printf("YOU WANT TO EXIT EH?\n");
+    printf("Anda telah meninggalkan office\n");
     return;
 };
 
