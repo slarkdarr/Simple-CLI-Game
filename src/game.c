@@ -68,6 +68,8 @@ void GAME_Save()
             fprintf(savefile, "0\n");
         }
 
+        fprintf(savefile, "%d\n",_wahana(i).mapId);
+
         for (int j = 0; j < _wahana(i).size; j++)
         {
             fprintf(savefile, "%d %d\n", _wahana(i).exPosition[j].X, _wahana(i).exPosition[j].Y);
