@@ -199,10 +199,15 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
                 edgeBufferN++;
             }
 
-            if (edgeBufferN != 0)
+            for (int i = trailStart; i < edgeBufferN; i++)
             {
-                EdgeDest(edgeBuffer[edgeBufferN-1]) = NULL;
+                NextEdge(edgeBuffer[i]) = edgeBuffer[i+1];
             }
+        
+            // if (edgeBufferN != 0)
+            // {
+            //     NextEdge(edgeBuffer[edgeBufferN]) = NULL;
+            // }
 
             // Test(3);
             
@@ -254,6 +259,7 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
             // Test(4);
             VertexMap(node) = *M;
             VertexId(node) = mapID;
+            printf("TRAIL INDEX %d\n", trailStart);
             VertexTrail(node) = edgeBuffer[trailStart];
 
             mapsBuffer[mapsBufferN] = node;
@@ -281,8 +287,24 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
     // Test(6);
     for (i = 0; i < edgeBufferN; i++)
     {
+        printf("EDGE TO %d\n", (int)EdgeDest(edgeBuffer[i]));
         EdgeDest(edgeBuffer[i]) = mapsBuffer[(int)EdgeDest(edgeBuffer[i])];
     } 
+
+    for (i = 0; i < edgeBufferN; i++)
+    {
+        printf("EDGE TO MAP %d\n", VertexId(EdgeDest(edgeBuffer[i])));
+    }
+
+    for (i = 0; i < mapsBufferN; i++)
+    {
+        gAddress_E P = VertexTrail(mapsBuffer[i]);
+        printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(P)));
+        printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(NextEdge(P))));
+        
+    }
+
+    printf("%d\n", edgeBufferN);
 
     *M = VertexMap(mapsBuffer[0]);
     *fullMap = mapsBuffer[0];
@@ -411,7 +433,13 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
     while (VertexId(EdgeDest(roads)) != destId)
     {
         Test(111);
+        printf("EDGE N %d", VertexId(EdgeDest(roads)));
         roads = NextEdge(roads);
+        printf("EDGE N %d", VertexId(EdgeDest(roads)));
+        if (roads == NULL)
+        {
+            printf("NULL\n");
+        }
     }
 
     // fullMap = P;
