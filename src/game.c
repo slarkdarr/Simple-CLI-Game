@@ -5,6 +5,7 @@ GAME gameInstance;
 void GAME_Init()
 {
     LoadFullMap(&Map(gameInstance), "map.txt", &FullMap(gameInstance));
+    RootMap(gameInstance) = FullMap(gameInstance);
     printf("THIS IS ID OF FIRST MAP %d", VertexId(VertexNext(_fullMap)));
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
     WahanaCount(gameInstance) = 0;

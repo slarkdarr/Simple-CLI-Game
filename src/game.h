@@ -11,6 +11,7 @@
 #include "arrayaction.h"
 
 typedef struct {
+    gAddress_V rootMap;
     gAddress_V fullMap;
     MAP map;
     char PName[25];
@@ -27,6 +28,7 @@ typedef struct {
 } GAME;
 
 // #define FullMap(G) (G).fullMap
+#define RootMap(G) (G).rootMap
 #define FullMap(G) (G).fullMap
 #define Map(G) (G).map
 #define PName(G) (G).PName
@@ -49,6 +51,7 @@ extern GAME gameInstance;
 #define ln printf("\n")
 
 // #define _fullmap FullMap(gameInstance)
+#define _rootmap RootMap(gameInstance)
 #define _fullMap FullMap(gameInstance)
 #define _map Map(gameInstance)
 #define _name PName(gameInstance)
