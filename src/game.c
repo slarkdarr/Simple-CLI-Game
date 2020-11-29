@@ -36,7 +36,71 @@ void GAME_Init()
 
 void GAME_Load()
 {
-    
+    FILE *loadFile;
+    char line[100];
+
+    loadFile = fopen("./savefile.txt", "w");
+
+
+    if (loadFile == NULL)
+    {
+        printf("FAILED TO READ DATA\n");
+        return;
+    }
+
+    else
+    {
+        int jam, menit, detik;
+
+        fscanf(loadFile, "%s\n", &_name); // <PName>
+        fscanf(loadFile, "%d\n", &_money); // <money>
+        fscanf(loadFile, "%d\n", &_day); // <day>
+        fscanf(loadFile, "%d %d %d\n", &jam, &menit, &detik); // <time>
+        
+        _time = MakeJAM(jam, menit, detik);
+
+        while (fgets(line, 100, loadFile) != NULL)
+        {  
+            if (line[0] == "#" && line[1] == "C")
+            {
+                fscanf(loadFile, "%d\n", &_wCount);
+            }
+            
+            for (int i = 0; i < _wCount; i++)
+            {
+                if (line[0] == "#" && line[1] == "W" && line[2] == "I")
+                {
+                    fscanf(loadFile, "%d\n %d %d\n %d\n %d\n %d\n %d\n", &_wahana(i).root, &_wahana(i).timesUsed, &_wahana(i).timesUsedToday, &_wahana(i).totalIncome, &_wahana(i).size, &_wahana(i).status, &_wahana(i).mapId);
+
+                    for (int j = 0; j < _wahana(i).size; j++)
+                    {
+                        int x, y;
+                        fscanf("%d %d\n", &x, &y);
+                        _wahana(i).exPosition[j] = MakePOINT(x,y);
+                    }
+
+                    // upgrades?
+                    char up[50];
+                    fgets(up, 25, loadFile);
+                    
+                    int k = 0;
+                    while (up[k] != "n" && up[k] != 0 && up[k] != NULL)
+                    {
+                        /* int roott = _wahana(j).root; */
+                        if (up[k] == "L")
+                        {
+                            _wahana(k).current = Left(_wahana(k).current);
+                        }
+                        else if (up[k] == "R")
+                        {
+                            _wahana(k).current = Right(_wahana(k).current);
+                        }
+                        k++;
+                    }
+                }
+            }
+        }   
+    }
 };
 
 void GAME_Save()
