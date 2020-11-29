@@ -10,6 +10,7 @@
 #include "jam.h"
 
 ArrayAction_ElType AlokasiElementAction(Kata action, int durasi)
+// Mengalokasikan elemen array action
 {
     ArrayAction_ElType E;
     Action(E) = action;
@@ -32,7 +33,6 @@ void TulisIsiTab (ArrayAction_TabInt T)
     }
 }
 
-/* ********** SEARCHING ********** */
 int GetDuration(ArrayAction_TabInt T, Kata action)
 // Kata action pasti ada dalam tabel, karena telah di cek sebelumnya
 {
@@ -46,12 +46,14 @@ int GetDuration(ArrayAction_TabInt T, Kata action)
 }
 
 void ActionAddTime(ArrayAction_TabInt T, Kata action, JAM *time)
+// Menambah waktu berdasarkan action dalam array of action
 {
     *time = NextNDetik(*time, GetDuration(T, action));
     return;
 }
 
 void InitializeArrayAction(ArrayAction_TabInt *Tab)
+// Menginisialisasi array action yang akan digunakan untuk data waktu yang akan dikonsumsi
 {
     ArrayAction_Elmt(*Tab, 0) = AlokasiElementAction(CreateKata("w"), 60);          // Aksi movement 1 menit
     ArrayAction_Elmt(*Tab, 1) = AlokasiElementAction(CreateKata("a"), 60);          // Aksi movement 1 menit

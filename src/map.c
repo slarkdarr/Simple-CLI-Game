@@ -194,22 +194,14 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
             for (int i = 0; i < gateCount; i++)
             {
                 fscanf(mapFile, "%d", &gateDestinations[i]);
-                // printf("READ %d\n", gateDestinations[i]);
-                // printf("EDGEBUFFERN %d\n", edgeBufferN);
                 edgeBuffer[edgeBufferN] = malloc(sizeof(MAP_gEdge));
                 EdgeDest(edgeBuffer[edgeBufferN]) = gateDestinations[i];
-                // printf("ASSIGNED %d\n", EdgeDest(edgeBuffer[edgeBufferN]));
-                if (edgeBufferN != 0)
-                {
-                    NextEdge(edgeBuffer[edgeBufferN-1]) = edgeBuffer[edgeBufferN];
-                }
-                // printf("ADDED EDGE\n");
                 edgeBufferN++;
             }
 
             if (edgeBufferN != 0)
             {
-                NextEdge(edgeBuffer[edgeBufferN-1]) = NULL;
+                EdgeDest(edgeBuffer[edgeBufferN-1]) = NULL;
             }
 
             // Test(3);
@@ -256,7 +248,7 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
                 }
             }
 
-            // printf("%d %d\n", NBrs(*M), NKol(*M));
+            printf("%d %d\n", NBrs(*M), NKol(*M));
             // DrawMap(*M, "");
 
             // Test(4);
@@ -289,14 +281,13 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
     // Test(6);
     for (i = 0; i < edgeBufferN; i++)
     {
-        // printf("DEST TO %d\n", (int)EdgeDest(edgeBuffer[i]));
         EdgeDest(edgeBuffer[i]) = mapsBuffer[(int)EdgeDest(edgeBuffer[i])];
     } 
 
     *M = VertexMap(mapsBuffer[0]);
     *fullMap = mapsBuffer[0];
 
-    // printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
+    printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
 
     fclose(mapFile);
     return;
@@ -424,7 +415,6 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
     }
 
     // fullMap = P;
-    VertexMap(*fullMap) = *M;
     *M = VertexMap(EdgeDest(roads));
     *fullMap = EdgeDest(roads);
 

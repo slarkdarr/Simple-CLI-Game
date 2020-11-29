@@ -7,11 +7,19 @@
 
 int main()
 {
+    GAME_Init();
     WAHANA_Instance Wahana;
-    tAddress wahanaType[10];
-    WAHANA_CreateInstance(MakePOINT(12, 12), 0, _fullMap);
-    LoadWahanaTypes(&wahanaType[10], "../wahana.txt", 10);
-    Wahana.upgrades = AlokUpgrade(_wType(1));
+    Wahana.current = _wType(0);
+    Wahana.position = MakePOINT(0, 0);
+    Wahana.upgrades = AlokUpgrade(_wType(0));
+    Wahana.size = 1;
+    Wahana.exPosition[0] = MakePOINT(0, 0);
+    Wahana.root = 0;
+    Wahana.currentLoad = 0;
+    Wahana.timesUsed = 0;
+    Wahana.timesUsedToday = 0;
+    Wahana.status = true;
+    Wahana.totalIncome = 0;
     for (int i = 0; i < 6; i++)
     {
         if (i % 2 == 0)
@@ -39,7 +47,7 @@ int main()
         P = NextUpgrade(P);
     }
 
-
+    // driver\driverlistlinier.exe saat di directory src
 
     return 0;
 }

@@ -76,7 +76,7 @@ int main_phase()
                             // printf("idw yang didapat : %d\n", idw); /////
                             if (idw != -10 || idw != -11)
                             {
-                                if (_wahana(idw).status)
+                                if ((_wahana(idw).status) == true)
                                 {
                                     serve(&antrian, &inWahana, idw);
                                     ActionAddTime(_actions, CreateKata("serve"), &_time);
@@ -87,7 +87,6 @@ int main_phase()
 
                                     int random = rand();
 
-                                    // printf("%d\n", random%10); /////
                                     DrawMap(_map, "");
                                     if ((random%10) == 0)
                                     {
@@ -98,13 +97,15 @@ int main_phase()
                                 }
                                 else
                                 {
-                                    DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
+                                    if ((_wahana(idw)).status == false)
+                                    {
+                                        DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
+                                    }
                                 }
                             }
                             else if (idw == -10)
                             {
                                 DrawMap(_map, "Wahana tidak ditemukan\n");
-                                // printf("Wahana tidak ditemukan\n"); /////
                             }
                             else
                             {
@@ -215,11 +216,7 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
         printf("Wahana yang ingin dinaiki sudah penuh\n");
     else
     {
-        if (_wahana(idw).status == false)
-        {
-            printf("Wahana yang ingin dinaiki rusak\n");
-        }
-        else if (PengunjungWahana(InfoHead(*antrian), idw, _wCount))
+        if (PengunjungWahana(InfoHead(*antrian), idw, _wCount))
         {
             Pengunjung X;
             DequeueAntrian(antrian, &X, idw, _wCount);
@@ -390,7 +387,6 @@ void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
     }
     _day += 1;
 
-    // reset antrian, dan antrian wahana?
     return;
 };
 
