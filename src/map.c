@@ -30,11 +30,9 @@ void LoadMap(MAP *M, char* fileName)
         dest<N>         : int, id dari tujuan gate ke-N (penomoran gate dibaca terurut seperti paragraf)
     
     Ukuran M adalah HxW
-
     Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
     (Untuk map.txt, tidak ada Wahana atau Antrian)
     (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
-
     NOTES:
         Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
         Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
@@ -140,11 +138,9 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
         dest<N>         : int, id dari tujuan gate ke-N (penomoran gate dibaca terurut seperti paragraf)
     
     Ukuran M adalah HxW
-
     Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
     (Untuk map.txt, tidak ada Wahana atau Antrian)
     (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
-
     NOTES:
         Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
         Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
@@ -199,10 +195,15 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
                 edgeBufferN++;
             }
 
-            if (edgeBufferN != 0)
+            for (int i = trailStart; i < edgeBufferN; i++)
             {
-                EdgeDest(edgeBuffer[edgeBufferN-1]) = NULL;
+                NextEdge(edgeBuffer[i]) = edgeBuffer[i+1];
             }
+        
+            // if (edgeBufferN != 0)
+            // {
+            //     NextEdge(edgeBuffer[edgeBufferN]) = NULL;
+            // }
 
             // Test(3);
             
@@ -248,12 +249,13 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
                 }
             }
 
-            printf("%d %d\n", NBrs(*M), NKol(*M));
+            // printf("%d %d\n", NBrs(*M), NKol(*M));
             // DrawMap(*M, "");
 
             // Test(4);
             VertexMap(node) = *M;
             VertexId(node) = mapID;
+            // printf("TRAIL INDEX %d\n", trailStart);
             VertexTrail(node) = edgeBuffer[trailStart];
 
             mapsBuffer[mapsBufferN] = node;
@@ -281,13 +283,29 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
     // Test(6);
     for (i = 0; i < edgeBufferN; i++)
     {
+        // printf("EDGE TO %d\n", (int)EdgeDest(edgeBuffer[i]));
         EdgeDest(edgeBuffer[i]) = mapsBuffer[(int)EdgeDest(edgeBuffer[i])];
     } 
+
+    // for (i = 0; i < edgeBufferN; i++)
+    // {
+    //     // printf("EDGE TO MAP %d\n", VertexId(EdgeDest(edgeBuffer[i])));
+    // }
+
+    // for (i = 0; i < mapsBufferN; i++)
+    // {
+    //     gAddress_E P = VertexTrail(mapsBuffer[i]);
+    //     // printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(P)));
+    //     // printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(NextEdge(P))));
+        
+    // }
+
+    // printf("%d\n", edgeBufferN);
 
     *M = VertexMap(mapsBuffer[0]);
     *fullMap = mapsBuffer[0];
 
-    printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
+    // printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
 
     fclose(mapFile);
     return;
@@ -411,7 +429,13 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
     while (VertexId(EdgeDest(roads)) != destId)
     {
         Test(111);
+        printf("EDGE N %d", VertexId(EdgeDest(roads)));
         roads = NextEdge(roads);
+        printf("EDGE N %d", VertexId(EdgeDest(roads)));
+        if (roads == NULL)
+        {
+            printf("NULL\n");
+        }
     }
 
     // fullMap = P;

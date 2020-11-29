@@ -16,7 +16,7 @@ int main_phase();
 
 void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw);
 
-void repair();
+// void repair();
 
 void detail();
 

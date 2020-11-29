@@ -247,9 +247,12 @@ void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana)
     _wahana(idWahana).exPosition[_wahana(idWahana).size] = P;
     _wahana(idWahana).size++;
 
-    TypeElmtAtP(VertexMap(M), P.X, P.Y) = 'W';
-    InfoElmtAtP(VertexMap(M), P.X, P.Y) = idWahana;
-
+    for (int i = 0; i < _wahana(idWahana).size; i++)
+    {
+        POINT PP = _wahana(idWahana).exPosition[i];
+        TypeElmtAtP(VertexMap(M), PP.X, PP.Y) = 'W';
+        InfoElmtAtP(VertexMap(M), PP.X, PP.Y) = idWahana;
+    }//////////
     return;
 }
 

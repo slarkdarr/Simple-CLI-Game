@@ -34,7 +34,7 @@ typedef struct {
 void LoadMaterial(TabMaterial *TabMat, char *filename);
 int SearchForPrice(TabMaterial TabMat, Kata Material);
 int SearchForQuantity(TabMaterial TabMat, Kata Material);
-void PrintAllMaterials(TabMaterial TabMat); //testing
+void PrintAllMaterials(TabMaterial TabMat); 
 boolean SearchForMaterial(TabMaterial TabMat, Kata Material); //mencari jika material ada
 int SearchForIndexMaterial(Kata Material);
 

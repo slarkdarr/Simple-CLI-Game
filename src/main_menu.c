@@ -8,21 +8,24 @@
 void main_menu()
 {
     boolean endGame = false;
-    char commandTemp;
-
     printf("Welcome to Willy Wangky's World!!\n");
     printf("New / Load / Exit\n");
 
-    scanf("%c", &commandTemp);
+    // scanf("%c", &commandTemp);
+    Kata commandTemp;
+    ReadInput(&commandTemp);
     
-    switch(commandTemp)
+    switch(commandTemp.TabKata[0])
     {
+        case 'N':
         case 'n':
             new_game();
             break;
+        case 'L':
         case 'l':
             // load_game();
             break;
+        case 'E':
         case 'e':
             endGame = true;
             break;

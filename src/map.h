@@ -75,7 +75,7 @@ typedef struct tMAP_gEdge {
 #define InfoElmt(M, i, j) ((M).Mem[(i)][(j)]).id //Select id dari struct ElType pada MAP indeks baris i dan kolom j
 #define InfoElmtAtP(M, x, y) ((M).Mem[(y)][(x)]).id // X, Y format for InfoElmt
 
-#define Test(i) printf("THIS IS TEST %d\n", i) // Testing Purposes
+#define Test(i) printf("") // Testing Purposes
 
 void MakeEmptyMAP(MAP *M);
 void LoadMap(MAP *M, char fileName[]);

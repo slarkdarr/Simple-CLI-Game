@@ -44,10 +44,7 @@ int main()
     int cont;
 
     main_menu();
-    WAHANA_PrintInfo(_wType(1));
-    printf("WCOUNT FAK %d\n", _wCount);
-    printf("Mann is this compiling?777777\n");
-    printf("HUHI");
+    // WAHANA_PrintInfo(_wType(1));
 
     while (cont != -1)
     {
@@ -75,5 +72,5 @@ int readCommand()
     }
 
 
-    return 0;
+    return -1;
 }

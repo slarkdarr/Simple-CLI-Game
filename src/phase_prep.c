@@ -40,27 +40,59 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
         {
             case 'w':
             case 'W':
-                Move(&_map, 'W', &messageBuffer, &_fullMap);
-                DrawMap(_map, messageBuffer);
-                info_prep(Actions, timeNeeded, moneyNeeded);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'W', &messageBuffer, &_fullMap);
+                    DrawMap(_map, messageBuffer);
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
                 break;
             case 'a':
             case 'A':
-                Move(&_map, 'A', &messageBuffer, &_fullMap);
-                DrawMap(_map, messageBuffer);
-                info_prep(Actions, timeNeeded, moneyNeeded);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'A', &messageBuffer, &_fullMap);
+                    DrawMap(_map, messageBuffer);
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                } 
                 break;
             case 's':
             case 'S':
-                Move(&_map, 'S', &messageBuffer, &_fullMap);
-                DrawMap(_map, messageBuffer);
-                info_prep(Actions, timeNeeded, moneyNeeded);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'S', &messageBuffer, &_fullMap);
+                    DrawMap(_map, messageBuffer);
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
                 break;
             case 'd':
             case 'D':
-                Move(&_map, 'D', &messageBuffer, &_fullMap);
-                DrawMap(_map, messageBuffer);
-                info_prep(Actions, timeNeeded, moneyNeeded);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'D', &messageBuffer, &_fullMap);
+                    DrawMap(_map, messageBuffer);
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                    info_prep(Actions, timeNeeded, moneyNeeded);
+                }
                 break;
             case 'x':
                 cont = -1;
@@ -389,6 +421,11 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
 
                                     TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) = 'w'; // w menandakan sedang dibuat, setelah execute akan menjadi W
                                     InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array //indeks sementara pada map agar tidak bisa dijalani
+                                    for (int i = 0; i < _wahana(indeks).size; i++)
+                                    {
+                                        POINT PP = _wahana(indeks).exPosition[i];
+                                        TypeElmtAtP(_map, PP.X, PP.Y) = 'w';
+                                    } /////////
                                     Push(&Actions, command, indeks, 1, Player(_map), _fullMap);
                                     Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
                                     DrawMap(_map, "");
@@ -417,7 +454,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                         DrawMap(_map, "Tidak dapat membangun di depan gerbang atau di dalam Office/dekat office/dekat wahana/dekat Antrian\n");
                         // printf("Tidak dapat membangun di depan gerbang\n");
                     }
-                    TulisIsiTab(_actions);
+                    // TulisIsiTab(_actions);
                     info_prep(Actions, timeNeeded, moneyNeeded);
                 }
                 break;
@@ -439,6 +476,12 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                     STACK_CreateEmpty(&TargetExecution);
                     DrawMap(_map, "Pindah ke main phase\n");
                     // Set jam ke jam buka, pindah ke main phase
+                }
+                break;
+            case 'q':
+                if (IsKataSama(command, CreateKata("quit")))
+                {
+                    return -1;
                 }
                 break;
             default :
@@ -643,6 +686,11 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
             Buy(&_mlist, WStone(_wType(specCommand__)), 1); // refund stone
             Buy(&_mlist, WIron(_wType(specCommand__)), 2); // refund iron
             *moneyNeeded -= WBuildPrice(_wType(specCommand__)); // refund uang
+            for (int i = 0; i < _wahana(specCommand__).size; i++)
+            {
+                POINT PP = _wahana(specCommand__).exPosition[i];
+                TypeElmtAtP(_map, PP.X, PP.Y) = 'W';
+            } /////////
             // refund bahan bangunan dan uang
         }
         long waktu = JAMToDetik(*timeNeeded); // Mengkonversikan *timeNeeded menjadi long terlebih dahulu
@@ -723,6 +771,7 @@ void info_prep(Stack Action, JAM timeNeeded, int moneyNeeded)
 {
     Kata KName = CreateKata(_name); 
 
+    printf("Preparation Phase Day %d\n", _day);
     printf("Nama                            :   "); PrintKata(KName); printf("\n"); 
     printf("Money                           :   %d\n", _money); 
     printf("Current Time                    :   21.00\n"); 

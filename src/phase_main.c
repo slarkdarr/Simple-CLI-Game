@@ -18,7 +18,7 @@ int main_phase()
     PrioQueueWahana inWahana;
     
     CreateEmptyPrioQueue(&antrian, 5);
-    CreateEmptyPrioQueueWahana(&inWahana, 10);
+    CreateEmptyPrioQueueWahana(&inWahana, 200);
     RandomEnqueue(&antrian, _wCount);
 
     DrawMap(_map, "");
@@ -26,11 +26,9 @@ int main_phase()
 
     while(main_phase)
     {
-        RandomEnqueue(&antrian, _wCount);
         Kata Wnama;
         printf("Perintah : ");
         ReadInput(&command);
-        // if (Durasi(_time, closetiem) < GetDuration(_actions, command)) /////
         if (JAMToDetik(_time) >= JAMToDetik(closetiem))
         {
             printf("Time exceeded, moving on to prepare phase.\n");
@@ -38,20 +36,33 @@ int main_phase()
             return 0;
         }
 
-        // printf("test\n"); /////
         switch(command.TabKata[0])
         {
             case 'w':
             case 'W':
-                Move(&_map, 'W', &messageBuffer, &_fullMap);
-                ActionAddTime(_actions, command, &_time);
-                DrawMap(_map, messageBuffer);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'W', &messageBuffer, &_fullMap);
+                    ActionAddTime(_actions, command, &_time);
+                    DrawMap(_map, messageBuffer);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                }
                 break;
             case 'a':
             case 'A':
-                Move(&_map, 'A', &messageBuffer, &_fullMap);
-                ActionAddTime(_actions, command, &_time);
-                DrawMap(_map, messageBuffer);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'A', &messageBuffer, &_fullMap);
+                    ActionAddTime(_actions, command, &_time);
+                    DrawMap(_map, messageBuffer);
+                }
+                else
+                {
+                    DrawMap(_map, "Input tidak dikenal\n");
+                }
                 break;
             case 's':
             case 'S':
@@ -74,7 +85,7 @@ int main_phase()
                             // printf("HAHA"); /////
                             int idw = SearchForIndexWahanaFromAntrian(antrian, WahanaServe);
                             // printf("idw yang didapat : %d\n", idw); /////
-                            if (idw != -10 || idw != -11)
+                            if (idw != -10 && idw != -11)
                             {
                                 if ((_wahana(idw).status) == true)
                                 {
@@ -97,10 +108,7 @@ int main_phase()
                                 }
                                 else
                                 {
-                                    if ((_wahana(idw)).status == false)
-                                    {
-                                        DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
-                                    }
+                                    DrawMap(_map, "Wahana yang ingin dinaiki rusak\n");
                                 }
                             }
                             else if (idw == -10)
@@ -111,7 +119,6 @@ int main_phase()
                             {
                                 DrawMap(_map, "Kapasitas wahana penuh\n");
                             }
-                            
                         }
                         else
                         {
@@ -152,7 +159,23 @@ int main_phase()
                 {
                     if (IsKataSama(command, CreateKata("repair")))
                     {
-                        repair(command);
+                        int id = GetObject(_map, 'W');
+                        if (id != -10)
+                        {
+                            if (!_wahana(id).status)
+                            {
+                                _wahana(id).status = true;
+                                ActionAddTime(_actions, command, &_time);
+                                _money -= WBuildPrice((_wahana(id)).current) / 2;
+                                DrawMap(_map, "Wahana berhasil diperbaiki\n");
+                            } else {
+                                DrawMap(_map, "Wahana sudah berfungsi dengan baik\n");
+                                // printf("Wahana sudah ok\n");
+                            }
+                        } else {
+                            DrawMap(_map, "Tidak ada wahana di dekat Anda\n");
+                            // printf("Tidak ada wahana didekat anda\n");
+                        }
                     }
                 }
                 break;
@@ -176,12 +199,14 @@ int main_phase()
                     }
                 }
                 break;
-            /* case 'x':
-                return -1;
-                break;
             case 'q':
-                ActionAddTime(_actions, command, &_time);
-                break; */
+                if (command.Length > 1)
+                {
+                    if (IsKataSama(command, CreateKata("quit")))
+                    {
+                        return -1;
+                    }
+                }
         }
         // Dequeue isi wahana
         boolean deq = true;
@@ -201,10 +226,12 @@ int main_phase()
         
         DecrKesabaran(&antrian);
         KesabaranHabis(&antrian);
+        RandomEnqueue(&antrian, _wCount);
         if (JAMToDetik(_time) < JAMToDetik(closetiem) && JGT(_time, opentiem))
         {
             printInfo(antrian);
         }
+        
     }
     return 0;
 }
@@ -235,27 +262,6 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
         }
     }
 }
-
-void repair(Kata command)
-{
-    int id = GetObject(_map, 'W');
-    if (id != -10)
-    {
-        if (!_wahana(id).status)
-        {
-            _wahana(id).status = true;
-            ActionAddTime(_actions, command, &_time);
-            _money -= WBuildPrice((_wahana(id)).current) / 2;
-        } else {
-            DrawMap(_map, "Wahana sudah berfungsi dengan baik\n");
-            // printf("Wahana sudah ok\n");
-        }
-    } else {
-        DrawMap(_map, "Tidak ada wahana di dekat Anda\n");
-        // printf("Tidak ada wahana didekat anda\n");
-    }
-    return;
-};
 
 void detail()
 {
@@ -396,6 +402,7 @@ void printInfo(PrioQueue Antrian)
     JAM ClosingTime = MakeJAM(21, 0, 0);
     JAM TimeRemaining = DetikToJAM(Durasi(_time, ClosingTime));
 
+    printf("Main Phase Day %d\n", _day);
     printf("Nama                            :   "); PrintKata(KName); printf("\n"); 
     printf("Money                           :   %d\n", _money); 
     printf("Current Time                    :   "); TulisJAM(_time); printf("\n"); 

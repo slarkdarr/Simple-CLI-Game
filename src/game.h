@@ -61,7 +61,7 @@ extern GAME gameInstance;
 #define _wTCount WahanaTypeCount(gameInstance)
 #define _wahana(i) Wahana(gameInstance)[i]
 #define _wCount WahanaCount(gameInstance)
-#define _money Money(gameInstance) //gua tambahin vin -Noler
+#define _money Money(gameInstance)
 #define _mlist MaterialList(gameInstance)
 #define _actions Actions(gameInstance)
 #define _day Day(gameInstance)
