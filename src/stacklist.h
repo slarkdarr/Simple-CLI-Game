@@ -5,6 +5,8 @@
 #include "point.h"
 #include "mesinkata.h"
 #include "boolean.h"
+#include "map.h"
+#include <stdio.h>
 #include <stdlib.h>
 
 /* Konstanta */
@@ -26,6 +28,7 @@ typedef struct tElmtStack {
 	int InfoCommand;
 	POINT PointPlayer;
 	addressStack Next; 
+	gAddress_V MapStack;
 } ElmtStack; 
 
 /* Type stack dengan ciri TOP : */
@@ -41,9 +44,10 @@ typedef struct {
 #define InfoCommand(P) (P)->InfoCommand
 #define Command(P) (P)->Command
 #define PointPlayer(P) (P)->PointPlayer
+#define MapStack(P) (P)->MapStack
 
 /* Prototype manajemen memori */
-void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoCommand, POINT pointPlayer);
+void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoCommand, POINT pointPlayer, gAddress_V mapStack);
 /* I.S. Sembarang */
 /* F.S. Alamat P dialokasi, jika berhasil maka Info(P)=X dan 
         Next(P)=Nil */
@@ -58,13 +62,13 @@ boolean STACK_IsEmpty (Stack S);
 void STACK_CreateEmpty (Stack * S);
 /* I.S. sembarang */ 
 /* F.S. Membuat sebuah stack S yang kosong */
-void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT pointPlayer);
+void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT pointPlayer, gAddress_V MapStack);
 /* Menambahkan X sebagai elemen Stack S */
 /* I.S. S mungkin kosong, X terdefinisi */
 /* F.S. X menjadi TOP yang baru jika alokasi X berhasil, */
 /*      jika tidak, S tetap */
 /* Pada dasarnya adalah operasi Insert First pada list linier */
-void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer);
+void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer, gAddress_V *MapStack);
 /* Menghapus X dari Stack S. */
 /* I.S. S tidak mungkin kosong */
 /* F.S. X adalah nilai elemen TOP yang lama, */

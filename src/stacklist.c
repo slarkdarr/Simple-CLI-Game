@@ -1,11 +1,12 @@
 #include "stacklist.h"
 #include "point.h"
 #include "boolean.h"
+#include "map.h"
 #include <stdio.h>
 #include <stdlib.h>
 
 // Prototype manajemen memori 
-void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoCommand, POINT pointPlayer)
+void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoCommand, POINT pointPlayer, gAddress_V mapStack)
 {
     *P = (addressStack) malloc(sizeof(ElmtStack));
     if (*P != STACK_Nil)
@@ -14,6 +15,7 @@ void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoComm
         SpecCommand(*P) = specCommand;
         InfoCommand(*P) = infoCommand;
         PointPlayer(*P) = pointPlayer;
+        MapStack(*P) = mapStack;
         Next(*P) = STACK_Nil;
     }
 }
@@ -45,10 +47,10 @@ void STACK_CreateEmpty (Stack * S)
 // Membuat Stack yang tidak memiliki isi
 // Representasi List Linier Stack (LIFO)
 
-void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT pointPlayer)
+void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT pointPlayer, gAddress_V mapStack)
 {
     addressStack P;
-    STACK_Alokasi(&P, command, specCommand, infoCommand, pointPlayer);
+    STACK_Alokasi(&P, command, specCommand, infoCommand, pointPlayer, mapStack);
     if (P != STACK_Nil)
     {
         Next(P) = Top(*S);
@@ -63,7 +65,7 @@ void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT poin
 // PointPlayer(P) : Berisi POINT Player saat melakukan aksi
 // addressStack P kemudian dimasukkan dalam Stack dengan metode Last In First Out (LIFO)
 
-void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer)
+void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer, gAddress_V *mapStack)
 {
     addressStack P = Top(*S);
     if (Next(P) == STACK_Nil)
@@ -73,6 +75,7 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
         *specCommand = SpecCommand(P);
         *infoCommand = InfoCommand(P);
         *pointPlayer = PointPlayer(P);
+        *mapStack = MapStack(P);
         STACK_Dealokasi(P);
     }
     else
@@ -82,6 +85,7 @@ void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *p
         *specCommand = SpecCommand(P);
         *infoCommand = InfoCommand(P);
         *pointPlayer = PointPlayer(P);
+        *mapStack = MapStack(P);
         Next(P) = STACK_Nil;
         STACK_Dealokasi(P);
     }

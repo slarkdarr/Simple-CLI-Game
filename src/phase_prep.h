@@ -15,9 +15,9 @@
 
 int preparation_phase();
 
-void Build(MAP *M, POINT P, int i);   
+void Build(MAP *M, POINT P, int i, gAddress_V mapStack);   
 //Fungsi untuk membangun wahana baru, i merupakan indeks wahana yang akan dibuat, menunjuk pada array wahana
-void Upgrade(POINT P, int specCommand_, int infoCommand_); //Fungsi untuk meng-upgrade wahana
+void Upgrade(POINT P, int specCommand_, int infoCommand_, gAddress_V mapStack_); //Fungsi untuk meng-upgrade wahana
 void Buy(TabMaterial *TabMat, int Jumlah, int Index);     //Fungsi untuk membeli bahan bangunan
 void Undo(Stack *S, JAM *timeNeeded, int *moneyNeeded);    //Fungsi untuk melakukan UNDO pada eksekusi terakhir pemain
 void Execute(Stack *S, int *globalCurrency); //Fungsi untuk mengeksekusi setiap command yang diberikan pemain

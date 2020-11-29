@@ -96,7 +96,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                             {
                                 int indeks = SearchForIndexMaterial(buyName);
                                 // Indeks dari Material yang diinput player (dalam Array of Materials)
-                                Push(&Actions, command, indeks, nBuy, Player(_map)); 
+                                Push(&Actions, command, indeks, nBuy, Player(_map), _fullMap); 
                                 // Memasukkan action Buy beserta info-info yang diperlukan ke dalam Stack Actions
                                 timeNeeded = JCheck; // timeNeeded ditambahkan (di set menjadi JCheck)
                                 moneyNeeded += price; // Menambahkan moneyNeeded
@@ -156,7 +156,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
 
                                     TypeElmtAtP(_map, Player(_map).X, Player(_map).Y) = 'w'; // w menandakan sedang dibuat, setelah execute akan menjadi W
                                     InfoElmtAtP(_map, Player(_map).X, Player(_map).Y) = indeks; // indeks array //indeks sementara pada map agar tidak bisa dijalani //CEK
-                                    Push(&Actions, command, indeks, 1, Player(_map));
+                                    Push(&Actions, command, indeks, 1, Player(_map), _fullMap);
                                     Player(_map) = GetObjectP(&_map,'-'); // memindahkan player ke '-' terdekat
                                     DrawMap(_map, "");
                                     // moneyNeeded =  /////
@@ -236,7 +236,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                             MaterialQuantity(_mlist, 0) -= WWood(Left((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 1) -= WStone(Left((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 2) -= WIron(Left((_wahana(cekobjek)).current));
-                                            Push(&Actions, command, cekobjek, 1, cekpointobjek);
+                                            Push(&Actions, command, cekobjek, 1, cekpointobjek, _fullMap);
                                             // 1 berarti left
                                             moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
                                             timeNeeded = JCheck;
@@ -255,7 +255,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                             MaterialQuantity(_mlist, 0) -= WWood(Right((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 1) -= WStone(Right((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 2) -= WIron(Right((_wahana(cekobjek)).current));
-                                            Push(&Actions, command, cekobjek, 0, cekpointobjek);
+                                            Push(&Actions, command, cekobjek, 0, cekpointobjek, _fullMap);
                                             // 0 berarti right
                                             moneyNeeded += WBuildPrice(Right((_wahana(cekobjek)).current));
                                             timeNeeded = JCheck;
@@ -287,7 +287,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                             MaterialQuantity(_mlist, 0) -= WWood(Left((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 1) -= WStone(Left((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 2) -= WIron(Left((_wahana(cekobjek)).current));
-                                            Push(&Actions, command, cekobjek, 1, cekpointobjek);
+                                            Push(&Actions, command, cekobjek, 1, cekpointobjek, _fullMap);
                                             // 1 berarti left
                                             moneyNeeded += WBuildPrice(Left((_wahana(cekobjek)).current));
                                             timeNeeded = JCheck;
@@ -317,7 +317,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
                                             MaterialQuantity(_mlist, 0) -= WWood(Right((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 1) -= WStone(Right((_wahana(cekobjek)).current));
                                             MaterialQuantity(_mlist, 2) -= WIron(Right((_wahana(cekobjek)).current));
-                                            Push(&Actions, command, cekobjek, 0, cekpointobjek);
+                                            Push(&Actions, command, cekobjek, 0, cekpointobjek, _fullMap);
                                             // 0 berarti right
                                             moneyNeeded += WBuildPrice(Right((_wahana(cekobjek)).current));
                                             timeNeeded = JCheck;
@@ -402,23 +402,27 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
 }
 
 //ini command yang dijalanin kalo command build, tambahin build ke stack
-void Build(MAP *M, POINT P, int i) //indeks pada array wahana
+void Build(MAP *M, POINT P, int i, gAddress_V mapStack) //indeks pada array wahana
 {
+    POINT Point = Player(_map);
     // int x = P.X; /////
     // int y = P.Y; /////
     // InfoElmtAtP(*M, x, y) = i; /////
     // TypeElmtAtP(*M, x, y) = 'W'; /////
-    WAHANA_CreateInstance(P, i);
+    WAHANA_CreateInstance(P, i, mapStack);
+    _map = VertexMap(_fullMap);
+    Player(_map) = Point;
     // Memasukkan Wahana pada Array yang berisi wahana yang terdapat dalam map
     // Mengganti TypeElmtAtP menjadi 'W' dengan Info menunjuk ke array pada wahana
 }
 
-void Upgrade(POINT P, int specCommand_, int infoCommand_)
+void Upgrade(POINT P, int specCommand_, int infoCommand_, gAddress_V mapStack_)
 // Mengakses array of Wahana Instance, upgrade wahana instance
 // specCommand_ merupakan indeks array of Wahana Instance, infoCommand_ menentukan upgrade ke left atau right
 // infoCommand_ == 1 berarti Left, infoCommand_ == 0 berarti Right
 {
-    TypeElmtAtP(_map, P.X, P.Y) = 'W'; // Penanda upgrade selesai, TypeElement menjadi W lagi
+    POINT Point = Player(_map);
+    TypeElmtAtP(VertexMap(mapStack_), P.X, P.Y) = 'W'; // Penanda upgrade selesai, TypeElement menjadi W lagi
     if (infoCommand_) // Jika infoCommand_ == 1 atau true maka Left
     {
         (_wahana(specCommand_)).current = Left(_wahana(specCommand_).current); // Mengganti current wahana Type pada Array of Wahana
@@ -436,6 +440,8 @@ void Upgrade(POINT P, int specCommand_, int infoCommand_)
         // (_wahana(specCommand_)).upgradeHistory[(_wahana(specCommand_)).upgradeHistoryNEff] = false; // Insersi pada NEff array boolean
         // (_wahana(specCommand_)).upgradeHistoryNEff += 1; // Menambah NEff dari history upgrade wahana
     }
+    _map = VertexMap(_fullMap);
+    Player(_map) = Point;
 }
 
 void Buy(TabMaterial *TabMat, int Jumlah, int Index)
@@ -452,6 +458,7 @@ void Execute(Stack *S, int *globalCurrency)
     int specCommand_;
     int infoCommand_;
     POINT pointPlayer_;
+    gAddress_V mapStack_;
 
     // Kata pembanding
     Kata KataBuild = CreateKata("build");
@@ -460,14 +467,14 @@ void Execute(Stack *S, int *globalCurrency)
 
     while (!STACK_IsEmpty(*S))
     {
-        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_);
+        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_, &mapStack_);
         if (IsKataSama(command_, KataBuild))
         {
-            Build(&_map, pointPlayer_, specCommand_); // Melaksanakan Build
+            Build(&_map, pointPlayer_, specCommand_, mapStack_); // Melaksanakan Build
         }
         else if (IsKataSama(command_, KataUpgrade))
         {
-            Upgrade(pointPlayer_, specCommand_, infoCommand_); // Melaksanakan Upgrade
+            Upgrade(pointPlayer_, specCommand_, infoCommand_, mapStack_); // Melaksanakan Upgrade
         }
         else if (IsKataSama(command_, KataBuy))
         {
@@ -485,10 +492,11 @@ void toTarget(Stack *S, Stack *Target)
     int specCommand_;
     int infoCommand_;
     POINT pointPlayer_;
+    gAddress_V mapStack_;
     while (!STACK_IsEmpty(*S))
     {
-        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_);
-        Push(Target, command_, specCommand_, infoCommand_, pointPlayer_);
+        Pop(S, &command_, &specCommand_, &infoCommand_, &pointPlayer_, &mapStack_);
+        Push(Target, command_, specCommand_, infoCommand_, pointPlayer_, mapStack_);
     }
 }
 
@@ -510,6 +518,8 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
     int specCommand__; // Menyimpan spesifikasi dari action yang dilakukan, memiliki arti yang berbeda untuk action yang berbeda
     int infoCommand__; // Info dari command yang dilakukan
     POINT pointPlayer__; // Point player / Point bangunan
+    gAddress_V mapStack__; // Lokasi Map saat melakukan command tersebut
+    POINT Point = Player(_map);
     addressStack P = Top(*S);
     if (P == STACK_Nil)
     {
@@ -518,14 +528,14 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
     }
     else
     {
-        Pop(S, &command__, &specCommand__, &infoCommand__, &pointPlayer__); 
+        Pop(S, &command__, &specCommand__, &infoCommand__, &pointPlayer__, &mapStack__); 
         // Melakukan pop dari Stack meng-assign tiap elemen pada hasil pop ke variable di atas
         if (IsKataSama(command__, CreateKata("build")))
         {
             int x = pointPlayer__.X;
             int y = pointPlayer__.Y;
-            InfoElmtAtP(_map, x, y) = -1; // Mengembalikan info elemen agar dapat dilangkahi lagi oleh player
-            TypeElmtAtP(_map, x, y) = '-'; // Mengembalikan ke karakter '-'
+            InfoElmtAtP(VertexMap(mapStack__), x, y) = -1; // Mengembalikan info elemen agar dapat dilangkahi lagi oleh player
+            TypeElmtAtP(VertexMap(mapStack__), x, y) = '-'; // Mengembalikan ke karakter '-'
             Buy(&_mlist, WWood(_wType(specCommand__)), 0); // refund wood
             Buy(&_mlist, WStone(_wType(specCommand__)), 1); // refund stone
             Buy(&_mlist, WIron(_wType(specCommand__)), 2); // refund iron
@@ -551,7 +561,7 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
                 // refund bahan bangunan dan uang
             }
             POINT posisi = _wahana(specCommand__).position;
-            TypeElmtAtP(_map, posisi.X, posisi.Y) = 'W';
+            TypeElmtAtP(VertexMap(mapStack__), posisi.X, posisi.Y) = 'W';
             // Membuat karater pada posisi.X, posisi.Y menjadi karakter 'W' atau W kapital, menandakan build sudah selesai
             /////
             // //pointPlayer pada upgrade merupakan point wahana yang akan di upgrade
@@ -580,6 +590,8 @@ void Undo (Stack *S, JAM *timeNeeded, int *moneyNeeded) // untuk fungsi user und
         waktu -= GetDuration(_actions, command__); // Mengambil durasi dari action yang dilakukan dari array of actions, lalu waktu dikurangkan sebanyak hasil
         *timeNeeded = DetikToJAM(waktu); // Mengurangkan timeNeeded sesuai dengan tipe action yang dilakukan
     }
+    _map = VertexMap(_fullMap);
+    Player(_map) = Point;
 }
 
 boolean SearchForBuilding(Kata Building)

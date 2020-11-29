@@ -20,6 +20,7 @@ Cost yang dibutuhkan untuk upgrade wahana(pindah ke node ​tree​ lain):
 #include "boolean.h"
 #include "mesinkata.h"
 #include "point.h"
+#include "map.h"
 
 typedef struct tWAHANA_Eltype {
     Kata nama;
@@ -107,7 +108,7 @@ FILE* readWahanaType(tAddress *WAHANAT);
 
 void WAHANA_PrintInfo(tAddress wahana);
 
-void WAHANA_CreateInstance(POINT location, int type); // Membuat wahana baru di location dengan tipe _wType(type)
+void WAHANA_CreateInstance(POINT location, int type, gAddress_V map); // Membuat wahana baru di location dengan tipe _wType(type)
 void WAHANA_PrintDetails(WAHANA_Instance W);
 
 void WAHANA_PrintUpgrade(tAddress W);

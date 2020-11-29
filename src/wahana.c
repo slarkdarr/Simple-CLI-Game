@@ -200,8 +200,8 @@ void WAHANA_PrintInfo(tAddress wahanaT)
     printf("\n");
     printf("\n");
 }
-
-void WAHANA_CreateInstance(POINT location, int type)
+// Ditamah gAddress_V
+void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
 {
     // tAddress current; // sekarang wahananya apa
     // POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
@@ -230,8 +230,9 @@ void WAHANA_CreateInstance(POINT location, int type)
     newWahana.status = true;
     newWahana.totalIncome = 0;
     
-    TypeElmtAtP(_map, location.X, location.Y) = 'W';
-    InfoElmtAtP(_map, location.X, location.Y) = _wCount;
+    TypeElmtAtP(VertexMap(map), location.X, location.Y) = 'W';
+    printf("%d\n", VertexId(map));
+    InfoElmtAtP(VertexMap(map), location.X, location.Y) = _wCount;
     _wahana(_wCount) = newWahana;
     _wCount += 1;
     
