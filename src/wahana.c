@@ -232,9 +232,10 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     newWahana.timesUsedToday = 0;
     newWahana.status = true;
     newWahana.totalIncome = 0;
+    newWahana.mapId = VertexId(map);
     
     TypeElmtAtP(VertexMap(map), location.X, location.Y) = 'W';
-    printf("%d\n", VertexId(map));
+    // printf("%d\n", VertexId(map));
     InfoElmtAtP(VertexMap(map), location.X, location.Y) = _wCount;
     _wahana(_wCount) = newWahana;
     _wCount += 1;

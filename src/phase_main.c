@@ -71,6 +71,10 @@ int main_phase()
                     Move(&_map, 'S', &messageBuffer, &_fullMap);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
+                } else if (IsKataSama(command, CreateKata("save")))
+                {
+                    GAME_Save();
+                    DrawMap(_map, "Game telah disave\n");
                 } else {
                     Kata WahanaServe;
                     // printf("HUHI"); /////

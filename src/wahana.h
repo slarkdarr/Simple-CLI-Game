@@ -79,6 +79,7 @@ typedef struct
     tAddress current; // sekarang wahananya apa
     POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
     POINT exPosition[15]; // [EXTENDED POSITIONS] ukuran disimpan sebagai list implementasi array
+    int mapId;
     int size; // size adalah NEff+1 dari exPosition
 
     upgrade upgrades;
@@ -90,7 +91,7 @@ typedef struct
     int timesUsed; // total dipakai berapa kali
     int timesUsedToday; // hari ini dipakai berapa kali
     int totalIncome;
-    
+
     boolean status;
 } WAHANA_Instance;
 
