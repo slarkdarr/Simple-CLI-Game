@@ -1,14 +1,14 @@
-#wt
+#wt 0
 100
 5
 1200
 4
 4 2 1 100
-1 2 5
+1 2 6
 Rollercoaster
 Normal rollercoaster
 
-#wu 
+#wu 1
 200
 5
 1800
@@ -18,7 +18,7 @@ Normal rollercoaster
 Super Rollercoaster
 Rollercoaster super
 
-#wu
+#wu 2
 400
 10
 1800
@@ -28,7 +28,7 @@ Rollercoaster super
 Extreme Rollercoaster
 Rollercoaster extreme
 
-#wu
+#wu 3
 800
 15
 2700
@@ -38,17 +38,27 @@ Rollercoaster extreme
 Coaster Park
 A really long rollercoaster
 
-#wu
+#wu 4
+800
+15
+2700
+60
+2 2 2 200
+-1 5
+Sweet Coaster
+Candy themed rollercoaster
+
+#wu 5
 800
 15
 2700
 60
 2 2 2 200
 -1 -1
-Sweet Coaster
-Candy themed rollercoaster
+Sweet Coaster 2
+Candy themed rollercoaster 2
 
-#wt
+#wt 1
 150
 5
 1200
@@ -58,7 +68,7 @@ Candy themed rollercoaster
 Haunted House
 Normal haunted house
 
-#wu 
+#wu 1
 200
 10
 1800
@@ -68,7 +78,7 @@ Normal haunted house
 Haunted Pirates
 House full of haunted pirates
 
-#wu
+#wu 2
 400
 10
 1800
@@ -78,7 +88,7 @@ House full of haunted pirates
 Haunted Spaceship
 Spaceship full of haunted aliens
 
-#wu
+#wu 3
 800
 15
 2700
@@ -88,7 +98,7 @@ Spaceship full of haunted aliens
 Haunted Park
 A really scary park
 
-#wu
+#wu 4
 800
 15
 2700

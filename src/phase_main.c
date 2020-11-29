@@ -43,14 +43,24 @@ int main_phase()
         {
             case 'w':
             case 'W':
-                Move(&_map, 'W', &messageBuffer, &_fullMap);
-                ActionAddTime(_actions, command, &_time);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'W', &messageBuffer, &_fullMap);
+                    ActionAddTime(_actions, command, &_time);
+                } else {
+                    messageBuffer = "Input tidak benar\n";
+                }
                 DrawMap(_map, messageBuffer);
                 break;
             case 'a':
             case 'A':
-                Move(&_map, 'A', &messageBuffer, &_fullMap);
-                ActionAddTime(_actions, command, &_time);
+                if (command.Length == 1)
+                {
+                    Move(&_map, 'A', &messageBuffer, &_fullMap);
+                    ActionAddTime(_actions, command, &_time);
+                } else {
+                    messageBuffer = "Input tidak benar\n";
+                }
                 DrawMap(_map, messageBuffer);
                 break;
             case 's':
@@ -60,11 +70,15 @@ int main_phase()
                     Move(&_map, 'S', &messageBuffer, &_fullMap);
                     ActionAddTime(_actions, command, &_time);
                     DrawMap(_map, messageBuffer);
+                } else if (IsKataSama(command, CreateKata("save")))
+                {
+                    GAME_Save();
+                    DrawMap(_map, "GAME SAVED");
                 } else {
                     Kata WahanaServe;
                     // printf("HUHI"); /////
                     WahanaServe = ParseKata(command, CreateKata("serve "));
-                    // printf("Huhi2"); /////
+                    printf("Huhi2"); /////
                     if (WahanaServe.Length > 1)
                     {
                         if (GetObject(_map, 'A') != -10 && !IsEmptyPrioQueue(antrian))
