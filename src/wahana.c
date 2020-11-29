@@ -138,6 +138,7 @@ tAddress WAHANAT_Alokasi(char name[], int price, int cap, int dur, char desc[], 
 // edited buat naro wood, stone, iron
 WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc, int wood, int stone, int iron, int buildprice)
 {
+    /*Konstruktor, digunakan saat load dari file*/
     WAHANA_ElType result;
 
     WahanaNama(result) = name;
@@ -155,6 +156,7 @@ WAHANA_ElType WAHANAT_Create(Kata name, int price, int cap, int dur, Kata desc, 
 
 void WAHANA_PrintInfo(tAddress wahanaT)
 {
+    /*Digunakan untuk testing*/
     WAHANA_ElType wahana = Akar(wahanaT);
 
     printf("NAME       : ");
@@ -206,8 +208,10 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     // tAddress current; // sekarang wahananya apa
     // POINT position; // letak wahana, kalau jadi ada ukuran, make list of position
 
-    // boolean upgradeHistory[25]; // Upgrade history disimpen pake List Implementasi Array, true = Left, false = right      
-    // int upgradeHistoryNEff; // NEff dari upgradeHistory
+    // upgrade upgrades // list berkait untuk 
+
+    // int size // ukuran wahana
+    // int exPosition[] List // implementasi array dari semua posisi dari wahanaInstance
 
     // int root; // id tipe awal wahananya apa
     // int currentLoad; // sekarang isinya ada berapa orang
@@ -216,13 +220,9 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     // int timesUsedToday; // hari ini dipakai berapa kali
     WAHANA_Instance newWahana;
 
-    // Test(4);
-
     newWahana.current = _wType(type);
     newWahana.position = location;
-    // Test(3);
     newWahana.upgrades = AlokUpgrade(_wType(type));
-    // Test(2);
     newWahana.size = 1;
     newWahana.exPosition[0] = location;
 
@@ -235,7 +235,6 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
     newWahana.mapId = VertexId(map);
     
     TypeElmtAtP(VertexMap(map), location.X, location.Y) = 'W';
-    // printf("%d\n", VertexId(map));
     InfoElmtAtP(VertexMap(map), location.X, location.Y) = _wCount;
     _wahana(_wCount) = newWahana;
     _wCount += 1;
@@ -245,6 +244,7 @@ void WAHANA_CreateInstance(POINT location, int type, gAddress_V map)
 
 void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana)
 {
+    //Menambahkan ukuran wahana
     _wahana(idWahana).exPosition[_wahana(idWahana).size] = P;
     _wahana(idWahana).size++;
 
@@ -253,13 +253,14 @@ void WAHANA_ExtendInstance(gAddress_V M, POINT P, int idWahana)
         POINT PP = _wahana(idWahana).exPosition[i];
         TypeElmtAtP(VertexMap(M), PP.X, PP.Y) = 'W';
         InfoElmtAtP(VertexMap(M), PP.X, PP.Y) = idWahana;
-    }//////////
+    }
     return;
 }
 
 
 upgrade AlokUpgrade(tAddress WahanaType)
 {
+    // Alokasi upgrade
     upgrade result = malloc(sizeof(UpgradeHistory));
     UpgradeInfo(result) = WahanaType;
     NextUpgrade(result) = NULL;
@@ -269,6 +270,7 @@ upgrade AlokUpgrade(tAddress WahanaType)
 
 void AddToUpgradeHistory(upgrade *UpgradeHistory, boolean Left)
 {
+    // Menambahkan suatu upgrade ke suatu history upgrade wahana
     Test(20);
     upgrade P = *UpgradeHistory;
     while (NextUpgrade(P) != NULL)
@@ -330,6 +332,7 @@ void WAHANA_PrintCommandUpgrade(tAddress W)
 
 void WAHANA_PrintDetails(WAHANA_Instance W)
 {
+    // untuk command detail
     printf("Nama        : ");
     PrintKata(WNama(W.current));
     printf("\n");
@@ -414,6 +417,7 @@ void WAHANA_PrintCommandUpgradeRight(tAddress W)
 
 void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
 {
+    // Menampilkan Details suatu wahana
     /*
     DETAILS
     Nama
@@ -453,6 +457,7 @@ void WAHANA_PrintOfficeDetails(WAHANA_Instance W)
 
 void WAHANA_PrintOfficeReport(WAHANA_Instance W)
 {
+    // Menampilkan Report suatu wahana berupa penghasilan total dan penghasilan di hari pemanggilan
     PrintKata(WNama(W.current)); ln;
     printf("Dinaiki sebanyak %d kali (total), %d hari ini", W.timesUsed, W.timesUsedToday); ln;
     printf("Penghasilan:"); ln;
@@ -462,6 +467,7 @@ void WAHANA_PrintOfficeReport(WAHANA_Instance W)
 
 void WAHANA_PrintHistory(WAHANA_Instance W)
 {
+    // Print history upgrade wahana
     int i; 
     upgrade upgrades = W.upgrades;
 
@@ -478,5 +484,6 @@ void WAHANA_PrintHistory(WAHANA_Instance W)
 
 boolean WAHANA_IsFull (WAHANA_Instance W)
 {
-    return (WKapasitas(W.current) == W.currentLoad);
+    // mengecek jika kapasitas wahana penuh
+    return (WKapasitas(W.current)*W.size == W.currentLoad);
 }

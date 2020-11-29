@@ -6,6 +6,7 @@
 #include <time.h>
 
 void CreateEmptyPrioQueue(PrioQueue *Antrian, int Max)
+/* Prosedur membuat antrian pengunjung kosong */
 {
   PrioQueue QTemp;
   QTemp.T = (Pengunjung *)malloc((Max) * sizeof(Pengunjung));
@@ -21,6 +22,7 @@ void CreateEmptyPrioQueue(PrioQueue *Antrian, int Max)
 }
 
 void CreateEmptyPrioQueueWahana(PrioQueueWahana *QWahana, int MaxCap)
+/* Prosedur membuat isi wahana kosong dengan representasi prioqueue */
 {
   PrioQueueWahana WTemp;
   WTemp.P = (Penumpang *)malloc((MaxCap) * sizeof(Penumpang));
@@ -36,6 +38,7 @@ void CreateEmptyPrioQueueWahana(PrioQueueWahana *QWahana, int MaxCap)
 }
 
 void CreatePenumpang(Penumpang *P, JAM out, int idWahana, Pengunjung X, int durasi)
+/* Prosedur membuat penumpang dengan elemen penyusunnya */
 {
   Pengunjung(*P) = X;
   JAMOut(*P) = out;
@@ -44,6 +47,7 @@ void CreatePenumpang(Penumpang *P, JAM out, int idWahana, Pengunjung X, int dura
 }
 
 void CreateEmptyListWahana(ListWahana *W, int nWahana)
+/* Prosedur membuat list wahana kosong */
 {
   ListW(*W) = (int*) malloc (nWahana * sizeof(int));
   
@@ -54,26 +58,32 @@ void CreateEmptyListWahana(ListWahana *W, int nWahana)
 }
 
 boolean IsEmptyPrioQueue (PrioQueue Antrian)
+/* Mengirimkan true apabila antrian kosong */
 {
   return (Head(Antrian)==-1) && (Tail(Antrian)==-1);
 }
 
 boolean IsEmptyPrioQueueW (PrioQueueWahana QWahana)
+/* Mengirimkan true apabila isi wahana kosong */
 {
   return (Head(QWahana)==-1) && (Tail(QWahana)==-1);
 }
 
 boolean IsEmptyWahana(ListWahana LWahana, int nWahana)
+/* Mengirimkan true apabila list wahana kosong */
 {
   return (NBElmtWahana(LWahana, nWahana)==0);
 }
 
 boolean IsFullPrioQueue (PrioQueue Antrian)
+/* Mengirimkan true apabila antrian penuh */
 {
   return (Head(Antrian) == (Tail(Antrian) + 1)%MaxElPrioQueue(Antrian));
 }
 
 int NBElmtWahana(ListWahana W, int nWahana)
+/* Mengirimkan jumlah pengunjung dalam antrian */
+/* Elemen pada list wahana bernilai 1 apabila pengunjung ingin naik wahana tersebut */
 {
   int n = 0;
   
@@ -84,18 +94,22 @@ int NBElmtWahana(ListWahana W, int nWahana)
 }
 
 int NBElmtPrioQueue (PrioQueue Antrian)
+/* Mengirimkan jumlah pengunjung dalam antrian */
 {
   if (IsEmptyPrioQueue(Antrian)) return 0;
   return ((Tail(Antrian) - Head(Antrian) + MaxElPrioQueue(Antrian))%MaxElPrioQueue(Antrian))+1;
 }
 
 int NBElmtPrioQueueW (PrioQueueWahana QWahana)
+/* Mengirimkan jumlah queue isi wahana */
 {
   if (IsEmptyPrioQueueW(QWahana)) return 0; 
   return ((Tail(QWahana) - Head(QWahana) + MaxElPrioQueue(QWahana))%MaxElPrioQueue(QWahana))+1;
 }
 
 void DeAlokasi(PrioQueue * Antrian)
+/* Dealokasi antrian */
+
 {
   Head(*Antrian) = -1;
   Tail(*Antrian) = -1;
@@ -104,6 +118,7 @@ void DeAlokasi(PrioQueue * Antrian)
 }
 
 void DeAlokasiQWahana(PrioQueueWahana *QWahana)
+/* Dealokasi isi wahana */
 {
   Head(*QWahana) = -1;
   Tail(*QWahana) = -1;
@@ -112,16 +127,18 @@ void DeAlokasiQWahana(PrioQueueWahana *QWahana)
 }
 
 void DelWahana(ListWahana *W, int idxWahana, int nWahana)
+/* Menghapus wahana dengan pada indeks idxWahana pada list wahana, dilakukan dengan mengubah elemen pada array list wahana menjadi -1 */
 {
   int i = 0;
   while (i < nWahana && i != idxWahana)
     i++;
   if (i != nWahana)
-    ElmtWahana(*W, i) = -1;
+    ElmtWahana(*W, i) = -1; // elemen idxwahana diubah
 }
 
 void Enqueue (PrioQueue * Antrian, Pengunjung X)
 {
+  /* Prosedur menambahkan pengunjung ke antrian */
   if (IsEmptyPrioQueue(*Antrian))
     Head(*Antrian) = 0;
   
@@ -143,6 +160,7 @@ void Enqueue (PrioQueue * Antrian, Pengunjung X)
 }
 
 void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int durasiWahana, JAM CurrTime)
+/* Prosesdur menambahkan penunpang ke isi wahana */
 {
   Penumpang PNew;
   int durasi = durasiWahana + JAMToDetik(CurrTime);
@@ -171,6 +189,7 @@ void EnqueueWahana (PrioQueueWahana * QWahana, Pengunjung X, int idWahana, int d
 }
 
 void EnqueuePenumpang (PrioQueueWahana * QWahana, Penumpang X)
+/* Prosedur menambahkan penumpang ke isi wahana dengan parameter penumpang */
 {
   Penumpang PNew = X;
 
@@ -195,6 +214,7 @@ void EnqueuePenumpang (PrioQueueWahana * QWahana, Penumpang X)
 }
 
 void Dequeue (PrioQueue * Antrian, Pengunjung * X)
+/* Prosedur mengeluarkan pengunjung dari antrian */
 {
   *X = InfoHead(*Antrian);
   if (Head(*Antrian) == Tail(*Antrian))
@@ -209,6 +229,7 @@ void Dequeue (PrioQueue * Antrian, Pengunjung * X)
 }
 
 boolean adaWahana(ListWahana LW, int idxWahana, int nWahana)
+/* Mengirimkan true apabila ada wahana dengan idxWahana pada sebuah list wahana */
 {
   for (int i =0; i<nWahana; i++)
     if (i == idxWahana && ElmtWahana(LW, i) == 1)
@@ -217,6 +238,7 @@ boolean adaWahana(ListWahana LW, int idxWahana, int nWahana)
 }
 
 void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana, int nWahana)
+/* Dequeue dengan mengecek apakah pengunjung ingin menaiki wahana terkait */
 {
   if (adaWahana(ListWP(InfoHead(*Antrian)), idxWahana, nWahana))
     {
@@ -227,6 +249,7 @@ void DequeueAntrian(PrioQueue * Antrian, Pengunjung * X, int idxWahana, int nWah
 }
 
 void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X)
+/* Dequeue pengunjung dari isi wahana */
 {
   if (!IsEmptyPrioQueueW(*QWahana))
   {
@@ -244,6 +267,7 @@ void DequeueWahana(PrioQueueWahana *QWahana, Penumpang *X)
 }
 
 void WahanaToAntrian (PrioQueueWahana *QWahana, Penumpang *X, JAM CurrTime,PrioQueue *Antrian, int nWahana, boolean *b)
+/* Dequeue pengunjung dari isi wahana dan langsung enqueue ke antrian */
 {
   if (!IsEmptyPrioQueueW(*QWahana))
   {  
@@ -285,6 +309,7 @@ void WahanaToAntrian (PrioQueueWahana *QWahana, Penumpang *X, JAM CurrTime,PrioQ
 
 /* Menghapus pengunjung yang kesabaran nya habis */
 void KesabaranHabis(PrioQueue *Antrian)
+/* Prosedur mengeluarkan pengunjung yang kesabarannya habis dari antrian */
 {
   int i = 0;
   PrioQueue AntrianNew;
@@ -301,6 +326,7 @@ void KesabaranHabis(PrioQueue *Antrian)
 }
 
 void DecrKesabaran(PrioQueue *Antrian)
+/* Prosedur decrement kesabaran dari pengunjung dalam antrian */
 {
   // Mengurangi kesabaran Pengunjung
   if (!IsEmptyPrioQueue(*Antrian))
@@ -324,12 +350,12 @@ void setPrio(Pengunjung *X, int prio)
   Prio(*X) = prio;
 }
 void RandomEnqueue(PrioQueue *Antrian, int nWahana) // Memunculkan Pengunjung
+/* Prosedur menambahkan pengunjung ke antrian secara acak */
 {
 
-  if (IsEmptyPrioQueue(*Antrian))
+  if (IsEmptyPrioQueue(*Antrian)) // Apabila empty maka akan mengirimkan minimal 1 pengunjung
   {
     int nEnque = rand() % 2 + 1;
-    //printf("Hasil random 1 %d\n", nEnque);
     for (int i = 0; i < nEnque; i++)
     {
       ListWahana LW;
@@ -342,7 +368,6 @@ void RandomEnqueue(PrioQueue *Antrian, int nWahana) // Memunculkan Pengunjung
 
         if (x==1)
         {
-      //    printf("%d\n", x);
           ElmtWahana(LW, j) = 1; 
         }
         j++;
@@ -439,6 +464,7 @@ void PrintPrioQueue(PrioQueue Antrian, int nWahana)
 }
 
 boolean PengunjungWahana(Pengunjung X, int idxWahana, int nWahana)
+/* Mengirimkan true apabila pengunjung X memiliki idxWahana pada list wahana yang dimilikinya, atau apabila pengunjung X ingin menaiki wahana pada idxWahana */
 {
   ListWahana W = ListWP(X);
 

@@ -20,6 +20,7 @@ int main()
     Wahana.timesUsedToday = 0;
     Wahana.status = true;
     Wahana.totalIncome = 0;
+    // Test upgrade history
     for (int i = 0; i < 6; i++)
     {
         if (i % 2 == 0)
@@ -33,6 +34,7 @@ int main()
             AddToUpgradeHistory(&Wahana.upgrades, true);
         }
     }
+    // Upgrade ditest dengan metode boolean
     upgrade P = Wahana.upgrades;
     while (P != NULL)
     {

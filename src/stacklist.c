@@ -25,6 +25,7 @@ void STACK_Alokasi (addressStack *P, Kata command, int specCommand, int infoComm
 // SpecCommand(P) = int specCommand
 // InfoCommand(P) = int infoCommand
 // PointPlayer(P) = POINT pointPlayer
+// MapStack(P) = Berisi Vertex dari Graph variasi multilist untuk menentukan pada map mana player sedang melakukan aksi
 
 void STACK_Dealokasi (addressStack P)
 {
@@ -64,11 +65,12 @@ void Push (Stack * S, Kata command, int specCommand, int infoCommand, POINT poin
 // InfoCommand(P) : Berisi info dari spesifikasi command, misal untuk Buy, berisi jumlah dari indeks specCommand (pada array material yang ada)
 // PointPlayer(P) : Berisi POINT Player saat melakukan aksi
 // addressStack P kemudian dimasukkan dalam Stack dengan metode Last In First Out (LIFO)
+// MapStack(P) = Berisi Vertex dari Graph variasi multilist untuk menentukan pada map mana player sedang melakukan aksi
 
 void Pop (Stack * S, Kata *command, int *specCommand, int *infoCommand, POINT *pointPlayer, gAddress_V *mapStack)
 {
     addressStack P = Top(*S);
-    if (Next(P) == STACK_Nil)
+    if (Next(P) == STACK_Nil) // Jika hanya berisi satu elemen
     {
         Top(*S) = STACK_Nil;
         *command = Command(P);

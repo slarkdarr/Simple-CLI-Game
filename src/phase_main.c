@@ -7,6 +7,9 @@
 
 int main_phase()
 {
+    /*
+    Pindah alih kontrol ke main phase
+    */
     const JAM opentiem = MakeJAM(9, 0, 0);
     const JAM closetiem = MakeJAM(21, 0, 0);
     
@@ -17,8 +20,8 @@ int main_phase()
     PrioQueue antrian;
     PrioQueueWahana inWahana;
     
-    CreateEmptyPrioQueue(&antrian, 5);
-    CreateEmptyPrioQueueWahana(&inWahana, 200);
+    CreateEmptyPrioQueue(&antrian, 5); // Inisialisasi Antrian
+    CreateEmptyPrioQueueWahana(&inWahana, 200); // Inisialisasi Penumpang wahana
     RandomEnqueue(&antrian, _wCount);
 
     DrawMap(_map, "");
@@ -34,7 +37,7 @@ int main_phase()
         }
         printf(": \n");
         ReadInput(&command);
-        if (JAMToDetik(_time) >= JAMToDetik(closetiem))
+        if (JAMToDetik(_time) >= JAMToDetik(closetiem)) // Langsung pindah ke main phase jika telah melebih batas waktu
         {
             printf("Time exceeded, moving on to prepare phase.\n");
             _time = closetiem;
@@ -82,18 +85,12 @@ int main_phase()
                     DrawMap(_map, "Game telah disave\n");
                 } else {
                     Kata WahanaServe;
-                    // printf("HUHI"); /////
                     WahanaServe = ParseKata(command, CreateKata("serve "));
-                    // printf("Huhi2"); /////
                     if (WahanaServe.Length > 1)
                     {
                         if (GetObject(_map, 'A') != -10 && !IsEmptyPrioQueue(antrian))
                         {
-                            // ListWahana p = ListWP(InfoHead(antrian));
-                            // akses elemen ElmtWahana(p,i);
-                            // printf("HAHA"); /////
                             int idw = SearchForIndexWahanaFromAntrian(antrian, WahanaServe);
-                            // printf("idw yang didapat : %d\n", idw); /////
                             if (idw != -10 && idw != -11)
                             {
                                 if ((_wahana(idw).status) == true)
@@ -101,18 +98,18 @@ int main_phase()
                                     serve(&antrian, &inWahana, idw);
                                     ActionAddTime(_actions, CreateKata("serve"), &_time);
 
-                                    // random to break
+                                    // Mengacak kerusakan dari sebuah wahana ketika aksi serve digunakan
                                     time_t t;
                                     srand((unsigned)time(&t));
 
                                     int random = rand();
 
                                     DrawMap(_map, "");
-                                    if ((random%10) == 0)
+                                    if ((random%10) == 0) // 10% kesempatan untuk rusak
                                     {
                                         printf("Wahana dengan id %d rusak, memulai proses mengeluarkan penumpang\n", idw);
-                                        RemoveFromWahana(&antrian, &inWahana, idw, _wCount);
-                                        _wahana(idw).status = false;
+                                        RemoveFromWahana(&antrian, &inWahana, idw, _wCount); // Mengembalikan penumpang yang sedang menaiki wahana dan mengembalikannya ke antrian
+                                        _wahana(idw).status = false; // Berfungsi untuk membuat suatu wahana rusak
                                     }
                                 }
                                 else
@@ -139,13 +136,11 @@ int main_phase()
                             {
                                 DrawMap(_map, "Harus bersebelahan dengan Antrian untuk serve\n");
                             }
-                            // printf("Harus bersebelahan dengan Antrian untuk serve\n"); /////
                         }
                     }
                     else
                     {
                         DrawMap(_map, "Input tidak benar\n");
-                        // printf("Input tidak benar\n"); /////
                     }
                 }
                 break;
@@ -180,11 +175,9 @@ int main_phase()
                                 DrawMap(_map, "Wahana berhasil diperbaiki\n");
                             } else {
                                 DrawMap(_map, "Wahana sudah berfungsi dengan baik\n");
-                                // printf("Wahana sudah ok\n");
                             }
                         } else {
                             DrawMap(_map, "Tidak ada wahana di dekat Anda\n");
-                            // printf("Tidak ada wahana didekat anda\n");
                         }
                     }
                 }
@@ -241,12 +234,12 @@ int main_phase()
             }
         }
         
-        DecrKesabaran(&antrian);
-        KesabaranHabis(&antrian);
-        RandomEnqueue(&antrian, _wCount);
+        DecrKesabaran(&antrian); // Mengurangi kesabaran dari tiap pengunjung
+        KesabaranHabis(&antrian); // Mengecek jika kesabaran dari suatu pengunjung habis maka akan dikeluarkan dari antrian
+        RandomEnqueue(&antrian, _wCount); // Fungsi untuk mengacak masuknya seorang pengunjung ke dalam antrian untuk menunggu di serve
         if (JAMToDetik(_time) < JAMToDetik(closetiem) && JGT(_time, opentiem))
         {
-            printInfo(antrian);
+            printInfo(antrian); // Fungsi untuk print info saat Main Phase
         }
         
     }
@@ -255,6 +248,7 @@ int main_phase()
 
 
 void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
+// Fungsi untuk serve pengunjung paling depan antrian
 {
     if (idw== -10)
         printf("Wahana yang ingin dinaiki sudah penuh\n");
@@ -281,8 +275,10 @@ void serve(PrioQueue *antrian, PrioQueueWahana *inWahana, int idw)
 }
 
 void detail()
+// Prosedur untuk menampilkan detail dari wahana terdekat
 {
-    int id = GetObject(_map, 'W');
+    /* menampilkan detail dari wahana terdekat */
+    int id = GetObject(_map, 'W'); // Fungsi untuk mengambil indeks / InfoElmtAtP dari Wahana terdekat dengan player
     if (id != -10)
     {
         WAHANA_PrintDetails(_wahana(id));
@@ -292,7 +288,9 @@ void detail()
 };
 
 void office_enter()
+// Prosedur simulasi masuk ke dalam office
 {
+    /* Pindah alih kontrol ke office */
     boolean inOffice = true;
     Kata O_Command;
 
@@ -339,15 +337,9 @@ void office_enter()
 
 void office_details()
 {
-    if(_wCount != 0)
-    {
-        int wahanaId = selectWahanaScreen();
-        WAHANA_PrintOfficeDetails(_wahana(wahanaId));
-    } else {
-        printf("Belum ada wahana\n");
-    }
-
     /*
+    Print DETAILS dari wahana hasil selectScreen
+
     DETAILS
     Nama
     Tipe
@@ -359,11 +351,24 @@ void office_details()
     Durasi
     Ukuran
     */
+
+    if(_wCount != 0)
+    {
+        int wahanaId = selectWahanaScreen();
+        WAHANA_PrintOfficeDetails(_wahana(wahanaId));
+    } else {
+        printf("Belum ada wahana\n");
+    }
+
+    
     return;
 };
 
 void office_report()
 {
+    /*
+    Print report dari wahana hasil pilihan selectWahana
+    */
     if (_wCount != 0)
     {
         int wahanaId = selectWahanaScreen();
@@ -378,12 +383,18 @@ void office_report()
 };
 void office_exit()
 {
+    /*
+    Meninggalkan office, pindah alih kontrol balik ke main phase
+    */
     printf("Anda telah meninggalkan office\n");
     return;
 };
 
 int selectWahanaScreen()
 {
+    /*
+    Meminta user memberikan indeks (input mulai dari 1, indeks mulai dari 0, offset -1) di _wahana dari wahana yang diinginkan
+    */
     int i;
     printf("Select Wahana\n");
     for (i = 0; i < _wCount; i++)
@@ -410,6 +421,11 @@ int selectWahanaScreen()
 
 void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
 {
+    /*
+    Mengosongkan semua wahana dan reset frekuensi digunakan hari ini.
+    Juga memperbaiki semua wahana yang rusak
+    
+    */
     _time = MakeJAM(21, 0, 0);
     DeAlokasi(&antrian);
     DeAlokasiQWahana(&inWahana);
@@ -427,6 +443,9 @@ void prepare(PrioQueue antrian, PrioQueueWahana inWahana)
 
 void printInfo(PrioQueue Antrian)
 {
+    /*
+    print Info pendamping map
+    */
     Kata KName = CreateKata(_name);
     JAM ClosingTime = MakeJAM(21, 0, 0);
     JAM TimeRemaining = DetikToJAM(Durasi(_time, ClosingTime));
@@ -441,6 +460,7 @@ void printInfo(PrioQueue Antrian)
 }
 
 void PrintAntrian(PrioQueue Antrian, int nWahana)
+// Prosedur untuk print antrian untuk dilihat oleh player (kegunaannya adalah untuk serve Antrian saat Main Phase)
 {
   printf("Antrian [%d/%d]\n", NBElmtPrioQueue(Antrian), MaxElPrioQueue(Antrian));
   if (!IsEmptyPrioQueue(Antrian))
@@ -481,6 +501,7 @@ void PrintAntrian(PrioQueue Antrian, int nWahana)
 }
 
 int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
+// Mencari indeks yang merepresentasikan wahana yang ingin dinaiki pengunjung paling depan antrian saat itu
 {
     boolean found = false;
     int i = 0;
@@ -524,6 +545,7 @@ int SearchForIndexWahanaFromAntrian(PrioQueue Antrian, Kata W)
 /* Apabila ada wahana rusak */
 void RemoveFromWahana(PrioQueue *Antrian, PrioQueueWahana *QWahana, int idWahana, int nWahana)
 {
+    /*menghilangkan semua pengunjung didalam wahana yang rusak didalam queue wahana*/
   PrioQueueWahana QNew;
 
   CreateEmptyPrioQueueWahana(&QNew, MaxElPrioQueue(*QWahana));

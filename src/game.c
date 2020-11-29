@@ -4,9 +4,12 @@ GAME gameInstance;
 
 void GAME_Init()
 {
+    /*
+    Inisialisasi gameInstance
+    Jam awal 21.00, langsung masuk ke prep phase
+    */
     LoadFullMap(&Map(gameInstance), "map.txt", &FullMap(gameInstance));
     RootMap(gameInstance) = FullMap(gameInstance);
-    // printf("THIS IS ID OF FIRST MAP %d", VertexId(VertexNext(_fullMap)));
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
     WahanaCount(gameInstance) = 0;
     Money(gameInstance) = 0;
@@ -14,28 +17,32 @@ void GAME_Init()
     Day(gameInstance) = 1;
     LoadMaterial(&MaterialList(gameInstance), "material.txt");
     InitializeArrayAction(&Actions(gameInstance));
-    _money = 10000;
-
-    //     Kata nama;
-    // Kata deskripsi;
-    // int harga;
-    // int kapasitas;
-    // int durasi;    
-
-    // printf("\n");
-    // PrintKata((Akar((WahanaType(gameInstance))[0])).nama);
-    // PrintKata((Akar((WahanaType(gameInstance))[0])).deskripsi);
-    // printf("HARGA %d\n", (Akar((WahanaType(gameInstance))[0])).harga);
-    // printf("KAP %d\n", (Akar((WahanaType(gameInstance))[0])).kapasitas);
-    // printf("DURASI %d\n", (Akar((WahanaType(gameInstance))[0])).durasi);
-
-    // printf("OUTSIDE WAHANA.C\n");
-    // WAHANA_PrintInfo(WahanaType(gameInstance)[0]);
-    // WAHANA_PrintInfo(WahanaType(gameInstance)[1]);   
+    _money = 10000; 
 }
 
 void GAME_Load()
 {
+    /*
+    FORMAT SAVEFILE
+    <PName>
+    <money>
+    <day>
+    <time>
+
+    #C 
+    <wCount>
+    #WI
+    <root as index of _wType>
+    <timesUsed> <timesUsedToday>
+    <totalIncome>
+    <size>
+    <status as 0 for false, 1 for true>
+    <mapId>
+    <exPosition[0]>
+    ...
+    <exPosition[size-1]>
+    <upgrades as LRLRLR>
+    */
     LoadFullMap(&Map(gameInstance), "map.txt", &FullMap(gameInstance));
     RootMap(gameInstance) = FullMap(gameInstance);
     LoadWahanaTypes(&(WahanaType(gameInstance)), "wahana.txt", &WahanaTypeCount(gameInstance));
@@ -168,6 +175,10 @@ void GAME_Load()
 
 void GAME_Save()
 {
+    /*
+    Mengambil snapshot gameInstance, menyimpan di savefile.txt. 
+    Hanya bisa dilakukan di main phase
+    */
     FILE *savefile;
 
     savefile = fopen("./savefile.txt", "w");

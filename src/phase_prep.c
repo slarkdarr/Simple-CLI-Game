@@ -37,7 +37,7 @@ int preparation_phase() // buat jadi int return -1 kalo keluar prep phase tapi s
     {
         printf("Perintah : ");
         ReadInput(&command); // Membaca input player menggunakan Mesin Kata
-        switch(command.TabKata[0])
+        switch(command.TabKata[0]) 
         {
             case 'w':
             case 'W':

@@ -32,10 +32,19 @@ typedef struct {
 #define MaterialPrice(T, i) ((T).TI[(i)]).price
 
 void LoadMaterial(TabMaterial *TabMat, char *filename);
+// Prosedur membaca material dari file eksternal
 int SearchForPrice(TabMaterial TabMat, Kata Material);
+// Fungsi untuk mencari harga dari suatu material yang sudah dicari terlebih dahulu oleh fungsi SearchForMaterial 
+// sehingga pasti akan ditemukan jika SearchForMaterial mengembalikan true
 int SearchForQuantity(TabMaterial TabMat, Kata Material);
-void PrintAllMaterials(TabMaterial TabMat); 
-boolean SearchForMaterial(TabMaterial TabMat, Kata Material); //mencari jika material ada
+// Fungsi yang menerima sebuah Kata Material dan mencari kuantitas yang dimiliki dari jenis kata material yang diinput
+// Fungsi akan selalu mengeluarkan angka karena Kata Material telah di cek terlebih dahulu jika ada atau tidak dalam _mlist (dari gameInstance) oleh fungsi
+// SearchForMaterial
+void PrintAllMaterials(TabMaterial TabMat);
+// Fungsi untuk men-display seluruh material dengan harganya
+boolean SearchForMaterial(TabMaterial TabMat, Kata Material); 
+// Fungsi untuk mencari jika Kata Material terdapat dalam _mlist (gameInstance) yang merupakan input dari TabMaterial TabMat
 int SearchForIndexMaterial(Kata Material);
+// Fungsi yang mengembalikan indeks dari Kata Material dalam TabMaterial (_mlist dari gameInstance)
 
 #endif

@@ -8,6 +8,7 @@
 
 void LoadMaterial(TabMaterial *TabMat, char *filename)
 {
+    // Melakukan load material dari file eksternal materials.txt
     FILE *materialFile;
     char line[20];
     int price;
@@ -41,6 +42,7 @@ void LoadMaterial(TabMaterial *TabMat, char *filename)
 
 int SearchForPrice(TabMaterial TabMat, Kata Material)
 {
+    // Mencari harga suatu material
     boolean found = false;
     int i = MATERIALS_IdxMin;
     while (!found && i <= MATERIALS_IdxMax)
@@ -59,6 +61,7 @@ int SearchForPrice(TabMaterial TabMat, Kata Material)
 
 int SearchForQuantity(TabMaterial TabMat, Kata Material)
 {
+    // Mencari kuantitas suatu material
     boolean found = false;
     int i = MATERIALS_IdxMin;
     while (!found && i <= MATERIALS_IdxMax)
@@ -75,8 +78,9 @@ int SearchForQuantity(TabMaterial TabMat, Kata Material)
     }
 }
 
-void PrintAllMaterials(TabMaterial TabMat) //testing
+void PrintAllMaterials(TabMaterial TabMat) 
 {
+    // Menampilkan semua material
     for (int i = 0; i < 3; i++)
     {
         PrintKata(MaterialName(TabMat, i)); printf("\n");
@@ -88,6 +92,7 @@ void PrintAllMaterials(TabMaterial TabMat) //testing
 boolean SearchForMaterial(TabMaterial TabMat, Kata Material) 
 // untuk memasukkan perintah buy pada stack, cari terlebih dahulu jika ada atau tidak
 {
+    // Mencari apakah material ada atau tidak di dalam Tab Material
     boolean found = false;
     int i = MATERIALS_IdxMin;
     while (!found && i <= MATERIALS_IdxMax)

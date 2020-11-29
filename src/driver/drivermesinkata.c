@@ -1,8 +1,12 @@
 #include "../mesinkata.h"
 #include <stdio.h>
 
+    // gcc -o drivermesinkata drivermesinkata.c ../mesinkata.c ../mesinkar.c
+    // drivermesinkata.exe
+
 int main()
 {
+    // Test ReadInput
     Kata test;
     printf("Input 1:");
     ReadInput(&test);
@@ -19,20 +23,20 @@ int main()
     {
         printf("sama\n");
     }
-    // gcc -o drivermesinkata drivermesinkata.c ../mesinkata.c ../mesinkar.c
-    // drivermesinkata.exe
+
+    // Test ReadInputInteger
     int integer;
     ReadInputInteger(&integer);
     printf("%d\n", integer);
 
+    // Test ReadInputInteger kemudian ReadInput
     int int2; Kata kata;
     ReadInputInteger(&int2);
     ReadInput(&kata);
-
     printf("%d\n", int2);
     PrintKata(kata);
 
-    /* Menggunakan format int diikuti dengan Kata */
+    // Test ReadCommand, Input integer disusul kata
     int quantity; Kata primogem;
     printf("Format input : kuantitas nama\n");
     ReadCommand(&quantity, &primogem);
@@ -41,6 +45,7 @@ int main()
     printf("nama : ");
     PrintKata(primogem);printf("\n");
 
+    // Test ReadServe
     Kata INPUT1, INPUT2;
     ReadServe(&INPUT1, &INPUT2);
     PrintKata(INPUT1); printf("\n");
@@ -48,6 +53,7 @@ int main()
     PrintKata(INPUT2); printf("\n");
     printf("length 2 : %d\n", INPUT2.Length);
 
+    // Test ParseKata
     Kata command;
     ReadInput(&command);
     Kata WNAMA = ParseKata(command, CreateKata("serve "));

@@ -7,6 +7,10 @@
 
 int main_menu()
 {
+    /*
+    Pindah kontrol layar ke main menu
+    Inisialisasi gameInstance dengan GAME_Init() atau GAME_Load()
+    */
     boolean endGame = false;
     printf("Welcome to Willy Wangky's World!!\n");
     
@@ -23,7 +27,7 @@ int main_menu()
         {
             case 'N':
             case 'n':
-                if (IsKataSama(commandTemp, CreateKata("new")))
+                if (IsKataSama(commandTemp, CreateKata("new"))) // Pengecekan input sama dengan Kata new
                 {
                     new_game();
                     endGame = true;
@@ -31,7 +35,7 @@ int main_menu()
                 break;
             case 'L':
             case 'l':
-                if (IsKataSama(commandTemp, CreateKata("load")))
+                if (IsKataSama(commandTemp, CreateKata("load"))) // Pengecekan input sama dengan Kata load
                 {
                     GAME_Load();
                     endGame = true;
@@ -40,7 +44,7 @@ int main_menu()
                 break;
             case 'E':
             case 'e':
-                if (IsKataSama(commandTemp, CreateKata("exit")))
+                if (IsKataSama(commandTemp, CreateKata("exit"))) // Pengecekan input sama dengan Kata exit
                 {
                     endGame = true;
                     return -1;
@@ -59,15 +63,14 @@ int main_menu()
 
 void new_game()
 {
+    /*
+    Menu new game
+    Meminta input nama user
+    */
     printf("Memulai permainan baru...\n");
     GAME_Init();
 
     printf("Masukkan nama: ");
     scanf("%s", &_name);
     printf("Player name is: %s\n", _name);
-}
-
-void exit_game()
-{
-    printf("Thanks for playing!!!");
 }

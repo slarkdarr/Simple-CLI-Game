@@ -75,6 +75,7 @@ void SalinKata()
 }
 
 Kata CreateKata(char String[])
+// Fungsi yang digunakan untuk mengkonversi data bertipe string ke Kata
 {
     int len = 0;
     char current = String[0];
@@ -91,6 +92,7 @@ Kata CreateKata(char String[])
 }
 
 boolean IsKataSama(Kata Kata1, Kata Kata2)
+// Fungsi yang digunakan untuk membandingkan 2 argumen bertipe Kata. Mengembalikan true jika kata sama
 {
     boolean sama = true;
 
@@ -123,8 +125,7 @@ boolean Command(char CommandAsString[], Kata Command)
     return IsKataSama(Command, CommandAsKata);
 }
 
-void Input(Kata *InputKata) // ga dipake soalnya ga make mesinkata
-// jangan pake yang ini, salah
+void Input(Kata *InputKata)
 {
     char character;
     int count = 0;
@@ -146,7 +147,7 @@ void Input(Kata *InputKata) // ga dipake soalnya ga make mesinkata
 }
 
 void PrintKata(Kata print)
-// testing purposes
+// Untuk Print dari ADT bertipe Kata
 {
     int traverse = 0;
     while (traverse < print.Length)
@@ -158,6 +159,8 @@ void PrintKata(Kata print)
 }
 
 void ReadInput(Kata *InputKata)
+// Membaca input dari pengguna dan menyimpan input ke InputKata
+// Dimulai dengan memanggil start dan langsung menggunakan IgnoreBlank
 {
     START();
     IgnoreBlank();
@@ -172,6 +175,7 @@ void ReadInput(Kata *InputKata)
 }
 
 void ReadInputInteger(int *out)
+// Untuk membaca input dari pengguna jika yang diperlukan hanya dalam bentuk integer
 {
     START();
     int output = 0;
@@ -196,7 +200,7 @@ void ReadInputInteger(int *out)
 }
 
 void ReadCommand(int *out, Kata *InputKata)
-/* Membaca input integer diikuti dengan Kata */
+// Membaca input integer diikuti dengan Kata 
 {
     START();
     int output = 0;
@@ -232,6 +236,7 @@ void ReadCommand(int *out, Kata *InputKata)
 }
 
 void ReadServe(Kata *InputKata1, Kata *InputKata2)
+// Prosedur yang digunakan untuk menerima input berupa dua kata yang terpisah oleh spasi
 {
     START();
     int count1 = 0;
@@ -256,6 +261,7 @@ void ReadServe(Kata *InputKata1, Kata *InputKata2)
 }
 
 void ReadServeName(Kata *WahanaServe)
+// Prosedur untuk melewati kata pertama dan mengambil kata kedua
 {
     int count = 0;
     START();
@@ -274,11 +280,12 @@ void ReadServeName(Kata *WahanaServe)
 }
 
 Kata ParseKata(Kata Command, Kata Serve)
+// Fungsi yang mengembalikan Kata kedua setelah Kata Serve
 {
     // Kata Serve = CreateKata("Serve ")
     boolean sama = true;
     int length = Serve.Length;
-    int check = 0;
+    int check = 0; // integer pencacah
     while (sama && (check < length))
     { 
         if (Command.TabKata[check] != Serve.TabKata[check])
@@ -291,7 +298,7 @@ Kata ParseKata(Kata Command, Kata Serve)
         }
     }
     Kata toReturn;
-    int tr = 0;
+    int tr = 0; // integer pencacah
     if (sama && (Command.Length > 6))
     {
         while (check < Command.Length)

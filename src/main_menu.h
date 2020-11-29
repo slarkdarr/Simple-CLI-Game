@@ -3,17 +3,9 @@
 
 #include "game.h"
 
-int main_menu();
+int main_menu(); // Fungsi Main Menu
 
-// New game. Wahana dan Barang placeholder, ADT wahana dan barang belum ada
-// Wahana -> Tree dari tipe wahana dari file
-// Barang -> List Implementasi array berisi nama dan harga barang/bahan
+// buka menu new game
 void new_game();
-
-// Exit game
-void exit_game();
-
-// Load game
-void load_game();
 
 #endif

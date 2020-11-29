@@ -10,27 +10,26 @@ driverprioqueue */
 
 int main ()
 { 
+  // Definisi ADT
   PrioQueue Antrian;
   PrioQueueWahana QWahana;
-
   Pengunjung X;
   Pengunjung Y;
-
   Penumpang A;
   Penumpang B;
   
   int maxAntrian = 15;
   int maxCap = 30;
-
   int nWahana = 5;
 
+  // Konstruktor
   CreateEmptyPrioQueue(&Antrian, maxAntrian);
   CreateEmptyPrioQueueWahana(&QWahana, maxCap);
 
   int serve; int idw;
-
   srand ( time(NULL) );
 
+  // Test enqueue
   RandomEnqueue(&Antrian, nWahana);
   JAM CurrTime = MakeJAM(9, 0, 0);
 
@@ -45,6 +44,7 @@ int main ()
     {
       if (PengunjungWahana(InfoHead(Antrian), idw, nWahana))
       {
+        // Test dequeue dan enqueue
         DequeueAntrian(&Antrian, &X, idw, nWahana);
         EnqueueWahana(&QWahana, X, idw, 10, CurrTime);
       }

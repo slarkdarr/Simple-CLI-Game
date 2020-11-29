@@ -5,17 +5,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* KONSTRUKTOR */
-void MakeEmptyMAP(MAP *M)
-{
-
-}
-
 void LoadMap(MAP *M, char* fileName)
 {
     /*
+    DIGUNAKAN UNTUK MEMBACA 1 MAP, TANPA GRAF
+
+
     Membaca data map dari file mulai dari penanda #map. 
-    Bisa untuk membaca dari file map.txt dan state.txt
+    Bisa untuk membaca dari file map.txt dan savefile.txt
     FORMAT:
         #map
         id H W
@@ -31,11 +28,6 @@ void LoadMap(MAP *M, char* fileName)
     
     Ukuran M adalah HxW
     Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
-    (Untuk map.txt, tidak ada Wahana atau Antrian)
-    (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
-    NOTES:
-        Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
-        Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
     */
 
     FILE *mapFile;
@@ -56,9 +48,7 @@ void LoadMap(MAP *M, char* fileName)
     while (fgets(line, 100, mapFile) != NULL)
     {
         if (line[0] == '#' && line[1] == 'm')
-        {
-            // fseek(mapFile, ftell(mapFile), SEEK_SET);
-            // Mulai dari data map
+        {            // Mulai dari data map
             fscanf(mapFile, "%d %d %d", &mapID, &mapH, &mapW);
             fscanf(mapFile, "%d", &gateCount);
 
@@ -122,8 +112,10 @@ void LoadMap(MAP *M, char* fileName)
 void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
 {
     /*
+    /
+
     Membaca data map dari file mulai dari penanda #map. 
-    Bisa untuk membaca dari file map.txt dan state.txt
+    Bisa untuk membaca dari file map.txt dan savefile.txt
     FORMAT:
         #map
         id H W
@@ -139,24 +131,15 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
     
     Ukuran M adalah HxW
     Jika ada Wahana atau Antrian pada matriks, InfoElmt diinisialisasi dengan -1. 
-    (Untuk map.txt, tidak ada Wahana atau Antrian)
-    (Untuk state.txt, Wahana dan Antrian diisi oleh fungsi pembaca dari file untuk Wahana dan Antrian)
-    NOTES:
-        Untuk sekarang hanya membaca satu map. Nanti kalau udah diajarin graf, dia dipakai buat baca banyak map kemudian menyusun graf petanya
-        Tapi dia udah bisa baca banyak map dalam satu file, tapi semuanya ngubah ke M aja untuk sekarang.
     */
 
     FILE *mapFile;
     char line[100];
 
-    
-
     gAddress_V mapsBuffer[25];
-    // int mapCount = 0;
     int mapsBufferN = 0;
 
     gAddress_E edgeBuffer[50];
-    // int vertexCount = 0;
     int edgeBufferN = 0;
 
     int mapH, mapW, mapID;
@@ -199,16 +182,7 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
             {
                 NextEdge(edgeBuffer[i]) = edgeBuffer[i+1];
             }
-        
-            // if (edgeBufferN != 0)
-            // {
-            //     NextEdge(edgeBuffer[edgeBufferN]) = NULL;
-            // }
-
-            // Test(3);
-            
-            // printf("MAP %d DIMENSIONS %d %d\n", mapID, mapH, mapW);
-            // printf("GATE DATA %d, %d %d\n", gateCount, gateDestinations[0], gateDestinations[1]);
+    
             fgets(line, 100, mapFile);
 
             NBrs(*M) = mapH;
@@ -249,13 +223,8 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
                 }
             }
 
-            // printf("%d %d\n", NBrs(*M), NKol(*M));
-            // DrawMap(*M, "");
-
-            // Test(4);
             VertexMap(node) = *M;
             VertexId(node) = mapID;
-            // printf("TRAIL INDEX %d\n", trailStart);
             VertexTrail(node) = edgeBuffer[trailStart];
 
             mapsBuffer[mapsBufferN] = node;
@@ -267,45 +236,20 @@ void LoadFullMap(MAP *M, char* fileName, gAddress_V *fullMap)
     }
 
     int i;
-    // Test(5);
-
-    // DrawMap(VertexMap(mapsBuffer[0]), "");
-    // printf("%d", mapsBufferN);
 
     for (i = 0; i < mapsBufferN-1; i++)
     {
-        // Test(i);
         VertexNext(mapsBuffer[i]) = mapsBuffer[i+1];
-        // Test(i+1);
     }
     VertexNext(mapsBuffer[i]) = NULL;
 
-    // Test(6);
     for (i = 0; i < edgeBufferN; i++)
     {
-        // printf("EDGE TO %d\n", (int)EdgeDest(edgeBuffer[i]));
         EdgeDest(edgeBuffer[i]) = mapsBuffer[(int)EdgeDest(edgeBuffer[i])];
     } 
 
-    // for (i = 0; i < edgeBufferN; i++)
-    // {
-    //     // printf("EDGE TO MAP %d\n", VertexId(EdgeDest(edgeBuffer[i])));
-    // }
-
-    // for (i = 0; i < mapsBufferN; i++)
-    // {
-    //     gAddress_E P = VertexTrail(mapsBuffer[i]);
-    //     // printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(P)));
-    //     // printf("EDGE TO HEHE %d\n", VertexId(EdgeDest(NextEdge(P))));
-        
-    // }
-
-    // printf("%d\n", edgeBufferN);
-
     *M = VertexMap(mapsBuffer[0]);
     *fullMap = mapsBuffer[0];
-
-    // printf("THIS IS ID OF FIRST MAP %d", VertexId(mapsBuffer[0]));
 
     fclose(mapFile);
     return;
@@ -319,7 +263,6 @@ void Move(MAP *M, char X, char* message[], gAddress_V *fullMap)
     POINT P = Player(*M);
     POINT collisionPoint;
     boolean collision = false;
-    // DrawMapInfo(*M);
     switch (X)
     {
         //Kalau indeks 0 adalah border pada MAP
@@ -386,12 +329,8 @@ void Move(MAP *M, char X, char* message[], gAddress_V *fullMap)
     {
         if (!IsGate(*M, collisionPoint))
         {
-            // printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
-            // printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
             *message = "Anda tertabrak\n"; //Output jika Player menabrak bangunan/border
         } else {
-            // printf("TYPE %d\n", TypeElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
-            // printf("INFO %d\n", InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y));
             EnterGate(M, InfoElmtAtP(*M, collisionPoint.X, collisionPoint.Y), fullMap, VertexId(*fullMap));
             *message = "";
         }
@@ -403,6 +342,7 @@ void Move(MAP *M, char X, char* message[], gAddress_V *fullMap)
 
 boolean IsGate(MAP M, POINT P)
 {
+    /*Mengecek jika POINT P adalah Gate*/
     boolean gate;
     switch(TypeElmtAtP(M, P.X, P.Y))
     {
@@ -418,6 +358,10 @@ boolean IsGate(MAP M, POINT P)
 
 void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
 {
+    /*
+    Menelusuri trail dari fullMap (yang merupakan simpul dari map sekarang) sampai ditemukan tujuan dengan VertexId = destId
+    destId adalah infoElmt dari gate
+    */
     gAddress_V P = *fullMap;
 
     printf("WE AT %d\n", VertexId(*fullMap));
@@ -492,6 +436,12 @@ void EnterGate(MAP *M, int destId, gAddress_V *fullMap, int originId)
 
 void DrawMap(MAP M, char message[])
 {
+    /*
+    Print map, diawali cls untuk menghapus layar.
+    char message[] berfungsi untuk menampung string yang ingin diprint setelah DrawMap tetapi stringnya diinisialisasi sebelum DrawMap (karena DrawMap diawali cls)
+        umumnya digunakan bersama dengan Move()
+    Sudah termasuk legenda.
+    */
     system("cls");
     for (int i = 0; i < NBrs(M); i++)
     {
@@ -520,6 +470,9 @@ void DrawMap(MAP M, char message[])
 
 void DrawMapInfo(MAP M)
 {
+    /*
+    DrawMap tetapi menampilkan InfoElement dari setiap titik Map
+    */
     printf("\nTHIS IS A DEBUG MAP\nPLAYER AT %d, %d\n", Player(M).X, Player(M).Y);
     
     printf("%d\n", InfoElmt(M, 8, 2));
@@ -552,6 +505,9 @@ void DrawMapInfo(MAP M)
 
 int GetObject(MAP M, char O)
 {
+    /*
+    Mengembalikan InfoElmt dari object dengan Type O disebelah (atas, bawah, samping) dari player
+    */
     boolean found = false;
     POINT player = Player(M);
     if (TypeElmtAtP(M, player.X + 1, player.Y) == O)
@@ -578,6 +534,9 @@ int GetObject(MAP M, char O)
 
 POINT GetObjectP(MAP *M, char O)
 {
+    /*
+    Mengembalikan POINT dari object dengan Type O disebelah (atas, bawah, samping) dari player
+    */
     boolean found = false;
     POINT player = Player(*M);
     if (TypeElmtAtP(*M, player.X + 1, player.Y) == O)

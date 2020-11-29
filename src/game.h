@@ -12,19 +12,19 @@
 #include "arrayaction.h"
 
 typedef struct {
-    gAddress_V rootMap;
-    gAddress_V fullMap;
-    MAP map;
-    char PName[25];
-    tAddress wahanaType[10];
-    int wahanaTypeCount;
-    WAHANA_Instance wahana[50];
-    int wahanaCount;
-    int money;
-    JAM time;
-    int day; //penanda hari ke berapa
-    TabMaterial MaterialList;
-    ArrayAction_TabInt actions;
+    gAddress_V rootMap; // Vertex dari Map Awal
+    gAddress_V fullMap; // Vertex dari FullMap
+    MAP map; // Merupakan map player saat ini (akan berganti jika berpindah map)
+    char PName[25]; // Nama dari player untuk display
+    tAddress wahanaType[10]; // Berisi tipe-tipe wahana yang dapat dibuat dengan fungsi build
+    int wahanaTypeCount; // Berisi total jumlah wahana yang dapat dibuat dengan fungsi build
+    WAHANA_Instance wahana[50]; // Berisi wahana yang terdapat pada tiap map
+    int wahanaCount; // Berisi total jumlah wahana yang terdapat pada map
+    int money; // Berisi total uang yang dimiliki oleh player
+    JAM time; // Penanda Jam saat ini
+    int day; // Penanda hari ke berapa
+    TabMaterial MaterialList; // Berisi Material yang dapat digunakan sebagai bahan bangunan
+    ArrayAction_TabInt actions; // Berisi aksi yang dapat dilakukan beserta durasinya
 } GAME;
 
 // #define FullMap(G) (G).fullMap

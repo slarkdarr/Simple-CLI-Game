@@ -89,19 +89,25 @@ typedef struct{
 #define Pengunjung(P) (P).Cust 
 #define CurrWahana(P) (P).idWahana
 
-/* ---------- PROSEDUR DAN FUNGSI ---------- */
-
+/* KONSTRUKTOR */
 void CreateEmptyPrioQueue(PrioQueue *Antrian, int Max);
-/* Prosedur membuat antrian kosong dengan MaxElPrioQueue sebagai panjang maksimal antrian. Definisi antrian kosong Head(Q) = Tail(Q) = Nil dengan metode circular buffer */
+/* Prosedur membuat antrian kosong dengan MaxElPrioQueue sebagai panjang maksimal antrian. */
+/* Definisi antrian kosong Head(Q) = Tail(Q) = Nil dengan metode circular buffer */
 
 void CreateEmptyPrioQueueWahana(PrioQueueWahana *QWahana, int MaxCap);
-/* Prosedur membuat isi wahana kosong dengan MaxElPrioQueue sebagai panjang maksimal antrian. Definisi antrian kosong Head(Q) = Tail(Q) = Nil dengan metode circular buffer */
+/* Prosedur membuat isi wahana kosong dengan MaxElPrioQueue sebagai panjang maksimal antrian. */
+/* Definisi antrian kosong Head(Q) = Tail(Q) = Nil dengan metode circular buffer */
 
 void CreatePenumpang(Penumpang *P, JAM out, int idWahana, Pengunjung X, int durasi);
 /* Prosedur membuat penumpang dengan parameter dari penyusun ADT Penumpang*/
+/* Tipe bentukan pemumpang tediri dari JAM out, idWahana, pengunjung X dan durasi menaiki wahana */
 
 void CreateEmptyListWahana(ListWahana *W, int nWahana);
 /* Prosedur membuat list wahana kosong, definisi list kosong seluruh anggota elemennya adalah -1*/
+/* Implementasi list wahana dalam bentuk truth table */
+/* [-1,-1,1,1] artinya pengunjung ingin menaiki wahana dengan id 2 dan 3 */
+
+/* ---------- PROSEDUR DAN FUNGSI ---------- */
 
 boolean IsEmptyPrioQueue (PrioQueue Antrian);
 /* Mengembalikan true apabila antrian kosong */
@@ -167,12 +173,12 @@ void KesabaranHabis(PrioQueue *Antrian);
 /* Prosedur mengeluarkan pengunjung yang kesabarannya habis dari antrian */
 
 void setPrio(Pengunjung *X, int prio);
-/* Set prio ketika pengunjung ingin balik ke antrian */
+/* Prosedur mengisi prio ketika pengunjung ingin balik ke antrian */
 
 void RandomEnqueue(PrioQueue *Antrian, int nWahana);
 /* Prosedur menambahkan pengunjung ke antrian secara acak */
 
 void PrintPrioQueue(PrioQueue Antrian, int nWahana);
-/* Prosedur menampilkan list wahana yang ingin dinaiki pengunjung serta kesabarannya */
+/* Prosedur menampilkan list wahana yang ingin dinaiki pengunjung beserta dengan kesabarannya */
 
 #endif
