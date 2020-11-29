@@ -1,0 +1,1 @@
+Merupakan ADT Stack dengan representasi linked list

@@ -1,0 +1,1 @@
+Merupakan ADT POINT

@@ -1,5 +1,5 @@
 #include "../boolean.h"
-#include "../jam.h"
+#include "../jam/jam.h"
 #include <stdio.h>
 
 
@@ -25,11 +25,11 @@ int main()
     SetOpen(&made);
     TulisJAM(made);printf("\n");
 
-    // gcc -o driverjam driverjam.c ../jam.c
+    // gcc -o driverjam driverjam.c ../jam/jam.c
     // driverjam.exe
 
     // Hasil Eksekusi:
-    // User Input : JJ:MM:SS
+    // User Input : JJ MM SS
     // 10:10:10
     // 12:12:12
     // 36610

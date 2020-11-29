@@ -1,0 +1,1 @@
+Merupakan ADT Queue implementasi menggunakan array dinamis yang dicatat Head dan Tail nya, juga merupakan priority queue

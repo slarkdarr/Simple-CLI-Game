@@ -1,0 +1,1 @@
+Merupkan display untuk menu utama saat memulai game

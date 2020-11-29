@@ -1,8 +1,8 @@
-#include "../mesinkata.h"
+#include "../mesinkata/mesinkata.h"
 #include <stdio.h>
 
-    // gcc -o drivermesinkata drivermesinkata.c ../mesinkata.c ../mesinkar.c
-    // drivermesinkata.exe
+// gcc -o drivermesinkata drivermesinkata.c ../mesinkata/mesinkata.c ../mesinkata/mesinkar.c
+// .\drivermesinkata.exe
 
 int main()
 {

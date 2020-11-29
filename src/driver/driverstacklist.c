@@ -1,12 +1,17 @@
 #include "../boolean.h"
-#include "../stacklist.h"
-#include "../mesinkata.h"
-#include "../point.h"
+#include "../stacklist/stacklist.h"
+#include "../mesinkata/mesinkata.h"
+#include "../point/point.h"
+#include "../map/map.h"
 
 int main()
 {
     Stack TestStack;
     STACK_CreateEmpty(&TestStack);
+
+    MAP TEST;
+    gAddress_V FULLMAP;
+    LoadFullMap(&TEST, "../map.txt", &FULLMAP);
 
     Kata command1 = CreateKata("build");
     Kata command2 = CreateKata("upgrade");
@@ -17,8 +22,8 @@ int main()
     POINT TestPoint1 = MakePOINT(5, 5);
     POINT TestPoint2 = MakePOINT(6, 6);
 
-    Push(&TestStack, command1, specCommand1, infoCommand1, TestPoint1);
-    Push(&TestStack, command2, specCommand2, infoCommand2, TestPoint2);
+    Push(&TestStack, command1, specCommand1, infoCommand1, TestPoint1, FULLMAP);
+    Push(&TestStack, command2, specCommand2, infoCommand2, TestPoint2, FULLMAP);
 
     PrintIsiStack(TestStack);
 
@@ -31,9 +36,12 @@ int main()
     POINT printPoint1;
     POINT printPoint2;
 
+    gAddress_V One;
+    gAddress_V Two;
+
     printf("Hasil pop : \n");
-    Pop(&TestStack, &print1, &printSpec1, &printInfo1, &printPoint1);
-    Pop(&TestStack, &print2, &printSpec2, &printInfo2, &printPoint2);
+    Pop(&TestStack, &print1, &printSpec1, &printInfo1, &printPoint1, &One);
+    Pop(&TestStack, &print2, &printSpec2, &printInfo2, &printPoint2, &Two);
 
     PrintKata(print1); printf("\n");
     printf("Spec : %d  Info : %d  Point : ", printSpec1, printInfo1); 
@@ -42,12 +50,12 @@ int main()
     printf("Spec : %d  Info : %d  Point : ", printSpec2, printInfo2); 
     TulisPOINT(printPoint2); printf("\n");
 
-    Push(&TestStack, command1, specCommand1, infoCommand1, TestPoint1);
-    Push(&TestStack, command2, specCommand2, infoCommand2, TestPoint2);
+    Push(&TestStack, command1, specCommand1, infoCommand1, TestPoint1, One);
+    Push(&TestStack, command2, specCommand2, infoCommand2, TestPoint2, Two);
 
     while(!STACK_IsEmpty(TestStack))
     {
-        Pop(&TestStack, &print1, &printSpec1, &printInfo1, &printPoint1);
+        Pop(&TestStack, &print1, &printSpec1, &printInfo1, &printPoint1, &One);
         PrintKata(print1); printf("\n");
         printf("Spec : %d  Info : %d  Point : ", printSpec1, printInfo1);
         TulisPOINT(printPoint1); printf("\n"); 
@@ -65,7 +73,7 @@ int main()
     // Spec    : 1
     // Info    : 11
     // Point   : (5,5)
-    // gcc -o driverstacklist driverstacklist.c ../stacklist.c ../mesinkata.c ../point.c ../mesinkar.c
+    // gcc -o driverstacklist driverstacklist.c ../stacklist/stacklist.c ../mesinkata/mesinkata.c ../point/point.c ../mesinkata/mesinkar.c ../map/map.c
     // ./driverstacklist.exe
 
 

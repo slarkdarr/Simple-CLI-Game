@@ -1,12 +1,11 @@
-#include "../prioqueue.h"
-#include "../jam.h"
+#include "../prioqueue/prioqueue.h"
+#include "../jam/jam.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 
 /* Testing */
-/* gcc -o driverprioqueue prioqueue.c jam.c driverprioqueue.c
-driverprioqueue */
+// gcc -o driverprioqueue ../prioqueue/prioqueue.c ../jam/jam.c driverprioqueue.c
 
 int main ()
 { 

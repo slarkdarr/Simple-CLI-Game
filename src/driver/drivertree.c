@@ -1,14 +1,14 @@
 #include "../boolean.h"
-#include "../wahana.h"
-#include "../mesinkata.h"
-#include "../point.h"
-#include "../game.h"
+#include "../wahana/wahana.h"
+#include "../mesinkata/mesinkata.h"
+#include "../point/point.h"
+#include "../game/game.h"
 // #include "../map.h"
 #include <stdio.h>
 
 /*
     COMPILE COMMAND
-        gcc -o drivertree drivertree.c ../wahana.c ../mesinkata.c ../mesinkar.c ../point.c ../game.c ../jam.c ../map.c ../arrayaction.c ../materials.c -lm
+        gcc -o drivertree drivertree.c ../wahana/wahana.c ../mesinkata/mesinkata.c ../mesinkata/mesinkar.c ../point/point.c ../game/game.c ../jam/jam.c ../map/map.c ../arrayaction/arrayaction.c ../materials/materials.c -lm
 */
 
 int main()

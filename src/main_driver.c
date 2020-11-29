@@ -1,16 +1,17 @@
 // Main Driver Willy Wangky's World //
 
-#include "jam.h"
+#include "jam/jam.h"
 #include <stdio.h>
 #include "boolean.h"
-#include "game.h"
-#include "main_menu.h"
-#include "mesinkata.h"
+#include "game/game.h"
+#include "main_menu/main_menu.h"
+#include "mesinkata/mesinkata.h"
 
 /*
 COMPILE COMMAND (ganti dir ke src):
-    gcc -o that main_driver.c point.c stacklist.c materials.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c arrayaction.c phase_main.c prioqueue.c -lm
-    gcc -o wangk main_driver.c point.c stacklist.c materials.c map.c main_menu.c jam.c game.c mesinkata.c mesinkar.c wahana.c phase_prep.c arrayaction.c phase_main.c prioqueue.c -lm
+    gcc -o that main_driver.c ./point/point.c ./stacklist/stacklist.c ./materials/materials.c ./map/map.c ./main_menu/main_menu.c ./jam/jam.c ./game/game.c ./mesinkata/mesinkata.c ./mesinkata/mesinkar.c ./wahana/wahana.c ./phase/phase_prep.c ./arrayaction/arrayaction.c ./phase/phase_main.c ./prioqueue/prioqueue.c -lm
+    
+    gcc -o wangk main_driver.c ./point/point.c ./stacklist/stacklist.c ./materials/materials.c ./map/map.c ./main_menu/main_menu.c ./jam/jam.c ./game/game.c ./mesinkata/mesinkata.c ./mesinkata/mesinkar.c ./wahana/wahana.c ./phase/phase_prep.c ./arrayaction/arrayaction.c ./phase/phase_main.c ./prioqueue/prioqueue.c -lm
 */
 
 // RUN COMMAND:

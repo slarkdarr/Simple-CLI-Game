@@ -1,7 +1,7 @@
-#include "../map.h"
-#include "../point.h"
+#include "../map/map.h"
+#include "../point/point.h"
 #include "../boolean.h"
-#include "../mesinkata.h"
+#include "../mesinkata/mesinkata.h"
 #include <stdio.h>
 
 int main()
@@ -46,7 +46,7 @@ int main()
     }
     // Driver matriks dan POINT
     // cara compile
-    // gcc -o drivermap drivermap.c ../map.c ../point.c ../mesinkar.c ../mesinkata.c
+    // gcc -o drivermap drivermap.c ../map/map.c ../point/point.c ../mesinkata/mesinkar.c ../mesinkata/mesinkata.c
     // drivermap.exe
 
     return 0;

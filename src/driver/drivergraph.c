@@ -1,14 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "../map.h"
-#include "../point.h"
+#include "../map/map.h"
+#include "../point/point.h"
 #include "../boolean.h"
 
 
 /*
     compile command:
-        gcc -o drivergraph drivergraph.c ../map.c ../point.c -lm
+        gcc -o drivergraph drivergraph.c ../map/map.c ../point/point.c -lm
 */
 
 int main()

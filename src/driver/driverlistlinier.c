@@ -1,7 +1,7 @@
-#include "../wahana.h"
-#include "../mesinkata.h"
-#include "../game.h"
-#include "../point.h"
+#include "../wahana/wahana.h"
+#include "../mesinkata/mesinkata.h"
+#include "../game/game.h"
+#include "../point/point.h"
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -34,7 +34,7 @@ int main()
             AddToUpgradeHistory(&Wahana.upgrades, true);
         }
     }
-    // Upgrade ditest dengan metode boolean
+    // Test upgrade
     upgrade P = Wahana.upgrades;
     while (P != NULL)
     {
@@ -49,7 +49,7 @@ int main()
         P = NextUpgrade(P);
     }
 
-    // driver\driverlistlinier.exe saat di directory src
-
+    //gcc -o driverlistlinier driverlistlinier.c ../wahana/wahana.c ../mesinkata/mesinkar.c ../mesinkata/mesinkata.c ../point/point.c ../game/game.c ../jam/jam.c ../map/map.c ../arrayaction/arrayaction.c ../materials/materials.c -lm 
+    //.\driverlistlinier.c
     return 0;
 }

@@ -1,7 +1,10 @@
 #include <stdio.h>
 #include <math.h>
-#include "../point.h"
+#include "../point/point.h"
 #include "../boolean.h"
+
+// compile command gcc -o driverpoint driverpoint.c ../point/point.c
+// input: 2 point x y x y
 
 int main()
 {

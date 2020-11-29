@@ -1,6 +1,7 @@
 #include "../boolean.h"
-#include "../mesinkata.h"
-#include "../arrayaction.h"
+#include "../mesinkata/mesinkata.h"
+#include "../arrayaction/arrayaction.h"
+#include "../jam/jam.h"
 #include <stdio.h>
 
 int main()
@@ -23,7 +24,8 @@ int main()
     // serve 600 detik
     // repair 3600 detik
 
-    // gcc -o driverarrayaction driverarrayaction.c ../arrayaction.c ../mesinkata.c ../mesinkar.c
+    // Compile command :
+    // gcc -o driverarrayaction driverarrayaction.c ../arrayaction/arrayaction.c ../mesinkata/mesinkata.c ../mesinkata/mesinkar.c ../jam/jam.c
     // ./driverarrayaction.exe
 
 
