@@ -7,7 +7,8 @@
 int main()
 {
     MAP TEST;
-    LoadMap(&TEST, "../map.txt");
+    gAddress_V FULLMAP;
+    LoadFullMap(&TEST, "../map.txt", &FULLMAP);
     int cont = 0;
     char* messageBuffer;
     Kata command;
@@ -20,22 +21,22 @@ int main()
         {
             case 'w':
             case 'W':
-                Move(&TEST, 'W', &messageBuffer);
+                Move(&TEST, 'W', &messageBuffer, &FULLMAP);
                 DrawMap(TEST, messageBuffer);
                 break;
             case 'a':
             case 'A':
-                Move(&TEST, 'A', &messageBuffer);
+                Move(&TEST, 'A', &messageBuffer, &FULLMAP);
                 DrawMap(TEST, messageBuffer);
                 break;
             case 's':
             case 'S':
-                Move(&TEST, 'S', &messageBuffer);
+                Move(&TEST, 'S', &messageBuffer, &FULLMAP);
                 DrawMap(TEST, messageBuffer);
                 break;
             case 'd':
             case 'D':
-                Move(&TEST, 'D', &messageBuffer);
+                Move(&TEST, 'D', &messageBuffer, &FULLMAP);
                 DrawMap(TEST, messageBuffer);
                 break;
             case 'x':
